@@ -1,0 +1,94 @@
+<div class="min-h-screen flex items-center justify-center bg-gray-50 px-4 py-12 dark:bg-gray-950 transition-colors duration-300">
+  <div class="max-w-xl w-full space-y-8 bg-white dark:bg-gray-900 p-10 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-800">
+    <div>
+      <div class="mx-auto h-12 w-12 bg-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-200 dark:shadow-none">
+        <span class="text-white font-black italic text-xl">MR</span>
+      </div>
+      <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900 dark:text-white">
+        Create Account
+      </h2>
+      <p class="mt-2 text-center text-sm text-gray-600 dark:text-gray-400">
+        Connect your workshop team to MecaManage
+      </p>
+    </div>
+
+    <form [formGroup]="signupForm" (ngSubmit)="onSubmit()" class="mt-8 space-y-4">
+      @if (errorMessage()) {
+        <div class="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+          {{ errorMessage() }}
+        </div>
+      }
+
+      @if (successMessage()) {
+        <div class="rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
+          {{ successMessage() }}
+        </div>
+      }
+
+      <div class="space-y-4">
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div>
+            <label for="firstName" class="block text-sm font-medium text-gray-700 dark:text-gray-300">First Name</label>
+            <input id="firstName" formControlName="firstName" type="text"
+              class="mt-1 block w-full px-4 py-3 bg-gray-50 dark:bg-gray-800 border-0 text-gray-900 dark:text-white rounded-xl focus:ring-2 focus:ring-indigo-500 transition-all outline-none"
+              placeholder="John">
+            @if (signupForm.get('firstName')?.invalid && signupForm.get('firstName')?.touched) {
+              <p class="mt-1 text-sm text-red-500">First name is required.</p>
+            }
+          </div>
+          <div>
+            <label for="lastName" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Last Name</label>
+            <input id="lastName" formControlName="lastName" type="text"
+              class="mt-1 block w-full px-4 py-3 bg-gray-50 dark:bg-gray-800 border-0 text-gray-900 dark:text-white rounded-xl focus:ring-2 focus:ring-indigo-500 transition-all outline-none"
+              placeholder="Doe">
+            @if (signupForm.get('lastName')?.invalid && signupForm.get('lastName')?.touched) {
+              <p class="mt-1 text-sm text-red-500">Last name is required.</p>
+            }
+          </div>
+        </div>
+
+        <div>
+          <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Email Address</label>
+          <input id="email" formControlName="email" type="email"
+            class="mt-1 block w-full px-4 py-3 bg-gray-50 dark:bg-gray-800 border-0 text-gray-900 dark:text-white rounded-xl focus:ring-2 focus:ring-indigo-500 transition-all outline-none"
+            placeholder="name@example.com">
+          @if (signupForm.get('email')?.invalid && signupForm.get('email')?.touched) {
+            <p class="mt-1 text-sm text-red-500">Please enter a valid email.</p>
+          }
+        </div>
+
+        <div>
+          <label for="phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Phone Number</label>
+          <input id="phone" formControlName="phone" type="tel"
+            class="mt-1 block w-full px-4 py-3 bg-gray-50 dark:bg-gray-800 border-0 text-gray-900 dark:text-white rounded-xl focus:ring-2 focus:ring-indigo-500 transition-all outline-none"
+            placeholder="+216 20 000 000">
+          @if (signupForm.get('phone')?.invalid && signupForm.get('phone')?.touched) {
+            <p class="mt-1 text-sm text-red-500">Phone is required (min 8 characters).</p>
+          }
+        </div>
+
+        <div>
+          <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Password</label>
+          <input id="password" formControlName="password" type="password"
+            class="mt-1 block w-full px-4 py-3 bg-gray-50 dark:bg-gray-800 border-0 text-gray-900 dark:text-white rounded-xl focus:ring-2 focus:ring-indigo-500 transition-all outline-none"
+            placeholder="••••••••">
+          @if (signupForm.get('password')?.invalid && signupForm.get('password')?.touched) {
+            <p class="mt-1 text-sm text-red-500">Password must be at least 6 characters.</p>
+          }
+        </div>
+      </div>
+
+      <div>
+        <button type="submit" [disabled]="signupForm.invalid || isSubmitting()"
+          class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-bold rounded-xl text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all transform hover:scale-[1.02] active:scale-[0.98]">
+          {{ isSubmitting() ? 'Creating account...' : 'Create Account' }}
+        </button>
+      </div>
+
+      <p class="text-center text-sm text-gray-600 dark:text-gray-400 pt-2">
+        Already have an account?
+        <a routerLink="/login" class="font-bold text-indigo-600 hover:text-indigo-500 dark:text-indigo-400">Sign in</a>
+      </p>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,15 @@
+{
+  "metadata": {
+    "timestamp": "2026-04-27T18:42:26.263672+00:00",
+    "vehicle": "Peugeot 208 (2020)",
+    "symptoms_input": "voyant moteur allume avec perte de puissance",
+    "chef_atelier_id": "c8b48d9e-8e8a-4f63-8d27-8ebd2e3c7a21",
+    "garage_id": "a42e1fc7-82fd-4831-8c5e-5be77ba32054"
+  },
+  "rag_results": [
+    {
+      "rank": 1,
+      "content": "Chunk A\n\n---\n\nChunk B"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "name": "mecamanage-api",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "dotnet watch run --project MecaManage.API.csproj --launch-profile Turbo",
+    "build": "dotnet build MecaManage.API.csproj"
+  }
+}
+

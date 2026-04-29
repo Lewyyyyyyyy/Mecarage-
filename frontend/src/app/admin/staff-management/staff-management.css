@@ -1,0 +1,32 @@
+/* Staff Management Component Styles */
+
+:host {
+  display: block;
+}
+
+/* Table Responsive Design */
+@media (max-width: 768px) {
+  table {
+    font-size: 0.875rem;
+  }
+
+  .px-6 {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+}
+
+/* Loading Animation */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+

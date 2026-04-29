@@ -1,0 +1,63 @@
+{
+  "name": "Notification mecanicien - assignation",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "mecanicien-assigned",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "id": "Webhook_MecanicienAssigned",
+      "name": "Webhook Mecanicien Assigned",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        240,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "fromEmail": "no-reply@mecamanage.tn",
+        "toEmail": "={{$json.mecanicienEmail}}",
+        "subject": "Nouvelle assignation intervention - #{{$json.interventionId}}",
+        "text": "Bonjour {{$json.mecanicienName || 'Mecanicien'}},\n\nUne nouvelle intervention vous a ete assignee.\n\nDetails:\n- ID: {{$json.interventionId}}\n- Client: {{$json.clientName || 'N/A'}}\n- Vehicule: {{$json.vehicle || 'N/A'}}\n- Adresse: {{$json.location || 'N/A'}}\n- Urgence: {{$json.urgency || 'N/A'}}\n\nMerci,\nEquipe MecaManage"
+      },
+      "id": "Email_Mecanicien",
+      "name": "Email Mecanicien",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2,
+      "position": [
+        520,
+        300
+      ],
+      "credentials": {
+        "smtp": {
+          "id": "smtp_mecamanage",
+          "name": "SMTP MecaManage"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Webhook Mecanicien Assigned": {
+      "main": [
+        [
+          {
+            "node": "Email Mecanicien",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {},
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": false,
+    "version": "1.0"
+  }
+}

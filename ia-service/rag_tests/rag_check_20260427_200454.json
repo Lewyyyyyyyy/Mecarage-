@@ -1,0 +1,15 @@
+{
+  "metadata": {
+    "timestamp": "2026-04-27T19:04:54.631101+00:00",
+    "vehicle": "totyota corolla (2023)",
+    "symptoms_input": "la voiture ne marche pas",
+    "chef_atelier_id": null,
+    "garage_id": "5a7ccb23-2c73-427f-9851-29e92343cdd4"
+  },
+  "rag_results": [
+    {
+      "rank": 1,
+      "content": "REFROIDISSEMENT - RELAIS VENTILATEUR HS CLIM EN MARCHE\nSymptomes: ventilateur ne demarre pas, surchauffe a l arret, defaut intermittent, plus net clim en marche\nCauses possibles: relais colle, contact brule, humidite boitier\nType atelier: electrique\nUrgence: modere\nCout estime: 50-180 TND\nActions: controle relais et alimentation\n\n---\n\nCARROSSERIE - VERROUILLAGE CENTRAL PORTE BLOQUE PORTE CONDUCTEUR INTERMITTENT\nSymptomes: porte ne se verrouille pas, moteur serrure bruite, telecommande marche mal, defaut intermittent\nCauses possibles: moteur serrure use, mecanisme sec, cablage soufflet porte\nType atelier: electrique\nUrgence: faible\nCout estime: 80-280 TND\nActions: controle serrure et faisceau\n\n---\n\nCARROSSERIE - VERROUILLAGE CENTRAL PORTE BLOQUE PORTE ARRIERE DROITE INTERMITTENT\nSymptomes: porte ne se verrouille pas, moteur serrure bruite, telecommande marche mal, defaut intermittent\nCauses possibles: moteur serrure use, mecanisme sec, cablage soufflet porte\nType atelier: electrique\nUrgence: faible\nCout estime: 80-280 TND\nActions: controle serrure et faisceau\n\n---\n\nRADAR RECUL - CAPTEUR HS ARRIERE EXTERIEUR DROIT SOUS PLUIE\nSymptomes: bip continu marche arriere, zone aveugle, un capteur ne cliquette pas, surtout sous pluie\nCauses possibles: capteur defaillant, eau dans capteur, choc pare choc\nType atelier: electrique\nUrgence: faible\nCout estime: 60-220 TND\nActions: diagnostic capteur remplacement\n\n---\n\nRADAR RECUL - CAPTEUR HS ARRIERE EXTERIEUR GAUCHE SOUS PLUIE\nSymptomes: bip continu marche arriere, zone aveugle, un capteur ne cliquette pas, surtout sous pluie\nCauses possibles: capteur defaillant, eau dans capteur, choc pare choc\nType atelier: electrique\nUrgence: faible\nCout estime: 60-220 TND\nActions: diagnostic capteur remplacement"
+    }
+  ]
+}

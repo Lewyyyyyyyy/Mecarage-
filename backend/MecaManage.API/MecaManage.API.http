@@ -1,0 +1,6 @@
+@MecaManage.API_HostAddress = http://localhost:5073
+
+GET {{MecaManage.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

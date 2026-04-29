@@ -1,0 +1,15 @@
+{
+  "metadata": {
+    "timestamp": "2026-04-27T19:24:05.942165+00:00",
+    "vehicle": "toyota corolla (2020)",
+    "symptoms_input": "la moteur vibre beacoups",
+    "chef_atelier_id": null,
+    "garage_id": "5e9b1c9c-2f0f-48eb-91b4-9d3f5d4d9ce2"
+  },
+  "rag_results": [
+    {
+      "rank": 1,
+      "content": "ABS - BLOC HYDRAULIQUE ABS FATIGUE INTERMITTENT\nSymptomes: voyants ABS ESP, pedale pulse anormalement, freinage de secours seulement, defaut intermittent\nCauses possibles: electrovannes grippees, pompe ABS fatigue, liquide pollue\nType atelier: electrique\nUrgence: urgent\nCout estime: 350-1200 TND\nActions: lecture defauts test bloc hydraulique reparation ou remplacement\n\n---\n\nABS - BLOC HYDRAULIQUE ABS FATIGUE APRES STATIONNEMENT\nSymptomes: voyants ABS ESP, pedale pulse anormalement, freinage de secours seulement, apres stationnement\nCauses possibles: electrovannes grippees, pompe ABS fatigue, liquide pollue\nType atelier: electrique\nUrgence: urgent\nCout estime: 350-1200 TND\nActions: lecture defauts test bloc hydraulique reparation ou remplacement\n\n---\n\nEV - CHAUFFAGE BATTERIE TRACTION HS INTERMITTENT\nSymptomes: charge rapide lente a froid, puissance limitee hiver, batterie froide, defaut intermittent\nCauses possibles: resistance chauffante HS, module thermique, relais\nType atelier: ev\nUrgence: modere\nCout estime: 500-2500 TND\nActions: diagnostic thermique pack\n\n---\n\nABS - BLOC HYDRAULIQUE ABS FATIGUE SOUS PLUIE\nSymptomes: voyants ABS ESP, pedale pulse anormalement, freinage de secours seulement, surtout sous pluie\nCauses possibles: electrovannes grippees, pompe ABS fatigue, liquide pollue\nType atelier: electrique\nUrgence: urgent\nCout estime: 350-1200 TND\nActions: lecture defauts test bloc hydraulique reparation ou remplacement\n\n---\n\nEV - CHAUFFAGE BATTERIE TRACTION HS APRES STATIONNEMENT\nSymptomes: charge rapide lente a froid, puissance limitee hiver, batterie froide, apres stationnement\nCauses possibles: resistance chauffante HS, module thermique, relais\nType atelier: ev\nUrgence: modere\nCout estime: 500-2500 TND\nActions: diagnostic thermique pack"
+    }
+  ]
+}

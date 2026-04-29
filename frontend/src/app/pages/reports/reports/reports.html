@@ -1,0 +1,53 @@
+<div class="min-h-screen bg-gray-50 dark:bg-gray-950 p-6 transition-colors duration-300">
+  <div class="max-w-7xl mx-auto space-y-12">
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+      <div>
+        <h1 class="text-3xl font-black text-gray-900 dark:text-white tracking-tight">Reports</h1>
+        <p class="text-gray-600 dark:text-gray-400">Deep dive into your garage performance</p>
+      </div>
+      <div class="flex space-x-3">
+        <button class="px-4 py-2 bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-xl text-sm font-bold text-gray-700 dark:text-gray-300">Export PDF</button>
+        <button class="px-4 py-2 bg-indigo-600 text-white rounded-xl text-sm font-bold">New Custom Report</button>
+      </div>
+    </div>
+
+    <!-- Active Reports Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <!-- Revenue Report -->
+      <div class="bg-white dark:bg-gray-900 p-8 rounded-[2.5rem] border border-gray-100 dark:border-gray-800 shadow-sm">
+        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-8 italic">Revenue breakdown</h3>
+        <div class="space-y-6">
+          <div class="space-y-2">
+            <div class="flex justify-between text-sm font-bold">
+              <span class="text-gray-500">Service Fees</span>
+              <span class="text-gray-900 dark:text-white">$24,300</span>
+            </div>
+            <div class="h-2 w-full bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
+              <div class="h-full bg-indigo-500" style="width: 75%"></div>
+            </div>
+          </div>
+          <div class="space-y-2">
+            <div class="flex justify-between text-sm font-bold">
+              <span class="text-gray-500">Parts Sales</span>
+              <span class="text-gray-900 dark:text-white">$12,450</span>
+            </div>
+            <div class="h-2 w-full bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
+              <div class="h-full bg-emerald-500" style="width: 45%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+       <!-- Customer Growth -->
+       <div class="bg-white dark:bg-gray-900 p-8 rounded-[2.5rem] border border-gray-100 dark:border-gray-800 shadow-sm flex flex-col items-center justify-center text-center">
+         <div class="mb-4 text-emerald-500">
+           <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+            </svg>
+         </div>
+         <h3 class="text-4xl font-black text-gray-900 dark:text-white">+24%</h3>
+         <p class="text-gray-500 font-bold uppercase tracking-widest text-xs mt-2">New Customer growth this month</p>
+       </div>
+    </div>
+  </div>
+</div>

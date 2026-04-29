@@ -1,0 +1,9 @@
+.garage-admin-dashboard {
+  min-height: 100vh;
+  background-color: #f5f7fa;
+}
+
+.space-y-4 > * + * {
+  margin-top: 1rem;
+}
+

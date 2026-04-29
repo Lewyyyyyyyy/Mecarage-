@@ -1,0 +1,218 @@
+<div class="space-y-8">
+  <div>
+    <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Gestion des Réparations</h2>
+    <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
+      Réparations autorisées par les clients — à planifier, tester, puis livrer.
+    </p>
+  </div>
+
+  @if (success()) {
+    <div class="p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg">
+      <p class="text-green-800 dark:text-green-300">{{ success() }}</p>
+    </div>
+  }
+  @if (error() && !showAssignModal()) {
+    <div class="p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
+      <p class="text-red-800 dark:text-red-300">{{ error() }}</p>
+    </div>
+  }
+
+  @if (loading()) {
+    <div class="flex justify-center py-12">
+      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+    </div>
+  } @else {
+
+    <!-- SECTION 1: Tasks awaiting repair (Assigned / InProgress) -->
+    <div>
+      <h3 class="text-lg font-bold text-gray-800 dark:text-gray-200 mb-3 flex items-center gap-2">
+        🔧 En cours de réparation
+        <span class="text-xs bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 px-2 py-0.5 rounded-full">
+          {{ getPendingTasks().length }}
+        </span>
+      </h3>
+      @if (getPendingTasks().length === 0) {
+        <div class="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-8 text-center">
+          <p class="text-gray-500 dark:text-gray-400 text-sm">Aucune réparation en cours</p>
+        </div>
+      } @else {
+        <div class="space-y-3">
+          @for (task of getPendingTasks(); track task.taskId) {
+            <div class="bg-white dark:bg-gray-900 rounded-lg border border-blue-100 dark:border-blue-900/30 p-5">
+              <div class="flex items-start justify-between mb-3">
+                <div class="flex-1">
+                  <h4 class="font-bold text-gray-900 dark:text-white">{{ task.taskTitle }}</h4>
+                  <p class="text-sm text-gray-600 dark:text-gray-400">{{ task.clientName }} — {{ task.vehicleInfo }}</p>
+                  <p class="text-xs text-gray-500 dark:text-gray-500 mt-1">
+                    📅 {{ formatDate(task.appointmentDate) }} &nbsp;|&nbsp; Devis: {{ task.invoiceTotal | number:'1.2-2' }} EUR
+                  </p>
+                </div>
+                <span [ngClass]="[getStatusBadge(task.taskStatus).bg, getStatusBadge(task.taskStatus).text]"
+                  class="px-3 py-1 text-xs font-semibold rounded-full shrink-0">
+                  {{ getStatusBadge(task.taskStatus).label }}
+                </span>
+              </div>
+
+              @if (task.assignedMechanics.length > 0) {
+                <p class="text-xs text-gray-500 dark:text-gray-400 mb-3">
+                  👷 {{ task.assignedMechanics.join(', ') }}
+                </p>
+              }
+
+              <button (click)="openAssignModal(task)"
+                class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm rounded-lg font-semibold transition">
+                ➕ Assigner mécanicien
+              </button>
+            </div>
+          }
+        </div>
+      }
+    </div>
+
+    <!-- SECTION 2: Tasks marked as Fixed - waiting for chef test -->
+    <div>
+      <h3 class="text-lg font-bold text-gray-800 dark:text-gray-200 mb-3 flex items-center gap-2">
+        🧪 À tester
+        <span class="text-xs bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-300 px-2 py-0.5 rounded-full">
+          {{ getFixedTasks().length }}
+        </span>
+      </h3>
+      @if (getFixedTasks().length === 0) {
+        <div class="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-8 text-center">
+          <p class="text-gray-500 dark:text-gray-400 text-sm">Aucun véhicule à tester pour le moment</p>
+        </div>
+      } @else {
+        <div class="space-y-3">
+          @for (task of getFixedTasks(); track task.taskId) {
+            <div class="bg-white dark:bg-gray-900 rounded-lg border border-purple-200 dark:border-purple-900/50 p-5">
+              <div class="flex items-start justify-between mb-3">
+                <div>
+                  <h4 class="font-bold text-gray-900 dark:text-white">{{ task.taskTitle }}</h4>
+                  <p class="text-sm text-gray-600 dark:text-gray-400">{{ task.clientName }} — {{ task.vehicleInfo }}</p>
+                  @if (task.assignedMechanics.length > 0) {
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">👷 {{ task.assignedMechanics.join(', ') }}</p>
+                  }
+                </div>
+                <span class="px-3 py-1 text-xs font-semibold rounded-full bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300 shrink-0">
+                  ✅ Réparé – À tester
+                </span>
+              </div>
+              <div class="p-3 bg-purple-50 dark:bg-purple-900/20 rounded text-sm text-purple-700 dark:text-purple-300 mb-3">
+                Le mécanicien a terminé les réparations. Veuillez tester le véhicule et valider la qualité.
+              </div>
+              <button (click)="markTested(task.taskId)"
+                class="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white text-sm rounded-lg font-semibold transition">
+                🧪 Test réussi — Marquer comme testé
+              </button>
+            </div>
+          }
+        </div>
+      }
+    </div>
+
+    <!-- SECTION 3: Tasks tested - ready for client pickup -->
+    <div>
+      <h3 class="text-lg font-bold text-gray-800 dark:text-gray-200 mb-3 flex items-center gap-2">
+        🚗 Prêt pour la livraison
+        <span class="text-xs bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-300 px-2 py-0.5 rounded-full">
+          {{ getTestedTasks().length }}
+        </span>
+      </h3>
+      @if (getTestedTasks().length === 0) {
+        <div class="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-8 text-center">
+          <p class="text-gray-500 dark:text-gray-400 text-sm">Aucun véhicule prêt à livrer</p>
+        </div>
+      } @else {
+        <div class="space-y-3">
+          @for (task of getTestedTasks(); track task.taskId) {
+            <div class="bg-white dark:bg-gray-900 rounded-lg border border-green-200 dark:border-green-800 p-5">
+              <div class="flex items-start justify-between mb-3">
+                <div>
+                  <h4 class="font-bold text-gray-900 dark:text-white">{{ task.taskTitle }}</h4>
+                  <p class="text-sm text-gray-600 dark:text-gray-400">{{ task.clientName }} — {{ task.vehicleInfo }}</p>
+                </div>
+                <span class="px-3 py-1 text-xs font-semibold rounded-full bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 shrink-0">
+                  🧪 Testé
+                </span>
+              </div>
+              <div class="p-3 bg-green-50 dark:bg-green-900/20 rounded text-sm text-green-700 dark:text-green-300 mb-3">
+                Le véhicule a passé le test. Informez le client qu'il peut venir récupérer son véhicule.
+              </div>
+              <button (click)="signalReadyForPickup(task.taskId)"
+                class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-sm rounded-lg font-semibold transition">
+                📢 Notifier le client — Véhicule prêt !
+              </button>
+            </div>
+          }
+        </div>
+      }
+    </div>
+
+  }<!-- end !loading -->
+</div>
+
+<!-- Assign Mechanic Modal -->
+@if (showAssignModal() && selectedTask()) {
+  <div class="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4">
+    <div class="bg-white dark:bg-gray-900 rounded-2xl max-w-lg w-full border border-gray-200 dark:border-gray-700 max-h-[90vh] overflow-y-auto">
+      <div class="p-6">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-xl font-bold text-gray-900 dark:text-white">Assigner mécanicien(s)</h3>
+          <button (click)="showAssignModal.set(false)" class="text-gray-500 hover:text-gray-800 dark:hover:text-white text-xl">✕</button>
+        </div>
+
+        <div class="mb-4 p-3 bg-gray-50 dark:bg-gray-800 rounded text-sm">
+          <p class="font-semibold text-gray-900 dark:text-white">{{ selectedTask()!.taskTitle }}</p>
+          <p class="text-gray-600 dark:text-gray-400">{{ selectedTask()!.clientName }} — {{ selectedTask()!.vehicleInfo }}</p>
+        </div>
+
+        @if (error()) {
+          <div class="mb-3 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded">
+            <p class="text-sm text-red-800 dark:text-red-300">{{ error() }}</p>
+          </div>
+        }
+
+        @if (mechanics().length === 0) {
+          <div class="p-4 bg-yellow-50 dark:bg-yellow-900/20 rounded text-yellow-700 dark:text-yellow-300 text-sm">
+            ⚠️ Aucun mécanicien disponible dans ce garage.
+          </div>
+        } @else {
+          <div class="space-y-2 mb-4">
+            @for (mech of mechanics(); track mech.id) {
+              <button type="button" (click)="toggleMechanic(mech.id)"
+                class="w-full flex items-center gap-3 p-3 rounded-xl border transition-all text-left"
+                [ngClass]="isMechanicSelected(mech.id)
+                  ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20 text-gray-900 dark:text-white'
+                  : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:border-gray-300 dark:hover:border-gray-600'">
+                <div class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm shrink-0"
+                  [ngClass]="isMechanicSelected(mech.id) ? 'bg-blue-600 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-500'">
+                  {{ mech.firstName[0] }}{{ mech.lastName[0] }}
+                </div>
+                <div class="flex-1">
+                  <p class="font-semibold text-sm">{{ mech.firstName }} {{ mech.lastName }}</p>
+                  <p class="text-xs text-gray-500 dark:text-gray-400">{{ mech.email }}</p>
+                </div>
+                @if (isMechanicSelected(mech.id)) {
+                  <span class="text-blue-500 text-sm">✓</span>
+                }
+              </button>
+            }
+          </div>
+        }
+
+        <div class="flex gap-3">
+          <button (click)="showAssignModal.set(false)"
+            class="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 font-semibold transition">
+            Annuler
+          </button>
+          <button (click)="assignMechanics()"
+            [disabled]="selectedMechanicIds.length === 0 || isSubmitting()"
+            class="flex-1 px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white rounded-lg font-semibold transition">
+            {{ isSubmitting() ? '⏳...' : 'Assigner →' }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+}
+

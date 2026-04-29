@@ -1,0 +1,14 @@
+{
+  "metadata": {
+    "timestamp": "2026-04-28T01:40:26.729899+00:00",
+    "vehicle": "toyota corolla (2020)",
+    "symptoms": "la meme defaut que l'autre fois"
+  },
+  "chunks": [
+    "PONT - ROULEMENT PONT BRUYANT INTERMITTENT\nSymptomes: grondement arriere, bruit qui varie a la deceleration, huile pont chargee, defaut intermittent\nCauses possibles: roulement use, huile basse, precharge fausse\nType atelier: mecanique\nUrgence: modere\nCout estime: 500-1800 TND\nActions: controle jeu et refection pont",
+    "FREIN - SERVOFREIN DEFAILLANT INTERMITTENT\nSymptomes: pedale dure, effort freinage eleve, sifflement a la pedale, defaut intermittent\nCauses possibles: membrane percee, durite depression fuite, clapet HS\nType atelier: mecanique\nUrgence: urgent\nCout estime: 220-650 TND\nActions: controle depression test servofrein remplacement si besoin",
+    "DIRECTION - POMPE DIRECTION ASSISTEE BRUYANTE A L ARRET\nSymptomes: grogne braquage, volant dur a l arret, mousse dans bocal, a l arret\nCauses possibles: niveau liquide bas, pompe usee, prise d air\nType atelier: mecanique\nUrgence: modere\nCout estime: 180-700 TND\nActions: controle pression DA purge et remplacement",
+    "ECHAPPEMENT - FLEXIBLE ECHAPPEMENT FISSURE INTERMITTENT\nSymptomes: souffle a l acceleration, odeur gaz, bruit avant moteur, defaut intermittent\nCauses possibles: tresse usee, support moteur fatigue, vibration\nType atelier: mecanique\nUrgence: modere\nCout estime: 100-350 TND\nActions: controle flexible remplacement",
+    "REFROIDISSEMENT - RELAIS VENTILATEUR HS INTERMITTENT\nSymptomes: ventilateur ne demarre pas, surchauffe a l arret, defaut intermittent\nCauses possibles: relais colle, contact brule, humidite boitier\nType atelier: electrique\nUrgence: modere\nCout estime: 50-180 TND\nActions: controle relais et alimentation"
+  ]
+}

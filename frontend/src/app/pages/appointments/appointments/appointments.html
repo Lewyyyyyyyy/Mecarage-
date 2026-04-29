@@ -1,0 +1,288 @@
+<div class="min-h-screen bg-gray-50 dark:bg-gray-950 p-6 transition-colors duration-300">
+  <div class="max-w-7xl mx-auto space-y-8">
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+      <div>
+        <h1 class="text-3xl font-black text-gray-900 dark:text-white tracking-tight">Mes Rendez-vous</h1>
+        <p class="text-gray-600 dark:text-gray-400">Gérez vos rendez-vous et devis</p>
+      </div>
+      <button class="inline-flex items-center px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-2xl transition-all shadow-lg shadow-indigo-200 dark:shadow-none">
+        Prendre RDV
+      </button>
+    </div>
+
+    <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
+      <!-- Calendar Placeholder -->
+      <div class="xl:col-span-2 bg-white dark:bg-gray-900 p-4 sm:p-8 rounded-3xl border border-gray-100 dark:border-gray-800 shadow-sm overflow-hidden">
+        <div class="flex flex-col sm:flex-row items-center justify-between mb-8 gap-4">
+          <h3 class="text-xl font-bold text-gray-900 dark:text-white">Mars 2026</h3>
+          <div class="flex space-x-2">
+            <button class="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors text-gray-600 dark:text-gray-400">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
+            </button>
+            <button class="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors text-gray-600 dark:text-gray-400">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" /></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-7 gap-1 sm:gap-2 mb-4">
+          <div class="text-center text-[10px] sm:text-xs font-black text-gray-400 uppercase tracking-widest py-2">Lun</div>
+          <div class="text-center text-[10px] sm:text-xs font-black text-gray-400 uppercase tracking-widest py-2">Mar</div>
+          <div class="text-center text-[10px] sm:text-xs font-black text-gray-400 uppercase tracking-widest py-2">Mer</div>
+          <div class="text-center text-[10px] sm:text-xs font-black text-gray-400 uppercase tracking-widest py-2">Jeu</div>
+          <div class="text-center text-[10px] sm:text-xs font-black text-gray-400 uppercase tracking-widest py-2">Ven</div>
+          <div class="text-center text-[10px] sm:text-xs font-black text-gray-400 uppercase tracking-widest py-2">Sam</div>
+          <div class="text-center text-[10px] sm:text-xs font-black text-gray-400 uppercase tracking-widest py-2">Dim</div>
+        </div>
+
+        <div class="grid grid-cols-7 gap-1 sm:gap-2">
+          <!-- Multi-day placeholder loop -->
+          <div class="aspect-square flex items-center justify-center text-sm font-bold text-gray-300 dark:text-gray-700">23</div>
+          <div class="aspect-square flex items-center justify-center text-sm font-bold text-gray-300 dark:text-gray-700">24</div>
+          <div class="aspect-square flex items-center justify-center text-sm font-bold text-gray-400">1</div>
+          <div class="aspect-square flex items-center justify-center text-sm font-bold text-gray-900 dark:text-white bg-indigo-50 dark:bg-indigo-900/40 rounded-2xl ring-2 ring-indigo-500">18</div>
+          <div class="aspect-square flex items-center justify-center text-sm font-bold text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-2xl transition-colors cursor-pointer">19</div>
+          <div class="aspect-square flex items-center justify-center text-sm font-bold text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-2xl transition-colors cursor-pointer relative">
+            20
+            <div class="absolute bottom-2 w-1.5 h-1.5 bg-rose-500 rounded-full"></div>
+          </div>
+          <div class="aspect-square flex items-center justify-center text-sm font-bold text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-2xl transition-colors cursor-pointer">21</div>
+        </div>
+      </div>
+
+      <!-- Upcoming Feed -->
+      <div class="bg-white dark:bg-gray-900 p-8 rounded-3xl border border-gray-100 dark:border-gray-800 shadow-sm">
+        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-6">Planning du jour</h3>
+        <div class="space-y-4">
+          <div class="p-4 bg-gray-50 dark:bg-gray-800 rounded-2xl border-l-4 border-indigo-500">
+            <p class="text-xs font-black text-indigo-600 dark:text-indigo-400 uppercase">09:00 AM</p>
+            <p class="font-bold text-gray-900 dark:text-white mt-1">Diagnostic complet du moteur</p>
+            <p class="text-sm text-gray-500 dark:text-gray-400">Client : Alice S.</p>
+          </div>
+          <div class="p-4 bg-gray-50 dark:bg-gray-800 rounded-2xl border-l-4 border-emerald-500">
+            <p class="text-xs font-black text-emerald-600 dark:text-emerald-400 uppercase">11:30 AM</p>
+            <p class="font-bold text-gray-900 dark:text-white mt-1">Remplacement des plaquettes de frein</p>
+            <p class="text-sm text-gray-500 dark:text-gray-400">Client : Bob J.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="space-y-6">
+      <!-- Alerts -->
+      @if (success()) {
+        <div class="p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg">
+          <p class="text-green-800 dark:text-green-300">{{ success() }}</p>
+        </div>
+      }
+      @if (error()) {
+        <div class="p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
+          <p class="text-red-800 dark:text-red-300">{{ error() }}</p>
+        </div>
+      }
+
+      <!-- Tabs -->
+      <div class="flex gap-2 border-b border-gray-200 dark:border-gray-800">
+        <button
+          (click)="activeTab.set('appointments')"
+          [class]="activeTab() === 'appointments' ? 'px-4 py-2 text-sm font-semibold text-blue-600 border-b-2 border-blue-600' : 'px-4 py-2 text-sm font-semibold text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'"
+        >Mes Rendez-vous</button>
+        <button
+          (click)="activeTab.set('book')"
+          [class]="activeTab() === 'book' ? 'px-4 py-2 text-sm font-semibold text-blue-600 border-b-2 border-blue-600' : 'px-4 py-2 text-sm font-semibold text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'"
+        >
+          Prendre RDV
+          @if (approvedReports().length > 0) {
+            <span class="ml-2 px-2 py-0.5 bg-green-500 text-white text-xs rounded-full">{{ approvedReports().length }}</span>
+          }
+        </button>
+      </div>
+
+      <!-- Appointments tab -->
+      @if (activeTab() === 'appointments') {
+        @if (loading()) {
+          <div class="flex justify-center py-12">
+            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+          </div>
+        } @else {
+          <!-- Pending invoices alert -->
+          @if (pendingInvoices.length > 0) {
+            <div class="p-4 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-300 dark:border-yellow-700 rounded-lg">
+              <h3 class="font-semibold text-yellow-800 dark:text-yellow-300 mb-3">
+                ⚠️ Vous avez {{ pendingInvoices.length }} devis en attente de votre approbation
+              </h3>
+              @for (inv of pendingInvoices; track inv.id) {
+                <div class="bg-white dark:bg-gray-800 rounded p-3 mb-2 border border-yellow-200 dark:border-yellow-700">
+                  <div class="flex items-start justify-between mb-2">
+                    <div>
+                      <p class="font-semibold text-gray-900 dark:text-white text-sm">{{ inv.invoiceNumber }}</p>
+                      <p class="text-xs text-gray-500 dark:text-gray-400">{{ inv.garageName }}</p>
+                    </div>
+                    <div class="flex gap-2 shrink-0">
+                      <button
+                        (click)="approveInvoice(inv.id)"
+                        class="px-3 py-1.5 bg-green-600 hover:bg-green-700 text-white text-sm rounded-lg font-semibold transition"
+                      >✅ Approuver</button>
+                      <button
+                        (click)="rejectInvoice(inv.id)"
+                        class="px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white text-sm rounded-lg font-semibold transition"
+                      >❌ Refuser</button>
+                    </div>
+                  </div>
+                  <!-- Line items -->
+                  @if ($any(inv).lineItems?.length) {
+                    <div class="border-t border-yellow-100 dark:border-yellow-900 pt-2 mt-2 space-y-1">
+                      @for (item of $any(inv).lineItems; track item.description) {
+                        <div class="flex justify-between text-xs text-gray-600 dark:text-gray-400">
+                          <span>{{ item.description }} × {{ item.quantity }}</span>
+                          <span>{{ item.lineTotal | number:'1.2-2' }} EUR</span>
+                        </div>
+                      }
+                      <div class="flex justify-between text-sm font-bold text-gray-800 dark:text-gray-200 border-t border-yellow-200 dark:border-yellow-700 pt-1 mt-1">
+                        <span>Total</span>
+                        <span>{{ inv.totalAmount | number:'1.2-2' }} EUR</span>
+                      </div>
+                    </div>
+                  } @else {
+                    <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Total: <strong>{{ inv.totalAmount | number:'1.2-2' }} EUR</strong></p>
+                  }
+                </div>
+              }
+            </div>
+          }
+
+          @if (appointments().length === 0) {
+            <div class="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-12 text-center">
+              <p class="text-gray-600 dark:text-gray-400 mb-4">Aucun rendez-vous pour le moment</p>
+              <button (click)="activeTab.set('book')" class="text-blue-600 hover:underline font-semibold text-sm">
+                Prendre votre premier rendez-vous →
+              </button>
+            </div>
+          } @else {
+            <div class="grid gap-4">
+              @for (apt of appointments(); track apt.id) {
+                <div class="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-5">
+                  <div class="flex items-start justify-between">
+                    <div>
+                      <h3 class="font-bold text-gray-900 dark:text-white">{{ apt.vehicleInfo }}</h3>
+                      <p class="text-sm text-gray-600 dark:text-gray-400">{{ apt.garageName }}</p>
+                      <p class="text-sm text-gray-500 dark:text-gray-500 mt-1">{{ formatDate(apt.preferredDate) }} à {{ apt.preferredTime }}</p>
+                    </div>
+                    <span class="px-3 py-1 text-xs font-semibold rounded-full {{ getStatusBadge(apt.status).bg }} {{ getStatusBadge(apt.status).text }}">
+                      {{ getStatusBadge(apt.status).label }}
+                    </span>
+                  </div>
+                </div>
+              }
+            </div>
+          }
+        }
+      }
+
+      <!-- Book appointment tab -->
+      @if (activeTab() === 'book') {
+        @if (approvedReports().length === 0) {
+          <div class="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-12 text-center">
+            <p class="text-gray-600 dark:text-gray-400 mb-2">Aucun rapport approuvé disponible pour prendre rendez-vous.</p>
+            <p class="text-sm text-gray-500 dark:text-gray-500">Soumettez d'abord un rapport de symptômes et attendez l'approbation du chef d'atelier.</p>
+          </div>
+        } @else {
+          <div class="space-y-4">
+            <p class="text-sm text-gray-600 dark:text-gray-400">Sélectionnez un rapport approuvé pour prendre rendez-vous:</p>
+            @for (report of approvedReports(); track report.id) {
+              <div class="bg-white dark:bg-gray-900 rounded-lg border border-green-200 dark:border-green-800 p-5">
+                <div class="flex items-start justify-between mb-3">
+                  <div>
+                    <h3 class="font-bold text-gray-900 dark:text-white">{{ report.vehicleBrand }} {{ report.vehicleModel }}</h3>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">Rapport du {{ formatDate(report.submittedAt) }}</p>
+                  </div>
+                  <button
+                    (click)="openBookingModal(report)"
+                    class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-semibold text-sm transition"
+                  >
+                    Prendre RDV
+                  </button>
+                </div>
+                @if (report.availablePeriodStart && report.availablePeriodEnd) {
+                  <p class="text-sm text-green-700 dark:text-green-400">
+                    📅 Période disponible: {{ formatPeriod(report.availablePeriodStart, report.availablePeriodEnd) }}
+                  </p>
+                }
+                @if (report.chefFeedback) {
+                  <div class="mt-2 p-3 bg-green-50 dark:bg-green-900/20 rounded text-sm text-green-800 dark:text-green-300">
+                    <strong>Retour du chef:</strong> {{ report.chefFeedback }}
+                  </div>
+                }
+              </div>
+            }
+          </div>
+        }
+      }
+
+      <!-- Booking Modal -->
+      @if (showBookingModal() && selectedReport) {
+        <div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div class="bg-white dark:bg-gray-900 rounded-lg max-w-md w-full border border-gray-200 dark:border-gray-700">
+            <div class="p-6">
+              <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Prendre Rendez-vous</h3>
+              <div class="mb-4 p-3 bg-gray-50 dark:bg-gray-800 rounded text-sm">
+                <p class="text-gray-600 dark:text-gray-400">
+                  <strong>Véhicule:</strong> {{ selectedReport.vehicleBrand }} {{ selectedReport.vehicleModel }}
+                </p>
+                @if (selectedReport.availablePeriodStart && selectedReport.availablePeriodEnd) {
+                  <p class="text-green-700 dark:text-green-400 mt-1">
+                    📅 Choisissez entre {{ formatDate(selectedReport.availablePeriodStart) }} et {{ formatDate(selectedReport.availablePeriodEnd) }}
+                  </p>
+                }
+              </div>
+
+              <form [formGroup]="bookingForm" (ngSubmit)="submitBooking()" class="space-y-4">
+                <div>
+                  <label class="block text-sm font-semibold text-gray-900 dark:text-white mb-1">Date souhaitée *</label>
+                  <input
+                    type="date"
+                    formControlName="preferredDate"
+                    [min]="selectedReport.availablePeriodStart ? selectedReport.availablePeriodStart.split('T')[0] : ''"
+                    [max]="selectedReport.availablePeriodEnd ? selectedReport.availablePeriodEnd.split('T')[0] : ''"
+                    class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+                <div>
+                  <label class="block text-sm font-semibold text-gray-900 dark:text-white mb-1">Heure souhaitée *</label>
+                  <input
+                    type="time"
+                    formControlName="preferredTime"
+                    class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+                <div>
+                  <label class="block text-sm font-semibold text-gray-900 dark:text-white mb-1">Demandes spéciales</label>
+                  <textarea
+                    formControlName="specialRequests"
+                    rows="2"
+                    class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                    placeholder="Informations supplémentaires..."
+                  ></textarea>
+                </div>
+                <div class="flex gap-3">
+                  <button
+                    type="button"
+                    (click)="showBookingModal.set(false)"
+                    class="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 font-semibold transition"
+                  >Annuler</button>
+                  <button
+                    type="submit"
+                    [disabled]="!bookingForm.valid || isSubmitting()"
+                    class="flex-1 px-4 py-2 bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white rounded-lg font-semibold transition"
+                  >
+                    {{ isSubmitting() ? '⏳ Envoi...' : 'Confirmer RDV' }}
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</div>

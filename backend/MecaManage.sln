@@ -1,0 +1,46 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MecaManage.API", "MecaManage.API\MecaManage.API.csproj", "{3FAEA4AE-0C5E-4C34-AD2A-2BFC2199858A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MecaManage.Domain", "MecaManage.Domain\MecaManage.Domain.csproj", "{737C8ED6-D997-4644-8A67-9DD4A0407592}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MecaManage.Application", "MecaManage.Application\MecaManage.Application.csproj", "{F4BB51D6-83D7-42BF-92C2-6BE5F0AB1B21}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MecaManage.Infrastructure", "MecaManage.Infrastructure\MecaManage.Infrastructure.csproj", "{7EECFB8F-72EA-4BF6-9DE1-2B2C652C06AB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MecaManage.Tests", "MecaManage.Tests\MecaManage.Tests.csproj", "{93566E68-325E-40D5-9B12-5ADC8AFAC1C1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3FAEA4AE-0C5E-4C34-AD2A-2BFC2199858A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3FAEA4AE-0C5E-4C34-AD2A-2BFC2199858A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3FAEA4AE-0C5E-4C34-AD2A-2BFC2199858A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3FAEA4AE-0C5E-4C34-AD2A-2BFC2199858A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{737C8ED6-D997-4644-8A67-9DD4A0407592}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{737C8ED6-D997-4644-8A67-9DD4A0407592}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{737C8ED6-D997-4644-8A67-9DD4A0407592}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{737C8ED6-D997-4644-8A67-9DD4A0407592}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F4BB51D6-83D7-42BF-92C2-6BE5F0AB1B21}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4BB51D6-83D7-42BF-92C2-6BE5F0AB1B21}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4BB51D6-83D7-42BF-92C2-6BE5F0AB1B21}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4BB51D6-83D7-42BF-92C2-6BE5F0AB1B21}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7EECFB8F-72EA-4BF6-9DE1-2B2C652C06AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7EECFB8F-72EA-4BF6-9DE1-2B2C652C06AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7EECFB8F-72EA-4BF6-9DE1-2B2C652C06AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7EECFB8F-72EA-4BF6-9DE1-2B2C652C06AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{93566E68-325E-40D5-9B12-5ADC8AFAC1C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{93566E68-325E-40D5-9B12-5ADC8AFAC1C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{93566E68-325E-40D5-9B12-5ADC8AFAC1C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{93566E68-325E-40D5-9B12-5ADC8AFAC1C1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

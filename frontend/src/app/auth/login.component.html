@@ -1,0 +1,97 @@
+<div class="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-950 px-4 py-12 transition-colors duration-300">
+  <div class="max-w-md w-full space-y-8 bg-white dark:bg-gray-900 p-10 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-800">
+    <div>
+      <div class="mx-auto h-12 w-12 bg-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-200 dark:shadow-none">
+        <span class="text-white font-black italic text-xl">MR</span>
+      </div>
+      <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900 dark:text-white">
+        Welcome Back
+      </h2>
+      <p class="mt-2 text-center text-sm text-gray-600 dark:text-gray-400">
+        Enter your credentials to access MecaRage
+      </p>
+    </div>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="mt-8 space-y-6">
+      @if (errorMessage()) {
+        <div class="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+          {{ errorMessage() }}
+        </div>
+      }
+
+      <div class="space-y-4">
+        <!-- Email -->
+        <div>
+          <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+            Email Address
+          </label>
+          <input
+            id="email"
+            type="email"
+            formControlName="email"
+            class="mt-1 block w-full px-4 py-3 bg-gray-50 dark:bg-gray-800 border-0 text-gray-900 dark:text-white rounded-xl focus:ring-2 focus:ring-indigo-500 transition-all outline-none"
+            placeholder="name@example.com"
+          />
+
+          @if (email?.invalid && email?.touched) {
+            <p class="text-sm text-red-500 mt-1">
+              Please enter a valid email address.
+            </p>
+          }
+        </div>
+
+        <!-- Password -->
+        <div>
+          <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+            Password
+          </label>
+          <input
+            id="password"
+            type="password"
+            formControlName="password"
+            class="mt-1 block w-full px-4 py-3 bg-gray-50 dark:bg-gray-800 border-0 text-gray-900 dark:text-white rounded-xl focus:ring-2 focus:ring-indigo-500 transition-all outline-none"
+            placeholder="••••••••"
+          />
+
+          @if (password?.invalid && password?.touched) {
+            <p class="text-sm text-red-500 mt-1">
+              Password must be at least 6 characters.
+            </p>
+          }
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between">
+        <div class="flex items-center">
+          <input id="remember-me" name="remember-me" type="checkbox"
+            class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded dark:bg-gray-800 dark:border-gray-700">
+          <label for="remember-me" class="ml-2 block text-sm text-gray-900 dark:text-gray-300">
+            Remember me
+          </label>
+        </div>
+
+        <div class="text-sm">
+          <a href="#" class="font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400">
+            Forgot password?
+          </a>
+        </div>
+      </div>
+
+      <!-- Button -->
+      <div>
+        <button
+          type="submit"
+          [disabled]="loginForm.invalid || isSubmitting()"
+          class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-bold rounded-xl text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all transform hover:scale-[1.02] active:scale-[0.98]"
+        >
+          {{ isSubmitting() ? 'Signing in...' : 'Sign in' }}
+        </button>
+      </div>
+
+      <p class="text-center text-sm text-gray-600 dark:text-gray-400">
+        Don't have an account?
+        <a routerLink="/signup" class="font-bold text-indigo-600 hover:text-indigo-500 dark:text-indigo-400">Create one</a>
+      </p>
+    </form>
+  </div>
+</div>

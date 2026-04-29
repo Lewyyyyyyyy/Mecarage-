@@ -1,0 +1,101 @@
+{
+  "name": "Rapport quotidien interventions",
+  "nodes": [
+    {
+      "parameters": {
+        "triggerTimes": {
+          "item": [
+            {
+              "mode": "everyDay",
+              "hour": 18,
+              "minute": 0
+            }
+          ]
+        }
+      },
+      "id": "Cron_Daily1800",
+      "name": "Cron Daily 18h",
+      "type": "n8n-nodes-base.cron",
+      "typeVersion": 1,
+      "position": [
+        220,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT\n  id,\n  status,\n  urgency,\n  created_at\nFROM intervention_requests\nWHERE DATE(created_at) = CURRENT_DATE\nORDER BY created_at DESC;"
+      },
+      "id": "Postgres_TodayInterventions",
+      "name": "Postgres Today's Interventions",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2,
+      "position": [
+        500,
+        300
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "postgres_mecamanage",
+          "name": "PostgreSQL MecaManage"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fromEmail": "no-reply@mecamanage.tn",
+        "toEmail": "iheb@mecamanage.tn",
+        "subject": "Rapport quotidien interventions - {{$now.format('yyyy-LL-dd')}}",
+        "text": "Rapport quotidien MecaManage\n\nDate: {{$now.format('yyyy-LL-dd')}}\nNombre total d'interventions aujourd'hui: {{$items().length}}\n\nDetails JSON:\n{{JSON.stringify($items().map(i => i.json), null, 2)}}"
+      },
+      "id": "Email_AdminSummary",
+      "name": "Email Admin Summary",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2,
+      "position": [
+        800,
+        300
+      ],
+      "credentials": {
+        "smtp": {
+          "id": "smtp_mecamanage",
+          "name": "SMTP MecaManage"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Cron Daily 18h": {
+      "main": [
+        [
+          {
+            "node": "Postgres Today's Interventions",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Today's Interventions": {
+      "main": [
+        [
+          {
+            "node": "Email Admin Summary",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "timezone": "Africa/Tunis"
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": false,
+    "version": "1.0"
+  }
+}

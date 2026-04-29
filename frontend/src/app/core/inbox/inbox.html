@@ -1,0 +1,469 @@
+<div class="min-h-screen bg-gray-950 text-gray-100 font-sans">
+  <div class="container mx-auto px-6 py-10 max-w-4xl">
+
+    <!-- Header -->
+    <div class="mb-8">
+      <h1 class="text-4xl font-black text-white tracking-tight">
+        @if (isChef()) { 📥 Inbox Chef }
+        @else if (isClient()) { 🔔 Mes Notifications }
+        @else if (isMechanic()) { 🔧 Mes Tâches }
+        @else { Inbox }
+      </h1>
+    </div>
+
+    <!-- Chef sub-tabs -->
+    @if (isChef()) {
+      <div class="mb-8 flex gap-2 border-b border-gray-800">
+        <button (click)="chefTab.set('reports')"
+          class="px-6 py-3 font-bold transition-all border-b-2"
+          [ngClass]="chefTab() === 'reports' ? 'border-indigo-500 text-indigo-400' : 'border-transparent text-gray-500 hover:text-gray-300'">
+          📋 Rapports
+          @if (chefInbox().length) {
+            <span class="ml-2 text-xs bg-indigo-600 text-white px-2 py-0.5 rounded-full">{{ chefInbox().length }}</span>
+          }
+        </button>
+        <button (click)="chefTab.set('appointments')"
+          class="px-6 py-3 font-bold transition-all border-b-2"
+          [ngClass]="chefTab() === 'appointments' ? 'border-orange-500 text-orange-400' : 'border-transparent text-gray-500 hover:text-gray-300'">
+          📅 Rendez-vous
+          @if (appointments().length) {
+            <span class="ml-2 text-xs bg-orange-600 text-white px-2 py-0.5 rounded-full">{{ appointments().length }}</span>
+          }
+        </button>
+        <button (click)="chefTab.set('repairs')"
+          class="px-6 py-3 font-bold transition-all border-b-2"
+          [ngClass]="chefTab() === 'repairs' ? 'border-green-500 text-green-400' : 'border-transparent text-gray-500 hover:text-gray-300'">
+          🔧 Réparations
+        </button>
+      </div>
+    }
+
+    <!-- Error -->
+    @if (error()) {
+      <div class="mb-6 p-4 bg-rose-900/20 border border-rose-800 rounded-xl text-rose-400 font-semibold flex justify-between">
+        <span>{{ error() }}</span>
+        <button (click)="error.set(null)" class="ml-4 hover:text-rose-200">✕</button>
+      </div>
+    }
+
+    <!-- Success -->
+    @if (success()) {
+      <div class="mb-6 p-4 bg-emerald-900/20 border border-emerald-800 rounded-xl text-emerald-400 font-semibold">
+        ✅ {{ success() }}
+      </div>
+    }
+
+    <!-- Loading -->
+    @if (loading()) {
+      <div class="flex flex-col items-center py-20 space-y-4">
+        <div class="h-12 w-12 border-4 border-gray-800 border-t-indigo-500 rounded-full animate-spin"></div>
+        <p class="text-gray-500 font-bold">Chargement...</p>
+      </div>
+    }
+
+    <!-- ════════ CHEF INBOX ════════ -->
+    @if (!loading() && isChef() && chefTab() === 'reports') {
+      @if (chefInbox().length === 0) {
+        <div class="text-center py-20 border-2 border-dashed border-gray-800 rounded-2xl">
+          <p class="text-5xl mb-4">📭</p>
+          <p class="text-gray-500 font-bold text-lg">Aucun rapport pour ce garage</p>
+          <p class="text-gray-600 text-sm mt-1">Les nouveaux rapports soumis par les clients apparaîtront ici.</p>
+        </div>
+      } @else {
+        <div class="space-y-4">
+          @for (item of chefInbox(); track item.id) {
+            <div class="bg-gray-900 border rounded-2xl p-6 transition-all"
+                 [ngClass]="isReviewed(item) ? 'border-gray-700 opacity-80' : 'border-gray-800 hover:border-indigo-500/50'">
+
+              <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+                <div class="flex-1 min-w-0">
+
+                  <!-- Client + vehicle + status badge -->
+                  <div class="flex flex-wrap items-center gap-2 mb-1">
+                    <span class="text-white font-bold text-lg">{{ item.clientName }}</span>
+                    <span class="text-xs px-2 py-0.5 rounded-full font-bold uppercase border"
+                          [ngClass]="statusBadge(item.status).css">
+                      {{ statusBadge(item.status).label }}
+                    </span>
+                  </div>
+                  <p class="text-indigo-400 text-sm font-medium mb-2">🚗 {{ item.vehicleInfo }}</p>
+                  <p class="text-gray-300 text-sm leading-relaxed line-clamp-2">{{ item.symptomsDescription }}</p>
+
+                  <!-- AI diagnosis -->
+                  @if (item.aiPredictedIssue) {
+                    <div class="mt-3 p-3 bg-indigo-900/20 border border-indigo-800/50 rounded-xl">
+                      <p class="text-xs font-black text-indigo-400 uppercase tracking-widest mb-1">🤖 Diagnostic IA</p>
+                      <p class="text-sm text-gray-300 line-clamp-2">{{ item.aiPredictedIssue }}</p>
+                      @if (item.aiConfidenceScore) {
+                        <div class="mt-2 flex items-center gap-2">
+                          <div class="flex-1 bg-gray-800 rounded-full h-1.5">
+                            <div class="bg-indigo-500 h-1.5 rounded-full" [style.width]="aiPercent(item.aiConfidenceScore)"></div>
+                          </div>
+                          <span class="text-xs text-indigo-400 font-bold">{{ aiPercent(item.aiConfidenceScore) }}</span>
+                        </div>
+                      }
+                    </div>
+                  }
+
+                  <!-- Sent review summary (collapsed view) -->
+                  @if (isReviewed(item) && item.chefFeedback) {
+                    <div class="mt-3 p-3 bg-gray-800/60 border border-gray-700 rounded-xl">
+                      <p class="text-xs font-black text-gray-400 uppercase tracking-widest mb-1">📝 Avis envoyé</p>
+                      <p class="text-sm text-gray-300 line-clamp-2">{{ item.chefFeedback }}</p>
+                      @if (item.availablePeriodStart && item.availablePeriodEnd) {
+                        <p class="text-xs text-emerald-400 mt-1 font-mono">
+                          📅 {{ item.availablePeriodStart | date:'dd/MM/yyyy' }} → {{ item.availablePeriodEnd | date:'dd/MM/yyyy' }}
+                        </p>
+                      }
+                    </div>
+                  }
+                </div>
+
+                <!-- Right side: date + action button -->
+                <div class="flex flex-col items-end gap-3 shrink-0">
+                  <p class="text-xs text-gray-600 font-mono">{{ formatDate(item.submittedAt) }}</p>
+                  @if (item.reviewedAt) {
+                    <p class="text-xs text-gray-700 font-mono">Révisé: {{ formatDate(item.reviewedAt) }}</p>
+                  }
+                  <button
+                    (click)="openReview(item.id)"
+                    class="px-5 py-2 text-sm font-bold rounded-xl transition-all"
+                    [ngClass]="isReviewed(item)
+                      ? 'bg-gray-800 hover:bg-gray-700 text-gray-300'
+                      : 'bg-indigo-600 hover:bg-indigo-700 text-white'"
+                  >
+                    {{ isReviewed(item) ? '✏️ Modifier' : 'Réviser →' }}
+                  </button>
+                </div>
+              </div>
+
+            </div>
+          }
+        </div>
+      }
+    }
+
+    <!-- ════════ APPOINTMENTS (Chef) ════════ -->
+    @if (isChef() && chefTab() === 'appointments') {
+      @if (appointments().length === 0) {
+        <div class="text-center py-20 border-2 border-dashed border-gray-800 rounded-2xl">
+          <p class="text-5xl mb-4">📅</p>
+          <p class="text-gray-500 font-bold text-lg">Aucun rendez-vous en attente</p>
+          <p class="text-gray-600 text-sm mt-1">Les demandes de rendez-vous des clients apparaîtront ici.</p>
+        </div>
+      } @else {
+        <div class="space-y-4">
+          @for (appt of appointments(); track appt.id) {
+            <div class="bg-gray-900 border border-gray-800 rounded-2xl p-6 hover:border-orange-500/40 transition-all">
+              <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+                <div class="flex-1 min-w-0">
+                  <div class="flex flex-wrap items-center gap-2 mb-1">
+                    <span class="text-white font-bold text-lg">{{ appt.clientName }}</span>
+                    <span class="text-xs bg-orange-900/30 text-orange-400 border border-orange-800 px-2 py-0.5 rounded-full font-bold uppercase">
+                      En attente
+                    </span>
+                  </div>
+                  <p class="text-indigo-400 text-sm font-medium mb-2">🚗 {{ appt.vehicleInfo }}</p>
+                  <div class="flex flex-wrap gap-4 text-sm text-gray-400 mb-2">
+                    <span>📅 {{ appt.preferredDate | date:'dd/MM/yyyy' }}</span>
+                    <span>🕐 {{ appt.preferredTime }}</span>
+                  </div>
+                  @if (appt.symptomSummary) {
+                    <p class="text-gray-500 text-xs italic line-clamp-2 border-l-2 border-gray-700 pl-3">
+                      "{{ appt.symptomSummary }}"
+                    </p>
+                  }
+                </div>
+                <div class="flex flex-col items-end gap-2 shrink-0">
+                  <p class="text-xs text-gray-600 font-mono">Soumis: {{ appt.createdAt | date:'dd/MM/yy HH:mm' }}</p>
+                  <div class="flex gap-2">
+                    <button (click)="declineAppointment(appt.id)"
+                      class="px-4 py-2 bg-gray-800 hover:bg-gray-700 text-gray-300 text-sm font-bold rounded-xl transition">
+                      ❌ Refuser
+                    </button>
+                    <button (click)="openTaskModal(appt)"
+                      class="px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white text-sm font-bold rounded-xl transition">
+                      ✅ Confirmer & Assigner
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      }
+    }
+
+    <!-- ════════ REPAIRS (Chef) ════════ -->
+    @if (isChef() && chefTab() === 'repairs') {
+      <app-chef-repair-management [garageId]="garageId()"></app-chef-repair-management>
+    }
+
+    <!-- ════════ CLIENT NOTIFICATIONS ════════ -->
+    @if (!loading() && isClient()) {
+      @if (unreadCount() > 0) {
+        <p class="text-sm text-indigo-400 font-bold mb-4">{{ unreadCount() }} non lu(s)</p>
+      }
+      @if (notifications().length === 0) {
+        <div class="text-center py-20 border-2 border-dashed border-gray-800 rounded-2xl">
+          <p class="text-5xl mb-4">🔔</p>
+          <p class="text-gray-500 font-bold text-lg">Aucune notification</p>
+        </div>
+      } @else {
+        <div class="space-y-3">
+          @for (n of notifications(); track n.id) {
+            <a
+              [routerLink]="notifLink(n)"
+              (click)="!n.isRead && markRead(n.id)"
+              class="block bg-gray-900 border rounded-2xl p-5 transition-all"
+              [ngClass]="n.isRead ? 'border-gray-800 opacity-70' : 'border-indigo-700 hover:border-indigo-500'"
+            >
+              <div class="flex justify-between items-start gap-4">
+                <div class="flex-1">
+                  <div class="flex items-center gap-2 mb-1">
+                    @if (!n.isRead) { <span class="w-2 h-2 bg-indigo-500 rounded-full shrink-0"></span> }
+                    <p class="font-bold text-white">{{ n.title }}</p>
+                  </div>
+                  <p class="text-gray-400 text-sm">{{ n.message }}</p>
+                </div>
+                <p class="text-xs text-gray-600 font-mono shrink-0">{{ formatDate(n.createdAt) }}</p>
+              </div>
+            </a>
+          }
+        </div>
+      }
+    }
+
+    <!-- ════════ MECHANIC TASKS ════════ -->
+    @if (!loading() && isMechanic()) {
+      @if (tasks().length === 0) {
+        <div class="text-center py-20 border-2 border-dashed border-gray-800 rounded-2xl">
+          <p class="text-5xl mb-4">🔧</p>
+          <p class="text-gray-500 font-bold text-lg">Aucune tâche assignée pour le moment</p>
+        </div>
+      } @else {
+        <div class="space-y-4">
+          @for (task of tasks(); track task.id) {
+            <div class="bg-gray-900 border border-gray-800 rounded-2xl p-6 hover:border-gray-700 transition-all">
+              <div class="flex justify-between items-start gap-4 mb-3">
+                <div>
+                  <p class="text-white font-bold text-lg">{{ task.taskTitle }}</p>
+                  <p class="text-indigo-400 text-sm">🚗 {{ task.vehicleInfo }} — {{ task.clientName }}</p>
+                </div>
+                <span [ngClass]="taskStatusColor(task.status)" class="px-3 py-1 rounded-full text-xs font-black uppercase shrink-0">
+                  {{ task.status }}
+                </span>
+              </div>
+              <p class="text-gray-400 text-sm leading-relaxed">{{ task.description }}</p>
+              <div class="mt-3 flex items-center gap-4 text-xs text-gray-600 font-mono">
+                <span>Assigné: {{ formatDate(task.assignedAt) }}</span>
+                @if (task.estimatedMinutes) {
+                  <span>⏱ {{ task.estimatedMinutes }} min</span>
+                }
+              </div>
+              <div class="mt-4">
+                <a [routerLink]="['/mechanic/tasks']" class="text-sm text-indigo-400 hover:text-indigo-300 font-bold">
+                  Voir les détails →
+                </a>
+              </div>
+            </div>
+          }
+        </div>
+      }
+    }
+
+  </div>
+</div>
+
+<!-- ════════ TASK + ASSIGN MECHANIC MODAL ════════ -->
+@if (showTaskModal() && selectedAppointment()) {
+  <div class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="bg-gray-900 border border-gray-800 rounded-2xl p-8 w-full max-w-2xl shadow-2xl animate-in zoom-in-95 duration-200 max-h-[90vh] overflow-y-auto">
+
+      <div class="flex justify-between items-center mb-6">
+        <h2 class="text-2xl font-black text-white">✅ Confirmer et Assigner</h2>
+        <button (click)="closeTaskModal()" class="text-gray-500 hover:text-white transition text-xl">✕</button>
+      </div>
+
+      <!-- Appointment summary -->
+      <div class="bg-gray-950 rounded-xl p-4 mb-6 border border-gray-800 space-y-1">
+        <p class="font-bold text-white">{{ selectedAppointment()!.clientName }}</p>
+        <p class="text-indigo-400 text-sm">🚗 {{ selectedAppointment()!.vehicleInfo }}</p>
+        <p class="text-gray-400 text-sm">
+          📅 {{ selectedAppointment()!.preferredDate | date:'dd/MM/yyyy' }}
+          &nbsp;🕐 {{ selectedAppointment()!.preferredTime }}
+        </p>
+        @if (selectedAppointment()!.symptomSummary) {
+          <p class="text-gray-500 text-xs italic border-l-2 border-gray-700 pl-3 mt-2">
+            "{{ selectedAppointment()!.symptomSummary }}"
+          </p>
+        }
+      </div>
+
+      <form [formGroup]="taskForm" (ngSubmit)="approveAndAssign()" class="space-y-5">
+
+        <!-- Task title -->
+        <div>
+          <label class="block text-sm font-bold text-gray-300 mb-1">Titre de la tâche <span class="text-rose-400">*</span></label>
+          <input type="text" formControlName="taskTitle"
+            placeholder="Ex: Remplacement du démarreur"
+            class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-white focus:ring-2 focus:ring-orange-500 outline-none" />
+          @if (taskForm.get('taskTitle')?.invalid && taskForm.get('taskTitle')?.touched) {
+            <p class="text-rose-400 text-xs mt-1">Minimum 5 caractères.</p>
+          }
+        </div>
+
+        <!-- Description -->
+        <div>
+          <label class="block text-sm font-bold text-gray-300 mb-1">Description <span class="text-rose-400">*</span></label>
+          <textarea formControlName="description" rows="3"
+            placeholder="Détaillez les travaux à effectuer..."
+            class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-white resize-none focus:ring-2 focus:ring-orange-500 outline-none">
+          </textarea>
+          @if (taskForm.get('description')?.invalid && taskForm.get('description')?.touched) {
+            <p class="text-rose-400 text-xs mt-1">Minimum 10 caractères.</p>
+          }
+        </div>
+
+        <!-- Estimated time -->
+        <div>
+          <label class="block text-sm font-bold text-gray-300 mb-1">Durée estimée (minutes)</label>
+          <input type="number" formControlName="estimatedMinutes" min="15" step="15"
+            placeholder="Ex: 90"
+            class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-white focus:ring-2 focus:ring-orange-500 outline-none" />
+        </div>
+
+        <!-- Mechanic selection -->
+        <div>
+          <label class="block text-sm font-bold text-gray-300 mb-2">
+            Sélectionner le(s) mécanicien(s) <span class="text-rose-400">*</span>
+          </label>
+          @if (mechanics().length === 0) {
+            <div class="p-4 bg-amber-900/20 border border-amber-800 rounded-xl text-amber-400 text-sm">
+              ⚠️ Aucun mécanicien disponible. Ajoutez-en un depuis l'onglet Staff.
+            </div>
+          } @else {
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              @for (mech of mechanics(); track mech.id) {
+                <button type="button" (click)="toggleMechanic(mech.id)"
+                  class="flex items-center gap-3 p-3 rounded-xl border transition-all text-left"
+                  [ngClass]="isMechanicSelected(mech.id)
+                    ? 'border-orange-500 bg-orange-900/20 text-white'
+                    : 'border-gray-700 bg-gray-800 text-gray-400 hover:border-gray-500'">
+                  <div class="w-8 h-8 rounded-full flex items-center justify-center font-black text-sm shrink-0"
+                       [ngClass]="isMechanicSelected(mech.id) ? 'bg-orange-600 text-white' : 'bg-gray-700 text-gray-400'">
+                    {{ mech.firstName[0] }}{{ mech.lastName[0] }}
+                  </div>
+                  <div class="min-w-0">
+                    <p class="font-bold text-sm truncate">{{ mech.firstName }} {{ mech.lastName }}</p>
+                    <p class="text-xs text-gray-500 truncate">{{ mech.email }}</p>
+                  </div>
+                  @if (isMechanicSelected(mech.id)) {
+                    <span class="ml-auto text-orange-400 shrink-0">✓</span>
+                  }
+                </button>
+              }
+            </div>
+            @if (taskForm.get('mechanicIds')?.value?.length === 0 && taskForm.get('mechanicIds')?.touched) {
+              <p class="text-rose-400 text-xs mt-1">Sélectionnez au moins un mécanicien.</p>
+            }
+          }
+        </div>
+
+        @if (error()) {
+          <p class="text-rose-400 text-sm">{{ error() }}</p>
+        }
+
+        <div class="flex gap-3 pt-2">
+          <button type="button" (click)="closeTaskModal()"
+            class="flex-1 py-3 bg-gray-800 hover:bg-gray-700 text-white font-bold rounded-xl transition">
+            Annuler
+          </button>
+          <button type="submit"
+            [disabled]="!taskForm.valid || taskForm.get('mechanicIds')?.value?.length === 0 || isCreatingTask()"
+            class="flex-1 py-3 bg-orange-600 hover:bg-orange-700 disabled:bg-gray-700 disabled:text-gray-500 text-white font-bold rounded-xl transition">
+            @if (isCreatingTask()) { ⏳ Traitement... } @else { Confirmer & Assigner →  }
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+}
+
+<!-- ════════ CHEF FEEDBACK MODAL ════════ -->
+@if (showFeedbackModal() && getSelectedItem()) {
+  <div class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="bg-gray-900 border border-gray-800 rounded-2xl p-8 w-full max-w-2xl shadow-2xl animate-in zoom-in-95 duration-200">
+      <div class="flex justify-between items-center mb-6">
+        <h2 class="text-2xl font-black text-white">
+          {{ isReviewed(getSelectedItem()!) ? '✏️ Modifier le retour' : '📋 Révision du Rapport' }}
+        </h2>
+        <button (click)="closeModal()" class="text-gray-500 hover:text-white transition text-xl">✕</button>
+      </div>
+
+      <div class="bg-gray-950 rounded-xl p-4 mb-6 space-y-2 border border-gray-800">
+        <p class="text-sm font-bold text-white">{{ getSelectedItem()!.clientName }} — {{ getSelectedItem()!.vehicleInfo }}</p>
+        <p class="text-sm text-gray-400 leading-relaxed">{{ getSelectedItem()!.symptomsDescription }}</p>
+        @if (getSelectedItem()!.aiPredictedIssue) {
+          <div class="pt-2 border-t border-gray-800">
+            <p class="text-xs text-indigo-400 font-bold mb-1">🤖 Diagnostic IA</p>
+            <p class="text-xs text-gray-400">{{ getSelectedItem()!.aiPredictedIssue }}</p>
+          </div>
+        }
+      </div>
+
+      <form [formGroup]="feedbackForm" (ngSubmit)="submitFeedback()" class="space-y-5">
+        <div>
+          <label class="block text-sm font-bold text-gray-300 mb-2">Décision <span class="text-rose-400">*</span></label>
+          <select formControlName="newStatus"
+            class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-white focus:ring-2 focus:ring-indigo-500 outline-none">
+            <option value="Approved">✅ Approuvé — Rendez-vous disponible</option>
+            <option value="Declined">❌ Refusé — Demander des précisions</option>
+          </select>
+        </div>
+
+        @if (feedbackForm.get('newStatus')?.value === 'Approved') {
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-bold text-gray-400 mb-1">Début disponibilité</label>
+              <input type="datetime-local" formControlName="availablePeriodStart"
+                class="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-xl text-white text-sm focus:ring-2 focus:ring-indigo-500 outline-none" />
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-gray-400 mb-1">Fin disponibilité</label>
+              <input type="datetime-local" formControlName="availablePeriodEnd"
+                class="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-xl text-white text-sm focus:ring-2 focus:ring-indigo-500 outline-none" />
+            </div>
+          </div>
+        }
+
+        <div>
+          <label class="block text-sm font-bold text-gray-300 mb-2">Feedback professionnel <span class="text-rose-400">*</span></label>
+          <textarea formControlName="feedback" rows="4"
+            placeholder="Détaillez votre évaluation professionnelle du problème..."
+            class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-white resize-none focus:ring-2 focus:ring-indigo-500 outline-none">
+          </textarea>
+          @if (feedbackForm.get('feedback')?.invalid && feedbackForm.get('feedback')?.touched) {
+            <p class="text-rose-400 text-xs mt-1">Minimum 20 caractères requis.</p>
+          }
+        </div>
+
+        @if (error()) {
+          <p class="text-rose-400 text-sm">{{ error() }}</p>
+        }
+
+        <div class="flex gap-3 pt-2">
+          <button type="button" (click)="closeModal()"
+            class="flex-1 py-3 bg-gray-800 hover:bg-gray-700 text-white font-bold rounded-xl transition">
+            Annuler
+          </button>
+          <button type="submit" [disabled]="!feedbackForm.valid || isSubmitting()"
+            class="flex-1 py-3 bg-indigo-600 hover:bg-indigo-700 disabled:bg-gray-700 disabled:text-gray-500 text-white font-bold rounded-xl transition">
+            @if (isSubmitting()) { ⏳ Envoi... } @else { Envoyer le retour }
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+}
+

@@ -1,0 +1,15 @@
+{
+  "metadata": {
+    "timestamp": "2026-04-27T19:07:05.077504+00:00",
+    "vehicle": "totyota corolla (2023)",
+    "symptoms_input": "la voiture ma te5dmch",
+    "chef_atelier_id": null,
+    "garage_id": "668b39bf-b55c-4d51-8dba-ddb89d86175f"
+  },
+  "rag_results": [
+    {
+      "rank": 1,
+      "content": "DIRECTION - DURITE DA FUIT INTERMITTENT\nSymptomes: huile DA sous voiture, volant plus dur, pompe bruyante, defaut intermittent\nCauses possibles: durite craquelee, sertissage fuit, frottement\nType atelier: mecanique\nUrgence: modere\nCout estime: 120-380 TND\nActions: remplacement durite et purge\n\n---\n\nDIRECTION - DURITE DA FUIT APRES CHOC\nSymptomes: huile DA sous voiture, volant plus dur, pompe bruyante, apres choc\nCauses possibles: durite craquelee, sertissage fuit, frottement\nType atelier: mecanique\nUrgence: modere\nCout estime: 120-380 TND\nActions: remplacement durite et purge\n\n---\n\nDIRECTION - DURITE DA FUIT A L ARRET\nSymptomes: huile DA sous voiture, volant plus dur, pompe bruyante, a l arret\nCauses possibles: durite craquelee, sertissage fuit, frottement\nType atelier: mecanique\nUrgence: modere\nCout estime: 120-380 TND\nActions: remplacement durite et purge\n\n---\n\nDIRECTION - DURITE DA FUIT APRES LONG TRAJET\nSymptomes: huile DA sous voiture, volant plus dur, pompe bruyante, apres long trajet\nCauses possibles: durite craquelee, sertissage fuit, frottement\nType atelier: mecanique\nUrgence: modere\nCout estime: 120-380 TND\nActions: remplacement durite et purge\n\n---\n\nDIRECTION - DURITE DA FUIT EN VIRAGE\nSymptomes: huile DA sous voiture, volant plus dur, pompe bruyante, plus net en virage\nCauses possibles: durite craquelee, sertissage fuit, frottement\nType atelier: mecanique\nUrgence: modere\nCout estime: 120-380 TND\nActions: remplacement durite et purge"
+    }
+  ]
+}

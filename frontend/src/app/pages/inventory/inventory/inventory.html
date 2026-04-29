@@ -1,0 +1,26 @@
+<div class="min-h-screen bg-gray-950 text-gray-100 font-sans">
+  <div class="container mx-auto px-6 py-10 max-w-7xl">
+
+    <div class="mb-8">
+      <h1 class="text-4xl font-black text-white tracking-tight">📦 Stock & Inventaire</h1>
+      <p class="text-gray-400 mt-2">Gestion des pièces détachées de votre garage</p>
+    </div>
+
+    @if (canAccessStock() && garageId()) {
+      <app-stock-management [garageId]="garageId()!" [isReadOnly]="isReadOnly()"></app-stock-management>
+    } @else if (!canAccessStock()) {
+      <div class="text-center py-20 border-2 border-dashed border-gray-800 rounded-2xl">
+        <p class="text-5xl mb-4">🔒</p>
+        <p class="text-gray-500 font-bold text-lg">Accès réservé aux responsables de garage</p>
+        <p class="text-gray-600 text-sm mt-1">Connectez-vous en tant que Chef d'atelier ou Admin Entreprise pour gérer le stock.</p>
+      </div>
+    } @else {
+      <div class="text-center py-20 border-2 border-dashed border-gray-800 rounded-2xl">
+        <p class="text-5xl mb-4">⚠️</p>
+        <p class="text-gray-500 font-bold text-lg">Aucun garage associé à votre compte</p>
+        <p class="text-gray-600 text-sm mt-1">Reconnectez-vous pour actualiser votre session.</p>
+      </div>
+    }
+
+  </div>
+</div>

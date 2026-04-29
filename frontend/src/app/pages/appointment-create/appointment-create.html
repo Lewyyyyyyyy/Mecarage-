@@ -1,0 +1,125 @@
+<div class="max-w-2xl mx-auto space-y-6">
+  <!-- Header -->
+  <div>
+    <h2 class="text-3xl font-bold text-gray-900 dark:text-white">Prendre un Rendez-vous</h2>
+    <p class="text-gray-600 dark:text-gray-400 mt-2">Sélectionnez votre garage préféré et une date</p>
+  </div>
+
+  <!-- Success Message -->
+  @if (success()) {
+    <div class="p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg">
+      <p class="text-green-800 dark:text-green-300 font-semibold">{{ success() }}</p>
+      @if (createdAppointmentId) {
+        <a
+          routerLink="/appointments"
+          class="text-green-600 dark:text-green-400 underline mt-2 inline-block"
+        >
+          Voir mes rendez-vous →
+        </a>
+      }
+    </div>
+  }
+
+  <!-- Error Message -->
+  @if (error()) {
+    <div class="p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
+      <p class="text-red-800 dark:text-red-300">{{ error() }}</p>
+    </div>
+  }
+
+  <!-- Loading State -->
+  @if (loading()) {
+    <div class="flex justify-center py-12">
+      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+    </div>
+  } @else {
+    <!-- Form Card -->
+    <div class="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-6">
+      <form [formGroup]="appointmentForm" (ngSubmit)="onSubmit()" class="space-y-6">
+        <!-- Garage Selection -->
+        <div>
+          <label class="block text-sm font-semibold text-gray-900 dark:text-white mb-2">
+            Sélectionnez un garage
+          </label>
+          <select
+            formControlName="garageId"
+            class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="">-- Choisir un garage --</option>
+            @for (garage of garages(); track garage.id) {
+              <option [value]="garage.id">{{ garage.name }} - {{ garage.city }}</option>
+            }
+          </select>
+          @if (appointmentForm.get('garageId')?.invalid && appointmentForm.get('garageId')?.touched) {
+            <p class="text-red-600 dark:text-red-400 text-sm mt-1">Veuillez sélectionner un garage</p>
+          }
+        </div>
+
+        <!-- Date Selection -->
+        <div>
+          <label class="block text-sm font-semibold text-gray-900 dark:text-white mb-2">
+            Date préférée
+          </label>
+          <input
+            type="date"
+            formControlName="preferredDate"
+            class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          @if (appointmentForm.get('preferredDate')?.invalid && appointmentForm.get('preferredDate')?.touched) {
+            <p class="text-red-600 dark:text-red-400 text-sm mt-1">Veuillez sélectionner une date</p>
+          }
+        </div>
+
+        <!-- Time Selection -->
+        <div>
+          <label class="block text-sm font-semibold text-gray-900 dark:text-white mb-2">
+            Heure préférée
+          </label>
+          <input
+            type="time"
+            formControlName="preferredTime"
+            class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          @if (appointmentForm.get('preferredTime')?.invalid && appointmentForm.get('preferredTime')?.touched) {
+            <p class="text-red-600 dark:text-red-400 text-sm mt-1">Veuillez sélectionner une heure</p>
+          }
+        </div>
+
+        <!-- Special Requests -->
+        <div>
+          <label class="block text-sm font-semibold text-gray-900 dark:text-white mb-2">
+            Demandes spéciales (optionnel)
+          </label>
+          <textarea
+            formControlName="specialRequests"
+            rows="4"
+            class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+            placeholder="Ex: Besoin d'un diagnostic rapide, demande un mécanicien spécifique, etc."
+          ></textarea>
+        </div>
+
+        <!-- Submit Button -->
+        <button
+          type="submit"
+          [disabled]="!appointmentForm.valid || isSubmitting()"
+          class="w-full px-4 py-3 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white rounded-lg font-semibold transition duration-200"
+        >
+          @if (isSubmitting()) {
+            <span class="inline-block animate-spin mr-2">⏳</span>
+            Création en cours...
+          } @else {
+            Confirmer le Rendez-vous
+          }
+        </button>
+      </form>
+    </div>
+  }
+
+  <!-- Back Link -->
+  <div class="text-center">
+    <a routerLink="/appointments" class="text-blue-600 dark:text-blue-400 hover:underline font-semibold">
+      ← Retour aux rendez-vous
+    </a>
+  </div>
+</div>
+

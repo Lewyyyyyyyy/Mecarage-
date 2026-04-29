@@ -1,0 +1,13 @@
+{
+  "metadata": {
+    "timestamp": "2026-04-22T22:57:12.992698+00:00",
+    "vehicle": "totyota corolla (2023)",
+    "symptoms_input": "la voiture ne demarre pas, il y a un bruit en moteur"
+  },
+  "rag_results": [
+    {
+      "rank": 1,
+      "content": "ELECTRIQUE - RELAIS PRINCIPAL MOTEUR HS A FROID\nSymptomes: moteur ne demarre pas parfois, pompe carburant absente, voyant moteur absent, plus net a froid\nCauses possibles: relais chauffe, soudures fatiguees, humidité\nType atelier: electrique\nUrgence: modere\nCout estime: 50-180 TND\nActions: test relais principal remplacement\n\n---\n\nREFROIDISSEMENT - RELAIS VENTILATEUR HS EN VILLE\nSymptomes: ventilateur ne demarre pas, surchauffe a l arret, defaut intermittent, en ville\nCauses possibles: relais colle, contact brule, humidite boitier\nType atelier: electrique\nUrgence: modere\nCout estime: 50-180 TND\nActions: controle relais et alimentation\n\n---\n\nREFROIDISSEMENT - RELAIS VENTILATEUR HS EN MONTEE\nSymptomes: ventilateur ne demarre pas, surchauffe a l arret, defaut intermittent, plus net en montee\nCauses possibles: relais colle, contact brule, humidite boitier\nType atelier: electrique\nUrgence: modere\nCout estime: 50-180 TND\nActions: controle relais et alimentation\n\n---\n\nREFROIDISSEMENT - RELAIS VENTILATEUR HS CLIM EN MARCHE\nSymptomes: ventilateur ne demarre pas, surchauffe a l arret, defaut intermittent, plus net clim en marche\nCauses possibles: relais colle, contact brule, humidite boitier\nType atelier: electrique\nUrgence: modere\nCout estime: 50-180 TND\nActions: controle relais et alimentation\n\n---\n\nELECTRIQUE - RELAIS PRINCIPAL MOTEUR HS MOTEUR TOURNANT\nSymptomes: moteur ne demarre pas parfois, pompe carburant absente, voyant moteur absent, moteur tournant\nCauses possibles: relais chauffe, soudures fatiguees, humidité\nType atelier: electrique\nUrgence: modere\nCout estime: 50-180 TND\nActions: test relais principal remplacement"
+    }
+  ]
+}

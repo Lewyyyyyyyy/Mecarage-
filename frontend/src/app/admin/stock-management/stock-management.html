@@ -1,0 +1,339 @@
+<div class="space-y-6">
+
+  <!-- Stats bar -->
+  <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+    <div class="bg-gray-900 border border-gray-800 rounded-2xl p-5">
+      <div class="text-3xl font-black text-indigo-400">{{ stats().total }}</div>
+      <div class="text-xs font-bold text-gray-500 uppercase tracking-widest mt-1">Références</div>
+    </div>
+    <div class="bg-gray-900 border border-gray-800 rounded-2xl p-5">
+      <div class="text-3xl font-black text-emerald-400">{{ stats().active }}</div>
+      <div class="text-xs font-bold text-gray-500 uppercase tracking-widest mt-1">Actives</div>
+    </div>
+    <div class="bg-gray-900 border rounded-2xl p-5"
+         [ngClass]="stats().lowStock > 0 ? 'border-amber-700 bg-amber-900/10' : 'border-gray-800'">
+      <div class="text-3xl font-black" [ngClass]="stats().lowStock > 0 ? 'text-amber-400' : 'text-gray-500'">
+        {{ stats().lowStock }}
+      </div>
+      <div class="text-xs font-bold text-gray-500 uppercase tracking-widest mt-1">Stock faible</div>
+    </div>
+    <div class="bg-gray-900 border border-gray-800 rounded-2xl p-5">
+      <div class="text-2xl font-black text-purple-400">{{ formatCurrency(stats().totalValue) }}</div>
+      <div class="text-xs font-bold text-gray-500 uppercase tracking-widest mt-1">Valeur totale</div>
+    </div>
+  </div>
+
+  <!-- Toolbar -->
+  <div class="flex flex-col sm:flex-row gap-3">
+    <div class="relative flex-1">
+      <input type="text" placeholder="Rechercher par nom, code, référence..." [value]="searchQuery()"
+        (input)="searchQuery.set($any($event.target).value)"
+        class="w-full pl-10 pr-4 py-3 bg-gray-900 border border-gray-800 rounded-xl text-white focus:ring-2 focus:ring-indigo-500 outline-none" />
+      <span class="absolute left-3 top-3.5 text-gray-500">🔍</span>
+    </div>
+    <select [value]="selectedCategory()" (change)="selectedCategory.set($any($event.target).value)"
+      class="px-4 py-3 bg-gray-900 border border-gray-800 rounded-xl text-white focus:ring-2 focus:ring-indigo-500 outline-none min-w-[160px]">
+      <option value="">Toutes catégories</option>
+      @for (cat of categories; track cat) {
+        <option [value]="cat">{{ cat }}</option>
+      }
+    </select>
+    @if (!isReadOnly()) {
+      <button (click)="openAddModal()"
+        class="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl transition flex items-center gap-2 shrink-0">
+        <span>➕</span> Nouvelle pièce
+      </button>
+    }
+  </div>
+
+  <!-- Error / Success -->
+  @if (error()) {
+    <div class="p-4 bg-rose-900/20 border border-rose-800 rounded-xl text-rose-400 font-semibold flex justify-between">
+      <span>{{ error() }}</span>
+      <button (click)="error.set(null)" class="hover:text-rose-200">✕</button>
+    </div>
+  }
+  @if (success()) {
+    <div class="p-4 bg-emerald-900/20 border border-emerald-800 rounded-xl text-emerald-400 font-semibold">
+      ✅ {{ success() }}
+    </div>
+  }
+
+  <!-- Loading -->
+  @if (loading()) {
+    <div class="flex flex-col items-center py-20 gap-4">
+      <div class="h-10 w-10 border-4 border-gray-800 border-t-indigo-500 rounded-full animate-spin"></div>
+      <p class="text-gray-500 font-bold">Chargement du stock...</p>
+    </div>
+  }
+
+  <!-- Parts table -->
+  @if (!loading()) {
+    @if (filteredParts().length === 0) {
+      <div class="text-center py-20 border-2 border-dashed border-gray-800 rounded-2xl">
+        <p class="text-5xl mb-4">📦</p>
+        <p class="text-gray-500 font-bold text-lg">Aucune pièce trouvée</p>
+        <p class="text-gray-600 text-sm mt-1">Commencez par ajouter des pièces au stock de ce garage.</p>
+        @if (!isReadOnly()) {
+          <button (click)="openAddModal()"
+            class="mt-6 px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl transition">
+            ➕ Ajouter une pièce
+          </button>
+        }
+      </div>
+    } @else {
+      <div class="bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="border-b border-gray-800 text-gray-500 text-xs uppercase tracking-widest font-black">
+                <th class="px-5 py-4 text-left">Code / Nom</th>
+                <th class="px-5 py-4 text-left">Catégorie</th>
+                <th class="px-5 py-4 text-right">Prix unit.</th>
+                <th class="px-5 py-4 text-center">Stock</th>
+                <th class="px-5 py-4 text-center">Seuil alerte</th>
+                <th class="px-5 py-4 text-center">Statut</th>
+                @if (!isReadOnly()) {
+                  <th class="px-5 py-4 text-center">Actions</th>
+                }
+              </tr>
+            </thead>
+            <tbody>
+              @for (part of filteredParts(); track part.id) {
+                <tr class="border-b border-gray-800/60 hover:bg-gray-800/30 transition-colors"
+                    [ngClass]="!part.isActive ? 'opacity-50' : ''">
+                  <td class="px-5 py-4">
+                    <div class="flex flex-col">
+                      <span class="font-mono text-xs text-gray-500 mb-0.5">{{ part.code }}</span>
+                      <span class="font-bold text-white">{{ part.name }}</span>
+                      @if (part.partNumber) {
+                        <span class="text-xs text-gray-600">Réf: {{ part.partNumber }}</span>
+                      }
+                      @if (part.manufacturer) {
+                        <span class="text-xs text-gray-600">{{ part.manufacturer }}</span>
+                      }
+                    </div>
+                  </td>
+                  <td class="px-5 py-4">
+                    <span class="text-xs px-2 py-0.5 rounded-full border font-bold" [ngClass]="categoryColor(part.category)">
+                      {{ part.category }}
+                    </span>
+                  </td>
+                  <td class="px-5 py-4 text-right font-mono text-gray-300">{{ formatCurrency(part.unitPrice) }}</td>
+                  <td class="px-5 py-4 text-center">
+                    <div class="flex flex-col items-center gap-1">
+                      <span class="text-2xl font-black" [ngClass]="stockColor(part)">{{ part.stockQuantity }}</span>
+                      @if (part.stockQuantity === 0) {
+                        <span class="text-xs text-rose-500 font-bold">RUPTURE</span>
+                      } @else if (part.isLowStock) {
+                        <span class="text-xs text-amber-500 font-bold">FAIBLE</span>
+                      }
+                    </div>
+                  </td>
+                  <td class="px-5 py-4 text-center text-gray-500 font-mono">{{ part.reorderLevel }}</td>
+                  <td class="px-5 py-4 text-center">
+                    @if (part.isActive) {
+                      <span class="px-2 py-0.5 text-xs rounded-full bg-emerald-900/30 text-emerald-400 border border-emerald-800 font-bold">Actif</span>
+                    } @else {
+                      <span class="px-2 py-0.5 text-xs rounded-full bg-gray-800 text-gray-500 border border-gray-700 font-bold">Inactif</span>
+                    }
+                  </td>
+                  @if (!isReadOnly()) {
+                    <td class="px-5 py-4">
+                      <div class="flex items-center justify-center gap-2">
+                        <button (click)="openRestockModal(part)" title="Réapprovisionner"
+                          class="p-2 bg-emerald-900/30 hover:bg-emerald-900/60 text-emerald-400 rounded-lg transition text-sm">
+                          📦
+                        </button>
+                        <button (click)="openEditModal(part)" title="Modifier"
+                          class="p-2 bg-indigo-900/30 hover:bg-indigo-900/60 text-indigo-400 rounded-lg transition text-sm">
+                          ✏️
+                        </button>
+                        <button (click)="deletePart(part)" title="Supprimer"
+                          class="p-2 bg-rose-900/30 hover:bg-rose-900/60 text-rose-400 rounded-lg transition text-sm">
+                          🗑️
+                        </button>
+                      </div>
+                    </td>
+                  }
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    }
+  }
+</div>
+
+<!-- ════════ ADD / EDIT PART MODAL ════════ -->
+@if (showAddModal() || showEditModal()) {
+  <div class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="bg-gray-900 border border-gray-800 rounded-2xl p-8 w-full max-w-2xl shadow-2xl animate-in zoom-in-95 duration-200 max-h-[90vh] overflow-y-auto">
+
+      <div class="flex justify-between items-center mb-6">
+        <h2 class="text-2xl font-black text-white">
+          {{ showAddModal() ? '➕ Nouvelle pièce' : '✏️ Modifier la pièce' }}
+        </h2>
+        <button (click)="closeModals()" class="text-gray-500 hover:text-white transition text-xl">✕</button>
+      </div>
+
+      <form [formGroup]="partForm" (ngSubmit)="showAddModal() ? submitAdd() : submitEdit()" class="space-y-5">
+
+        <div class="grid grid-cols-2 gap-4">
+          <!-- Code (disabled in edit) -->
+          <div>
+            <label class="block text-xs font-bold text-gray-400 mb-1">Code <span class="text-rose-400">*</span></label>
+            <input type="text" formControlName="code" placeholder="EX: FILT-001"
+              [attr.disabled]="showEditModal() ? true : null"
+              class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-white font-mono focus:ring-2 focus:ring-indigo-500 outline-none disabled:opacity-50" />
+            @if (partForm.get('code')?.invalid && partForm.get('code')?.touched) {
+              <p class="text-rose-400 text-xs mt-1">2-50 caractères requis.</p>
+            }
+          </div>
+          <!-- Category -->
+          <div>
+            <label class="block text-xs font-bold text-gray-400 mb-1">Catégorie <span class="text-rose-400">*</span></label>
+            <select formControlName="category"
+              class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-white focus:ring-2 focus:ring-indigo-500 outline-none">
+              <option value="">— Choisir —</option>
+              @for (cat of categories; track cat) {
+                <option [value]="cat">{{ cat }}</option>
+              }
+            </select>
+          </div>
+        </div>
+
+        <!-- Name -->
+        <div>
+          <label class="block text-xs font-bold text-gray-400 mb-1">Nom de la pièce <span class="text-rose-400">*</span></label>
+          <input type="text" formControlName="name" placeholder="Ex: Filtre à huile"
+            class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-white focus:ring-2 focus:ring-indigo-500 outline-none" />
+        </div>
+
+        <!-- Description -->
+        <div>
+          <label class="block text-xs font-bold text-gray-400 mb-1">Description <span class="text-rose-400">*</span></label>
+          <textarea formControlName="description" rows="2" placeholder="Description courte de la pièce..."
+            class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-white resize-none focus:ring-2 focus:ring-indigo-500 outline-none">
+          </textarea>
+        </div>
+
+        <div class="grid grid-cols-3 gap-4">
+          <!-- Unit price -->
+          <div>
+            <label class="block text-xs font-bold text-gray-400 mb-1">Prix unitaire (TND) <span class="text-rose-400">*</span></label>
+            <input type="number" formControlName="unitPrice" min="0" step="0.01"
+              class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-white focus:ring-2 focus:ring-indigo-500 outline-none" />
+          </div>
+          <!-- Stock qty (only for add) -->
+          @if (showAddModal()) {
+            <div>
+              <label class="block text-xs font-bold text-gray-400 mb-1">Quantité initiale</label>
+              <input type="number" formControlName="stockQuantity" min="0"
+                class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-white focus:ring-2 focus:ring-indigo-500 outline-none" />
+            </div>
+          }
+          <!-- Reorder level -->
+          <div>
+            <label class="block text-xs font-bold text-gray-400 mb-1">Seuil alerte <span class="text-rose-400">*</span></label>
+            <input type="number" formControlName="reorderLevel" min="1"
+              class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-white focus:ring-2 focus:ring-indigo-500 outline-none" />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-bold text-gray-400 mb-1">Fabricant</label>
+            <input type="text" formControlName="manufacturer" placeholder="Ex: Bosch"
+              class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-white focus:ring-2 focus:ring-indigo-500 outline-none" />
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-gray-400 mb-1">Référence fabricant</label>
+            <input type="text" formControlName="partNumber" placeholder="Ex: 0451103369"
+              class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-white focus:ring-2 focus:ring-indigo-500 outline-none" />
+          </div>
+        </div>
+
+        @if (showEditModal()) {
+          <div class="flex items-center gap-3">
+            <input type="checkbox" formControlName="isActive" id="isActive" class="w-4 h-4 accent-indigo-600" />
+            <label for="isActive" class="text-sm text-gray-300 font-bold cursor-pointer">Pièce active</label>
+          </div>
+        }
+
+        @if (error()) {
+          <p class="text-rose-400 text-sm">{{ error() }}</p>
+        }
+
+        <div class="flex gap-3 pt-2">
+          <button type="button" (click)="closeModals()"
+            class="flex-1 py-3 bg-gray-800 hover:bg-gray-700 text-white font-bold rounded-xl transition">
+            Annuler
+          </button>
+          <button type="submit" [disabled]="isSubmitting()"
+            class="flex-1 py-3 bg-indigo-600 hover:bg-indigo-700 disabled:bg-gray-700 disabled:text-gray-500 text-white font-bold rounded-xl transition">
+            @if (isSubmitting()) { ⏳ Enregistrement... }
+            @else if (showAddModal()) { ➕ Créer la pièce }
+            @else { 💾 Enregistrer }
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+}
+
+<!-- ════════ RESTOCK MODAL ════════ -->
+@if (showRestockModal() && selectedPart()) {
+  <div class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="bg-gray-900 border border-gray-800 rounded-2xl p-8 w-full max-w-md shadow-2xl animate-in zoom-in-95 duration-200">
+
+      <div class="flex justify-between items-center mb-6">
+        <h2 class="text-2xl font-black text-white">📦 Réapprovisionnement</h2>
+        <button (click)="closeModals()" class="text-gray-500 hover:text-white transition text-xl">✕</button>
+      </div>
+
+      <div class="bg-gray-950 rounded-xl p-4 mb-6 border border-gray-800 space-y-1">
+        <p class="font-bold text-white">{{ selectedPart()!.name }}</p>
+        <p class="font-mono text-xs text-gray-500">{{ selectedPart()!.code }}</p>
+        <div class="flex items-center gap-4 mt-2">
+          <span class="text-sm text-gray-400">Stock actuel:</span>
+          <span class="text-xl font-black" [ngClass]="stockColor(selectedPart()!)">
+            {{ selectedPart()!.stockQuantity }} unités
+          </span>
+        </div>
+      </div>
+
+      <form [formGroup]="restockForm" (ngSubmit)="submitRestock()" class="space-y-5">
+        <div>
+          <label class="block text-sm font-bold text-gray-300 mb-2">Quantité à ajouter <span class="text-rose-400">*</span></label>
+          <input type="number" formControlName="quantityToAdd" min="1"
+            class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-white text-xl font-bold text-center focus:ring-2 focus:ring-emerald-500 outline-none" />
+        </div>
+
+        <div class="bg-gray-800 rounded-xl p-3 text-center">
+          <p class="text-xs text-gray-500 mb-1">Nouveau stock estimé</p>
+          <p class="text-2xl font-black text-emerald-400">
+            {{ (selectedPart()!.stockQuantity + (+restockForm.value.quantityToAdd || 0)) }} unités
+          </p>
+        </div>
+
+        @if (error()) {
+          <p class="text-rose-400 text-sm">{{ error() }}</p>
+        }
+
+        <div class="flex gap-3 pt-2">
+          <button type="button" (click)="closeModals()"
+            class="flex-1 py-3 bg-gray-800 hover:bg-gray-700 text-white font-bold rounded-xl transition">
+            Annuler
+          </button>
+          <button type="submit" [disabled]="!restockForm.valid || isSubmitting()"
+            class="flex-1 py-3 bg-emerald-600 hover:bg-emerald-700 disabled:bg-gray-700 disabled:text-gray-500 text-white font-bold rounded-xl transition">
+            @if (isSubmitting()) { ⏳ Traitement... } @else { ✅ Confirmer le réapprovisionnement }
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+}
+

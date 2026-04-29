@@ -1,0 +1,46 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --background: 255 255 255;
+    --foreground: 0 0 0;
+  }
+  .dark {
+    --background: 0 0 0;
+    --foreground: 255 255 255;
+    background-color: rgb(17, 24, 39); /* bg-gray-900 */
+    color: rgb(243, 244, 246); /* text-gray-100 */
+  }
+
+  html.dark body {
+    background-color: rgb(17, 24, 39);
+    color: rgb(243, 244, 246);
+  }
+}
+
+/* Scroll reveal helper */
+.reveal { will-change: transform, opacity; }
+.reveal-in { opacity: 1 !important; transform: translateY(0) !important; transition: opacity 700ms ease, transform 700ms ease; }
+
+/* Floating blobs */
+@keyframes float {
+  0%, 100% { transform: translateY(0) translateX(0); }
+  50% { transform: translateY(-14px) translateX(10px); }
+}
+@keyframes pulseSoft {
+  0%, 100% { transform: scale(1); opacity: 0.75; }
+  50% { transform: scale(1.03); opacity: 1; }
+}
+
+@keyframes slideInLeft {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(0); }
+}
+
+.animate-slide-in-left {
+  animation: slideInLeft 0.3s ease-out forwards;
+}
+
+.animate-float { animation: float 7s ease-in-out infinite; }
+.animate-float-delayed { animation: float 8.5s ease-in-out infinite; animation-delay: 0.8s; }
+.animate-pulse-soft { animation: pulseSoft 2.8s ease-in-out infinite; }

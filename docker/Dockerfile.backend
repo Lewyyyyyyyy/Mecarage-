@@ -1,0 +1,33 @@
+# ── Étape 1 : COMPILATION ──────────────────────────────────────────────────
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS compiler
+
+WORKDIR /src
+
+COPY MecaManage.API/MecaManage.API.csproj             MecaManage.API/
+COPY MecaManage.Application/MecaManage.Application.csproj   MecaManage.Application/
+COPY MecaManage.Domain/MecaManage.Domain.csproj           MecaManage.Domain/
+COPY MecaManage.Infrastructure/MecaManage.Infrastructure.csproj MecaManage.Infrastructure/
+COPY MecaManage.Tests/MecaManage.Tests.csproj             MecaManage.Tests/
+COPY MecaManage.sln .
+
+RUN dotnet restore MecaManage.sln
+
+COPY . .
+
+RUN dotnet publish MecaManage.API/MecaManage.API.csproj \
+    -c Release \
+    -o /app/publish
+
+# ── Étape 2 : RUNTIME ──────────────────────────────────────────────────────
+FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS runtime
+
+WORKDIR /app
+
+COPY --from=compiler /app/publish .
+
+EXPOSE 5073
+
+ENV ASPNETCORE_URLS=http://+:5073
+ENV ASPNETCORE_ENVIRONMENT=Production
+
+ENTRYPOINT ["dotnet", "MecaManage.API.dll"]

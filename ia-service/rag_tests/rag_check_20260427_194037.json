@@ -1,0 +1,15 @@
+{
+  "metadata": {
+    "timestamp": "2026-04-27T18:40:37.941986+00:00",
+    "vehicle": "Peugeot 208 (2020)",
+    "symptoms_input": "symptome 11",
+    "chef_atelier_id": null,
+    "garage_id": null
+  },
+  "rag_results": [
+    {
+      "rank": 1,
+      "content": "Chunk A\n\n---\n\nChunk B"
+    }
+  ]
+}

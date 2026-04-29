@@ -1,0 +1,291 @@
+<nav class="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 transition-colors duration-300">
+  <div class="max-w-[100%] mx-auto px-4 sm:px-6 lg:px-12">
+    <div class="flex justify-between items-center h-20">
+
+      <!-- Logo -->
+      <a routerLink="/" class="flex items-center space-x-2 group">
+        <div class="w-10 h-10 bg-indigo-600 dark:bg-indigo-500 rounded-lg flex items-center justify-center transition-transform group-hover:scale-105">
+          <span class="text-white font-black text-xl italic">MR</span>
+        </div>
+        <span class="text-2xl font-black tracking-tighter text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+          MecaRage
+        </span>
+      </a>
+
+      <!-- Desktop Menu -->
+      <div class="hidden xl:flex space-x-8 items-center">
+        <a routerLink="/" routerLinkActive="text-indigo-600 dark:text-indigo-400" [routerLinkActiveOptions]="{exact: true}"
+           class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">
+          Home
+        </a>
+
+        <!-- Super Admin Dashboard -->
+        @if (isSuperAdmin()) {
+          <a routerLink="/super-admin" routerLinkActive="text-indigo-600 dark:text-indigo-400"
+             class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">
+            Admin Dashboard
+          </a>
+        }
+
+        <!-- Garage Admin Dashboard (AdminEntreprise only) -->
+        @if (isAdminEntreprise()) {
+          <a routerLink="/admin" routerLinkActive="text-indigo-600 dark:text-indigo-400"
+             class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">
+            Garage Admin
+          </a>
+        }
+
+        <!-- Chef Atelier: just an Inbox link -->
+        @if (isChef()) {
+          <a routerLink="/inbox" routerLinkActive="text-indigo-600 dark:text-indigo-400"
+             class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">
+            📥 Inbox
+          </a>
+        }
+
+        <!-- Client Menu Items (hide for Super Admin) -->
+        @if (isClient()) {
+          <a routerLink="/inbox" routerLinkActive="text-indigo-600 dark:text-indigo-400"
+             class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">
+            🔔 Notifications
+          </a>
+          <a routerLink="/symptoms" routerLinkActive="text-indigo-600 dark:text-indigo-400"
+             class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">
+            Symptoms
+          </a>
+          <a routerLink="/appointments" routerLinkActive="text-indigo-600 dark:text-indigo-400"
+             class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">
+            Appointments
+          </a>
+          <a routerLink="/vehicles" routerLinkActive="text-indigo-600 dark:text-indigo-400"
+             class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">
+            Vehicles
+          </a>
+        }
+
+        <!-- Mechanic Menu Items -->
+        @if (isMechanic()) {
+          <a routerLink="/inbox" routerLinkActive="text-indigo-600 dark:text-indigo-400"
+             class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">
+            🔧 Mes Tâches
+          </a>
+        }
+
+        <!-- Chef Menu Items — managed inside the dashboard tabs, no extra nav links needed -->
+
+        <a routerLink="/inventory" routerLinkActive="text-indigo-600 dark:text-indigo-400"
+           class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">
+          Inventory
+        </a>
+        <a routerLink="/customers" routerLinkActive="text-indigo-600 dark:text-indigo-400"
+           class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">
+          Customers
+        </a>
+        <a routerLink="/services" routerLinkActive="text-indigo-600 dark:text-indigo-400"
+           class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">
+          Services
+        </a>
+        <a routerLink="/reports" routerLinkActive="text-indigo-600 dark:text-indigo-400"
+           class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">
+          Reports
+        </a>
+        <a routerLink="/about" routerLinkActive="text-indigo-600 dark:text-indigo-400"
+           class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">
+          About
+        </a>
+        <a routerLink="/contact" routerLinkActive="text-indigo-600 dark:text-indigo-400"
+           class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">
+          Contact
+        </a>
+
+        <div class="h-6 w-px bg-gray-200 dark:bg-gray-700"></div>
+
+        <!-- Notification Bell (Client only) -->
+        @if (isClient() && isAuthenticated()) {
+          <app-notification-bell />
+        }
+
+        <!-- Dark Mode Toggle -->
+        <button (click)="toggleTheme()" type="button" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors text-gray-600 dark:text-gray-400">
+          @if (isDark()) {
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd" />
+            </svg>
+          } @else {
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
+            </svg>
+          }
+        </button>
+
+        @if (!isAuthenticated()) {
+          <a routerLink="/login" class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">
+            Sign In
+          </a>
+          <a routerLink="/signup" class="inline-flex items-center px-6 py-2.5 border border-transparent text-sm font-bold rounded-full shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all transform hover:scale-105 active:scale-95">
+            Get Started
+          </a>
+        } @else {
+          <!-- User Profile Avatar/Link -->
+          <a routerLink="/profile" class="w-10 h-10 bg-indigo-100 dark:bg-indigo-900/30 rounded-full flex items-center justify-center text-indigo-600 dark:text-indigo-400 font-bold border-2 border-transparent hover:border-indigo-500 transition-all">
+            {{ user()?.initials }}
+          </a>
+          <button (click)="logout()" class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">
+            Logout
+          </button>
+        }
+      </div>
+
+      <!-- Mobile Button -->
+      <div class="xl:hidden flex items-center space-x-4">
+        <button (click)="toggleTheme()" type="button" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors text-gray-600 dark:text-gray-400">
+          @if (isDark()) {
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd" />
+            </svg>
+          } @else {
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
+            </svg>
+          }
+        </button>
+        <button
+          class="text-gray-600 dark:text-gray-300 focus:outline-none p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+          (click)="toggleMenu()"
+          aria-label="Toggle Menu">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile Menu -->
+  @if (isMenuOpenFn()) {
+    <!-- Backdrop -->
+    <div class="xl:hidden fixed inset-0 bg-black/50 z-40 backdrop-blur-sm transition-opacity" (click)="toggleMenu()"></div>
+
+    <!-- Left Sidebar Menu -->
+    <div class="xl:hidden fixed inset-y-0 left-0 w-3/4 max-w-sm bg-white dark:bg-gray-900 z-50 shadow-2xl transform transition-transform duration-300 ease-in-out flex flex-col animate-slide-in-left">
+      <div class="p-6 border-b border-gray-100 dark:border-gray-800 flex justify-between items-center">
+        <a routerLink="/" (click)="toggleMenu()" class="flex items-center space-x-2 group">
+          <div class="w-8 h-8 bg-indigo-600 dark:bg-indigo-500 rounded-lg flex items-center justify-center">
+            <span class="text-white font-black text-sm italic">MR</span>
+          </div>
+          <span class="text-xl font-black tracking-tighter text-gray-900 dark:text-white">
+            MecaRage
+          </span>
+        </a>
+        <button (click)="toggleMenu()" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <div class="flex-1 overflow-y-auto px-4 py-6 space-y-2">
+        <a routerLink="/" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400" [routerLinkActiveOptions]="{exact: true}"
+           class="flex items-center px-4 py-3 rounded-xl font-semibold text-gray-700 dark:text-gray-300">
+          Home
+        </a>
+
+        <!-- Super Admin Dashboard -->
+        @if (isSuperAdmin()) {
+          <a routerLink="/super-admin" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400"
+             class="flex items-center px-4 py-3 rounded-xl font-semibold text-gray-700 dark:text-gray-300">
+            Admin Dashboard
+          </a>
+        }
+
+        <!-- Garage Admin Dashboard (AdminEntreprise only) -->
+        @if (isAdminEntreprise()) {
+          <a routerLink="/admin" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400"
+             class="flex items-center px-4 py-3 rounded-xl font-semibold text-gray-700 dark:text-gray-300">
+            Garage Admin
+          </a>
+        }
+
+        <!-- Chef Atelier: just an Inbox link -->
+        @if (isChef()) {
+          <a routerLink="/inbox" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400"
+             class="flex items-center px-4 py-3 rounded-xl font-semibold text-gray-700 dark:text-gray-300">
+            📥 Inbox
+          </a>
+        }
+
+        <!-- Client Menu Items (hide for Super Admin) -->
+        @if (isClient()) {
+          <a routerLink="/inbox" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400"
+             class="flex items-center px-4 py-3 rounded-xl font-semibold text-gray-700 dark:text-gray-300">
+            🔔 Notifications
+          </a>
+          <a routerLink="/symptoms" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400"
+             class="flex items-center px-4 py-3 rounded-xl font-semibold text-gray-700 dark:text-gray-300">
+            Symptoms
+          </a>
+          <a routerLink="/appointments" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400"
+             class="flex items-center px-4 py-3 rounded-xl font-semibold text-gray-700 dark:text-gray-300">
+            Appointments
+          </a>
+          <a routerLink="/vehicles" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400"
+             class="flex items-center px-4 py-3 rounded-xl font-semibold text-gray-700 dark:text-gray-300">
+            Vehicles
+          </a>
+        }
+
+        <!-- Mechanic Menu Items -->
+        @if (isMechanic()) {
+          <a routerLink="/inbox" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400"
+             class="flex items-center px-4 py-3 rounded-xl font-semibold text-gray-700 dark:text-gray-300">
+            🔧 Mes Tâches
+          </a>
+        }
+
+        <!-- Chef Menu Items — managed inside the dashboard tabs -->
+
+        <a routerLink="/inventory" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400"
+           class="flex items-center px-4 py-3 rounded-xl font-semibold text-gray-700 dark:text-gray-300">
+          Inventory
+        </a>
+        <a routerLink="/customers" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400"
+           class="flex items-center px-4 py-3 rounded-xl font-semibold text-gray-700 dark:text-gray-300">
+          Customers
+        </a>
+        <a routerLink="/services" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400"
+           class="flex items-center px-4 py-3 rounded-xl font-semibold text-gray-700 dark:text-gray-300">
+          Services
+        </a>
+        <a routerLink="/reports" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400"
+           class="flex items-center px-4 py-3 rounded-xl font-semibold text-gray-700 dark:text-gray-300">
+          Reports
+        </a>
+        <div class="my-4 border-t border-gray-100 dark:border-gray-800"></div>
+        <a routerLink="/profile" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400"
+           class="flex items-center px-4 py-3 rounded-xl font-semibold text-gray-700 dark:text-gray-300">
+          My Profile
+        </a>
+        <a routerLink="/settings" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400"
+           class="flex items-center px-4 py-3 rounded-xl font-semibold text-gray-700 dark:text-gray-300">
+          Settings
+        </a>
+        @if (isAuthenticated()) {
+          <button (click)="logout(); toggleMenu()" class="flex items-center px-4 py-3 rounded-xl font-semibold text-gray-700 dark:text-gray-300 w-full text-left">
+            Logout
+          </button>
+        }
+      </div>
+
+      @if (!isAuthenticated()) {
+        <div class="p-6 border-t border-gray-100 dark:border-gray-800 space-y-3">
+          <a routerLink="/login" (click)="toggleMenu()" class="block w-full text-center px-4 py-3 rounded-xl font-bold text-gray-700 dark:text-gray-200 bg-gray-100 dark:bg-gray-800">
+            Sign In
+          </a>
+          <a routerLink="/signup" (click)="toggleMenu()" class="block w-full text-center px-4 py-3 rounded-xl font-bold text-white bg-indigo-600">
+            Get Started
+          </a>
+        </div>
+      }
+    </div>
+  }
+</nav>

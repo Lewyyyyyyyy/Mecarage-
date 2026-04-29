@@ -1,0 +1,14 @@
+{
+  "metadata": {
+    "timestamp": "2026-04-29T10:10:18.594652+00:00",
+    "vehicle": "toyota corolla (2020)",
+    "symptoms": "bruit avant train   "
+  },
+  "chunks": [
+    "SUSPENSION - BAGUE DE TRAIN ARRIERE USEE AVANT AU FREINAGE\nSymptomes: train arriere flottant, bruit sourd arriere, corrections au volant, plus net au freinage\nCauses possibles: silentbloc essieu use, age, charge forte\nType atelier: mecanique\nUrgence: modere\nCout estime: 200-700 TND\nActions: inspection train arriere remplacement bagues",
+    "SUSPENSION - BAGUE DE TRAIN ARRIERE USEE AVANT EN VIRAGE\nSymptomes: train arriere flottant, bruit sourd arriere, corrections au volant, plus net en virage\nCauses possibles: silentbloc essieu use, age, charge forte\nType atelier: mecanique\nUrgence: modere\nCout estime: 200-700 TND\nActions: inspection train arriere remplacement bagues",
+    "SUSPENSION - BAGUE DE TRAIN ARRIERE USEE AVANT A HAUTE VITESSE\nSymptomes: train arriere flottant, bruit sourd arriere, corrections au volant, plus net a haute vitesse\nCauses possibles: silentbloc essieu use, age, charge forte\nType atelier: mecanique\nUrgence: modere\nCout estime: 200-700 TND\nActions: inspection train arriere remplacement bagues",
+    "SUSPENSION - BAGUE DE TRAIN ARRIERE USEE AVANT SUR DOS D ANE\nSymptomes: train arriere flottant, bruit sourd arriere, corrections au volant, plus net sur dos d ane\nCauses possibles: silentbloc essieu use, age, charge forte\nType atelier: mecanique\nUrgence: modere\nCout estime: 200-700 TND\nActions: inspection train arriere remplacement bagues",
+    "SUSPENSION - BAGUE DE TRAIN ARRIERE USEE ARRIERE AU FREINAGE\nSymptomes: train arriere flottant, bruit sourd arriere, corrections au volant, plus net au freinage\nCauses possibles: silentbloc essieu use, age, charge forte\nType atelier: mecanique\nUrgence: modere\nCout estime: 200-700 TND\nActions: inspection train arriere remplacement bagues"
+  ]
+}

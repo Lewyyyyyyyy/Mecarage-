@@ -1,0 +1,19 @@
+{
+  "name": "mecamanage-workspace",
+  "private": true,
+  "packageManager": "npm@10.9.3",
+  "workspaces": [
+    "frontend",
+    "backend/MecaManage.API",
+    "ia-service"
+  ],
+  "scripts": {
+    "dev": "turbo run dev --parallel",
+    "build": "turbo run build",
+    "test": "turbo run test"
+  },
+  "devDependencies": {
+    "turbo": "^2.4.4"
+  }
+}
+

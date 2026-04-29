@@ -1,0 +1,32 @@
+/* Mechanic Tasks Styles */
+
+:host {
+  display: block;
+}
+
+/* Loading Animation */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+/* Card Hover Effect */
+.hover\:shadow-lg {
+  transition: box-shadow 0.3s ease;
+}
+
+/* Grid Layout */
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+

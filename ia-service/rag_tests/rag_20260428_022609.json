@@ -1,0 +1,14 @@
+{
+  "metadata": {
+    "timestamp": "2026-04-28T01:26:09.319967+00:00",
+    "vehicle": "toyota corolla (2020)",
+    "symptoms": "la voiture ne demarre pas"
+  },
+  "chunks": [
+    "REFROIDISSEMENT - RELAIS VENTILATEUR HS INTERMITTENT\nSymptomes: ventilateur ne demarre pas, surchauffe a l arret, defaut intermittent\nCauses possibles: relais colle, contact brule, humidite boitier\nType atelier: electrique\nUrgence: modere\nCout estime: 50-180 TND\nActions: controle relais et alimentation",
+    "ELECTRIQUE - RELAIS PRINCIPAL MOTEUR HS INTERMITTENT\nSymptomes: moteur ne demarre pas parfois, pompe carburant absente, voyant moteur absent, defaut intermittent\nCauses possibles: relais chauffe, soudures fatiguees, humidité\nType atelier: electrique\nUrgence: modere\nCout estime: 50-180 TND\nActions: test relais principal remplacement",
+    "REFROIDISSEMENT - RELAIS VENTILATEUR HS EN VILLE\nSymptomes: ventilateur ne demarre pas, surchauffe a l arret, defaut intermittent, en ville\nCauses possibles: relais colle, contact brule, humidite boitier\nType atelier: electrique\nUrgence: modere\nCout estime: 50-180 TND\nActions: controle relais et alimentation",
+    "ELECTRIQUE - RELAIS PRINCIPAL MOTEUR HS APRES STATIONNEMENT\nSymptomes: moteur ne demarre pas parfois, pompe carburant absente, voyant moteur absent, apres stationnement\nCauses possibles: relais chauffe, soudures fatiguees, humidité\nType atelier: electrique\nUrgence: modere\nCout estime: 50-180 TND\nActions: test relais principal remplacement",
+    "ELECTRIQUE - RELAIS PRINCIPAL MOTEUR HS MOTEUR TOURNANT\nSymptomes: moteur ne demarre pas parfois, pompe carburant absente, voyant moteur absent, moteur tournant\nCauses possibles: relais chauffe, soudures fatiguees, humidité\nType atelier: electrique\nUrgence: modere\nCout estime: 50-180 TND\nActions: test relais principal remplacement"
+  ]
+}

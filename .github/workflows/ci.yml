@@ -1,0 +1,101 @@
+name: MecaManage CI/CD
+
+on:
+  push:
+    branches: [ main, feature/devops-cicd ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+
+  # ── Test Backend .NET ──────────────────────────────────────
+  test-backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore dependencies
+        run: dotnet restore backend/MecaManage.sln
+
+      - name: Build
+        run: dotnet build backend/MecaManage.sln --no-restore
+
+      - name: Run tests
+        run: dotnet test backend/MecaManage.sln --no-build --verbosity normal
+
+  # ── Test IA Service Python ─────────────────────────────────
+  test-ia:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          cd ia-service
+          pip install -r requirements.txt
+          pip install pytest-asyncio anyio[asyncio]
+
+      - name: Run tests
+        env:
+          GEMINI_API_KEY: ""
+          PYTHONPATH: ${{ github.workspace }}/ia-service
+        run: |
+          cd ia-service
+          pytest tests/ -v
+
+  # ── Build & Push Docker Images ─────────────────────────────
+  docker-build:
+    runs-on: ubuntu-latest
+    needs: [test-backend, test-ia]
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build & Push Backend
+        uses: docker/build-push-action@v5
+        with:
+          context: ./backend
+          file: ./docker/Dockerfile.backend
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/mecamanage-backend:latest
+
+      - name: Build & Push IA Service
+        uses: docker/build-push-action@v5
+        with:
+          context: ./ia-service
+          file: ./ia-service/Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/mecamanage-ia:latest
+  # ── Auto-Deploy via SSH ────────────────────────────────────
+  deploy:
+    runs-on: ubuntu-latest
+    needs: [docker-build]
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          script: |
+            cd /opt/mecamanage
+            docker-compose pull
+            docker-compose --env-file .env.prod up -d
+            docker image prune -f

@@ -1,0 +1,63 @@
+{
+  "name": "Notification client - intervention acceptee",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "intervention-accepted",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "id": "Webhook_InterventionAccepted",
+      "name": "Webhook Intervention Accepted",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        240,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "fromEmail": "no-reply@mecamanage.tn",
+        "toEmail": "={{$json.clientEmail}}",
+        "subject": "Intervention acceptee - #{{$json.interventionId}}",
+        "text": "Bonjour {{$json.clientName || 'Client'}},\n\nVotre intervention a ete acceptee.\n\nDetails:\n- ID: {{$json.interventionId}}\n- Vehicule: {{$json.vehicle || 'N/A'}}\n- Garage: {{$json.garage || 'N/A'}}\n- Date planifiee: {{$json.scheduledAt || 'N/A'}}\n\nMerci,\nEquipe MecaManage"
+      },
+      "id": "Email_Client",
+      "name": "Email Client",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2,
+      "position": [
+        520,
+        300
+      ],
+      "credentials": {
+        "smtp": {
+          "id": "smtp_mecamanage",
+          "name": "SMTP MecaManage"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Webhook Intervention Accepted": {
+      "main": [
+        [
+          {
+            "node": "Email Client",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {},
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": false,
+    "version": "1.0"
+  }
+}

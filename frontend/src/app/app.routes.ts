@@ -1,0 +1,56 @@
+import { Routes } from '@angular/router';
+import { LoginComponent } from './auth/login.component';
+import { SignupComponent } from './auth/signup.component';
+import { AdminDashboardComponent } from './admin/admin-dashboard/admin-dashboard';
+import { SuperAdminDashboardComponent } from './admin/super-admin-dashboard/super-admin-dashboard';
+import { GarageAdminDashboardComponent } from './admin/garage-admin-dashboard/garage-admin-dashboard';
+import { ChefInboxComponent } from './admin/chef-inbox/chef-inbox';
+import { ChefExaminationReviewComponent } from './admin/chef-examination-review/chef-examination-review';
+import { ChefRepairManagementComponent } from './admin/chef-repair-management/chef-repair-management';
+import { TenantsListComponent } from './admin/tenants-list/tenants-list';
+import { ManageTenantComponent } from './admin/manage-tenant/manage-tenant';
+import { HomeComponent } from './pages/home/home';
+import { InventoryComponent } from './pages/inventory/inventory/inventory';
+import { CustomersComponent } from './pages/customers/customers/customers';
+import { ServicesComponent } from './pages/services/services/services';
+import { ContactComponent } from './contact.component';
+import { AboutComponent } from './about.component';
+import { ProfileComponent } from './pages/profile/profile/profile';
+import { AppointmentsComponent } from './pages/appointments/appointments/appointments';
+import { ReportsComponent } from './pages/reports/reports/reports';
+import { SettingsComponent } from './pages/settings/settings/settings';
+import { VehiclesComponent } from './pages/vehicles/vehicles';
+import { MySymptomReportsComponent } from './pages/my-symptom-reports/my-symptom-reports';
+import { SymptomReportFormComponent } from './pages/symptom-report-form/symptom-report-form';
+import { MechanicTasksComponent } from './pages/mechanic-tasks/mechanic-tasks';
+import { InboxComponent } from './core/inbox/inbox';
+
+export const routes: Routes = [
+  { path: '', component: HomeComponent },
+  { path: 'login', component: LoginComponent },
+  { path: 'signup', component: SignupComponent },
+  { path: 'inbox', component: InboxComponent },
+  { path: 'admin', component: AdminDashboardComponent },
+  { path: 'super-admin', component: SuperAdminDashboardComponent },
+  { path: 'tenants', component: TenantsListComponent },
+  { path: 'manage-tenant/:id', component: ManageTenantComponent },
+  { path: 'garage-admin/:garageId', component: GarageAdminDashboardComponent, pathMatch: 'full' },
+  { path: 'garage-admin/:garageId/inbox', component: ChefInboxComponent },
+  { path: 'garage-admin/:garageId/examination-reviews', component: ChefExaminationReviewComponent },
+  { path: 'garage-admin/:garageId/repairs', component: ChefRepairManagementComponent },
+  { path: 'garage-admin/:garageId/symptoms/new', component: SymptomReportFormComponent },
+  { path: 'inventory', component: InventoryComponent },
+  { path: 'customers', component: CustomersComponent },
+  { path: 'services', component: ServicesComponent },
+  { path: 'contact', component: ContactComponent },
+  { path: 'about', component: AboutComponent },
+  { path: 'profile', component: ProfileComponent },
+  { path: 'vehicles', component: VehiclesComponent },
+  { path: 'symptoms', component: MySymptomReportsComponent },
+  { path: 'symptoms/new', component: SymptomReportFormComponent },
+  { path: 'symptoms/:id', component: MySymptomReportsComponent },
+  { path: 'appointments', component: AppointmentsComponent },
+  { path: 'mechanic/tasks', component: MechanicTasksComponent },
+  { path: 'reports', component: ReportsComponent },
+  { path: 'settings', component: SettingsComponent },
+];

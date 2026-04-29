@@ -1,0 +1,47 @@
+---
+# ── Déploiement MecaManage sur le serveur ──────────────────
+
+- name: Créer le répertoire de déploiement
+  file:
+    path: /opt/mecamanage
+    state: directory
+    owner: ubuntu
+    group: ubuntu
+    mode: '0755'
+
+- name: Cloner le repository GitHub
+  git:
+    repo: https://github.com/iheb137/MECAMANAGE.git
+    dest: /opt/mecamanage
+    version: main
+    force: yes
+
+- name: Copier le fichier .env.prod
+  template:
+    src: env.prod.j2
+    dest: /opt/mecamanage/.env.prod
+    mode: '0600'
+
+- name: Arrêter les conteneurs existants
+  shell: |
+    cd /opt/mecamanage/docker
+    docker compose down
+  ignore_errors: yes
+
+- name: Lancer docker-compose
+  shell: |
+    cd /opt/mecamanage/docker
+    docker compose --env-file ../.env.prod up -d --build
+  register: compose_output
+
+- name: Afficher le résultat
+  debug:
+    var: compose_output.stdout_lines
+
+- name: Vérifier que les conteneurs tournent
+  shell: docker ps --format "table {{.Names}}\t{{.Status}}"
+  register: containers_status
+
+- name: Afficher le statut des conteneurs
+  debug:
+    var: containers_status.stdout_lines

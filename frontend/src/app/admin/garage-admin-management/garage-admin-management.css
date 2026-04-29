@@ -1,0 +1,49 @@
+/* Garage Admin Management Component Styles */
+
+:host {
+  display: block;
+}
+
+/* Modal Animations */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Table Responsive Design */
+@media (max-width: 768px) {
+  table {
+    font-size: 0.875rem;
+  }
+
+  .px-6 {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+}
+
+/* Hover Effects */
+.hover\:bg-gray-50:hover {
+  transition-duration: 200ms;
+}
+
+/* Loading Animation */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
