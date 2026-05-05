@@ -21,6 +21,7 @@ public interface IApplicationDbContext
     DbSet<RepairTask> RepairTasks { get; }
     DbSet<RepairTaskAssignment> RepairTaskAssignments { get; }
     DbSet<Notification> Notifications { get; }
+    DbSet<Intervention> Interventions { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

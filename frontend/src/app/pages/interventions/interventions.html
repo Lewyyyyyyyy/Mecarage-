@@ -1,0 +1,208 @@
+<div class="min-h-screen bg-gray-950 text-white">
+  <div class="max-w-5xl mx-auto px-4 py-10">
+
+    <!-- Header -->
+    <div class="mb-8">
+      <h1 class="text-3xl font-black tracking-tight text-white">🔩 Mes Interventions</h1>
+      <p class="text-gray-400 mt-1 text-sm">
+        Suivez chaque étape de vos interventions au garage, de l'examen initial au paiement.
+      </p>
+    </div>
+
+    @if (error()) {
+      <div class="mb-4 px-4 py-3 rounded-xl bg-rose-900/30 border border-rose-700 text-rose-300 text-sm">
+        ⚠️ {{ error() }}
+      </div>
+    }
+
+    <!-- Loading -->
+    @if (loading()) {
+      <div class="flex items-center justify-center py-20">
+        <div class="w-8 h-8 border-2 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
+        <span class="ml-3 text-gray-400 text-sm">Chargement...</span>
+      </div>
+    }
+
+    <!-- Detail panel (slide-in) -->
+    @if (selected()) {
+      <div class="fixed inset-0 z-50 flex">
+        <!-- Backdrop -->
+        <div class="fixed inset-0 bg-black/60" (click)="closeDetail()"></div>
+        <!-- Panel -->
+        <div class="relative ml-auto w-full max-w-2xl bg-gray-900 border-l border-gray-800 overflow-y-auto h-full p-6 z-10">
+          <button (click)="closeDetail()" class="text-gray-500 hover:text-white text-sm mb-6 flex items-center gap-1">
+            ← Fermer
+          </button>
+
+          <h2 class="text-xl font-black text-white mb-1">Détail de l'Intervention</h2>
+          <p class="text-gray-400 text-sm mb-6">{{ selected()!.garageName }} · {{ selected()!.vehicleInfo }}</p>
+
+          <!-- Status timeline -->
+          @if (!isRejected(selected()!.status)) {
+            <div class="mb-8">
+              <p class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-4">Progression</p>
+              <div class="relative">
+                <!-- vertical line -->
+                <div class="absolute left-4 top-0 bottom-0 w-px bg-gray-800"></div>
+                @for (step of steps; track step.key; let i = $index) {
+                  @let current = stepIndex(selected()!.status);
+                  <div class="relative flex items-start gap-4 mb-4">
+                    <!-- dot -->
+                    <div class="z-10 w-8 h-8 rounded-full flex items-center justify-center text-sm shrink-0"
+                         [class]="i < current ? 'bg-emerald-600 text-white' : i === current ? 'bg-indigo-600 text-white ring-4 ring-indigo-500/30' : 'bg-gray-800 text-gray-600'">
+                      @if (i < current) { ✓ } @else { {{ step.icon }} }
+                    </div>
+                    <div class="pt-1">
+                      <p class="text-sm font-semibold"
+                         [class]="i === current ? 'text-indigo-300' : i < current ? 'text-emerald-400' : 'text-gray-600'">
+                        {{ step.label }}
+                      </p>
+                    </div>
+                  </div>
+                }
+              </div>
+            </div>
+          } @else {
+            <div class="mb-8 p-4 bg-rose-900/20 border border-rose-800 rounded-xl">
+              <p class="text-rose-300 font-bold">❌ Intervention refusée</p>
+              <p class="text-rose-400 text-sm mt-1">Le devis a été refusé. L'intervention n'aura pas lieu.</p>
+            </div>
+          }
+
+          <!-- Examination -->
+          @if (selected()!.examinationNotes) {
+            <div class="mb-4 p-4 bg-blue-900/20 border border-blue-800/40 rounded-xl">
+              <p class="text-xs font-bold text-blue-400 mb-2">🔍 Rapport d'examen</p>
+              <p class="text-sm text-blue-200">{{ selected()!.examinationNotes }}</p>
+              @if (parseParts(selected()!.partsUsedJson).length > 0) {
+                <div class="mt-3 space-y-1">
+                  <p class="text-xs text-blue-500 font-semibold">Pièces identifiées :</p>
+                  @for (part of parseParts(selected()!.partsUsedJson); track $index) {
+                    <div class="flex justify-between text-xs text-blue-300">
+                      <span>{{ part.name }}</span>
+                      <span>× {{ part.quantity }}</span>
+                    </div>
+                  }
+                </div>
+              }
+            </div>
+          }
+
+          <!-- Invoice info -->
+          @if (selected()!.invoiceNumber) {
+            <div class="mb-4 p-4 bg-amber-900/20 border border-amber-800/40 rounded-xl">
+              <p class="text-xs font-bold text-amber-400 mb-1">💰 Devis / Facture</p>
+              <div class="flex justify-between">
+                <span class="text-sm text-amber-200">{{ selected()!.invoiceNumber }}</span>
+                <span class="text-sm font-bold text-white">{{ selected()!.invoiceTotal | number:'1.2-2' }} €</span>
+              </div>
+              <span class="text-xs text-amber-500">{{ selected()!.invoiceStatus }}</span>
+            </div>
+          }
+
+          <!-- Repair notes -->
+          @if (selected()!.repairNotes) {
+            <div class="mb-4 p-4 bg-violet-900/20 border border-violet-800/40 rounded-xl">
+              <p class="text-xs font-bold text-violet-400 mb-1">🔧 Notes de réparation</p>
+              <p class="text-sm text-violet-200">{{ selected()!.repairNotes }}</p>
+            </div>
+          }
+
+          <!-- Payment -->
+          @if (selected()!.paymentAmount !== null) {
+            <div class="mb-4 p-4 bg-emerald-900/20 border border-emerald-800/40 rounded-xl">
+              <p class="text-xs font-bold text-emerald-400 mb-1">💳 Paiement</p>
+              <div class="flex justify-between">
+                <span class="text-sm text-emerald-200">{{ selected()!.paymentMethod }}</span>
+                <span class="text-sm font-bold text-white">{{ selected()!.paymentAmount | number:'1.2-2' }} €</span>
+              </div>
+              <p class="text-xs text-emerald-500 mt-1">{{ formatDate(selected()!.paymentDate) }}</p>
+            </div>
+          }
+
+          <!-- Timestamps -->
+          <div class="mt-6 pt-4 border-t border-gray-800 text-xs text-gray-600 space-y-1">
+            <p>Ouvert le {{ formatDate(selected()!.createdAt) }}</p>
+            @if (selected()!.updatedAt) {
+              <p>Dernière mise à jour : {{ formatDate(selected()!.updatedAt) }}</p>
+            }
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- Detail loading overlay -->
+    @if (detailLoading()) {
+      <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
+        <div class="w-8 h-8 border-2 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    }
+
+    <!-- List -->
+    @if (!loading()) {
+      @if (interventions().length === 0) {
+        <div class="text-center py-20 text-gray-500">
+          <p class="text-5xl mb-4">🔩</p>
+          <p class="text-lg font-semibold">Aucune intervention pour l'instant.</p>
+          <p class="text-sm mt-1">Les interventions sont créées automatiquement lorsqu'un rendez-vous est approuvé.</p>
+          <a routerLink="/appointments" class="mt-4 inline-block text-indigo-400 hover:text-indigo-300 text-sm underline">
+            Voir mes rendez-vous →
+          </a>
+        </div>
+      }
+      <div class="space-y-4">
+        @for (item of interventions(); track item.id) {
+          <div
+            (click)="openDetail(item.id)"
+            class="cursor-pointer bg-gray-900 border border-gray-800 hover:border-indigo-700 rounded-2xl p-5 transition group"
+          >
+            <div class="flex items-start justify-between gap-4">
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-2 flex-wrap mb-1">
+                  <span class="text-xs px-2.5 py-0.5 rounded-full border font-semibold"
+                        [class]="statusCss(item.status)">
+                    {{ statusLabel(item.status) }}
+                  </span>
+                  @if (item.status === 'ReadyForPickup') {
+                    <span class="text-xs bg-teal-900/40 text-teal-300 border border-teal-700 rounded-full px-2.5 py-0.5 font-bold animate-pulse">
+                      À récupérer !
+                    </span>
+                  }
+                  @if (item.status === 'InvoicePending') {
+                    <span class="text-xs bg-amber-900/40 text-amber-300 border border-amber-700 rounded-full px-2.5 py-0.5 font-bold animate-pulse">
+                      Action requise
+                    </span>
+                  }
+                </div>
+                <p class="text-white font-bold text-base">{{ item.vehicleInfo }}</p>
+                <p class="text-gray-400 text-sm">{{ item.garageName }}</p>
+              </div>
+              <div class="text-right shrink-0">
+                @if (item.status === 'Closed' && item.paymentAmount !== null) {
+                  <p class="text-lg font-black text-white">{{ item.paymentAmount | number:'1.2-2' }} €</p>
+                  <p class="text-xs text-gray-500">{{ item.paymentMethod }}</p>
+                } @else if (item.invoiceNumber) {
+                  <p class="text-xs font-mono text-gray-400">{{ item.invoiceNumber }}</p>
+                }
+                <p class="text-xs text-gray-600 mt-1">{{ formatDate(item.createdAt) }}</p>
+              </div>
+            </div>
+
+            <!-- Mini progress bar -->
+            @if (!isRejected(item.status)) {
+              @let progress = ((stepIndex(item.status) + 1) / steps.length) * 100;
+              <div class="mt-4 bg-gray-800 rounded-full h-1.5">
+                <div class="bg-indigo-500 h-1.5 rounded-full transition-all" [style.width.%]="progress"></div>
+              </div>
+              <p class="text-xs text-gray-500 mt-1">
+                Étape {{ stepIndex(item.status) + 1 }} / {{ steps.length }}
+              </p>
+            }
+          </div>
+        }
+      </div>
+    }
+
+  </div>
+</div>
+

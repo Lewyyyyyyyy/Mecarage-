@@ -57,7 +57,7 @@ public class CreateRepairTaskCommandHandler : IRequestHandler<CreateRepairTaskCo
         {
             AppointmentId = request.AppointmentId,
             GarageId = appointment.GarageId,
-            TenantId = appointment.Client.TenantId!.Value,
+            TenantId = appointment.Garage.TenantId,
             AssignedByChefId = request.ChefId,
             TaskTitle = request.TaskTitle,
             Description = request.Description,

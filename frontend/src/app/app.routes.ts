@@ -24,6 +24,8 @@ import { MySymptomReportsComponent } from './pages/my-symptom-reports/my-symptom
 import { SymptomReportFormComponent } from './pages/symptom-report-form/symptom-report-form';
 import { MechanicTasksComponent } from './pages/mechanic-tasks/mechanic-tasks';
 import { InboxComponent } from './core/inbox/inbox';
+import { HistoryComponent } from './pages/history/history';
+import { InterventionsComponent } from './pages/interventions/interventions';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -51,6 +53,8 @@ export const routes: Routes = [
   { path: 'symptoms/:id', component: MySymptomReportsComponent },
   { path: 'appointments', component: AppointmentsComponent },
   { path: 'mechanic/tasks', component: MechanicTasksComponent },
+  { path: 'history', component: HistoryComponent },
+  { path: 'interventions', component: InterventionsComponent },
   { path: 'reports', component: ReportsComponent },
   { path: 'settings', component: SettingsComponent },
 ];

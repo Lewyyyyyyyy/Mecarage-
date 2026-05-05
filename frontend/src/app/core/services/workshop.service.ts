@@ -22,6 +22,10 @@ import {
   SparePartDto,
   CreateSparePartDto,
   UpdateSparePartDto,
+  UpdateMechanicTaskDto,
+  InterventionSummaryDto,
+  InterventionDetailDto,
+  RegisterPaymentDto,
 } from '../models/workshop.models';
 
 @Injectable({ providedIn: 'root' })
@@ -107,6 +111,10 @@ export class InvoiceService {
   rejectInvoice(invoiceId: string): Observable<any> {
     return this.http.patch(`${this.apiUrl}/${invoiceId}/reject`, {});
   }
+
+  downloadPdf(invoiceId: string): Observable<Blob> {
+    return this.http.get(`${this.apiUrl}/${invoiceId}/pdf`, { responseType: 'blob' });
+  }
 }
 
 @Injectable({ providedIn: 'root' })
@@ -145,8 +153,17 @@ export class RepairTaskService {
     return this.http.post<{ fileUrl: string }>(`${this.apiUrl}/${taskId}/upload-exam-file`, formData);
   }
 
-  reviewExamination(taskId: string, isApproved: boolean, serviceFee: number, declineReason?: string): Observable<any> {
-    return this.http.patch(`${this.apiUrl}/${taskId}/review-examination`, { isApproved, serviceFee, declineReason });
+  reviewExamination(
+    taskId: string,
+    isApproved: boolean,
+    serviceFee: number,
+    declineReason?: string,
+    updatedObservations?: string,
+    updatedParts?: import('../models/workshop.models').ReviewPartDto[]
+  ): Observable<any> {
+    return this.http.patch(`${this.apiUrl}/${taskId}/review-examination`, {
+      isApproved, serviceFee, declineReason, updatedObservations, updatedParts
+    });
   }
 
   getPendingExaminations(garageId: string): Observable<PendingExaminationDto[]> {
@@ -163,6 +180,14 @@ export class RepairTaskService {
 
   signalReadyForPickup(taskId: string): Observable<any> {
     return this.http.patch(`${this.apiUrl}/${taskId}/ready-for-pickup`, {});
+  }
+
+  submitRepairCompletion(taskId: string, data: { completionNotes?: string | null; fileUrl?: string | null }): Observable<any> {
+    return this.http.patch(`${this.apiUrl}/${taskId}/submit-repair`, data);
+  }
+
+  updateMechanicTask(taskId: string, data: UpdateMechanicTaskDto): Observable<any> {
+    return this.http.patch(`${this.apiUrl}/${taskId}/mechanic-update`, data);
   }
 }
 
@@ -212,6 +237,33 @@ export class SparePartsService {
 
   deletePart(garageId: string, partId: string): Observable<any> {
     return this.http.delete(`${this.apiUrl(garageId)}/${partId}`);
+  }
+}
+
+@Injectable({ providedIn: 'root' })
+export class InterventionLifecycleService {
+  private readonly apiUrl = `${environment.apiBaseUrl}/interventions/lifecycle`;
+
+  constructor(private http: HttpClient) {}
+
+  getMyInterventions(): Observable<InterventionSummaryDto[]> {
+    return this.http.get<InterventionSummaryDto[]>(`${this.apiUrl}/my`);
+  }
+
+  getGarageInterventions(garageId: string): Observable<InterventionSummaryDto[]> {
+    return this.http.get<InterventionSummaryDto[]>(`${this.apiUrl}/garage/${garageId}`);
+  }
+
+  getById(id: string): Observable<InterventionDetailDto> {
+    return this.http.get<InterventionDetailDto>(`${this.apiUrl}/${id}`);
+  }
+
+  getByAppointment(appointmentId: string): Observable<InterventionDetailDto> {
+    return this.http.get<InterventionDetailDto>(`${this.apiUrl}/by-appointment/${appointmentId}`);
+  }
+
+  registerPayment(id: string, data: RegisterPaymentDto): Observable<any> {
+    return this.http.patch(`${this.apiUrl}/${id}/payment`, data);
   }
 }
 

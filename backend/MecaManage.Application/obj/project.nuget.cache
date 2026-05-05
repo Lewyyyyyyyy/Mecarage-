@@ -1,10 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "cos0oImPOE0=",
+  "dgSpecHash": "HRP2enj+dEo=",
   "success": true,
   "projectFilePath": "D:\\MecaRage\\backend\\MecaManage.Application\\MecaManage.Application.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\louay\\.nuget\\packages\\automapper\\16.1.0\\automapper.16.1.0.nupkg.sha512",
+    "C:\\Users\\louay\\.nuget\\packages\\automapper\\16.1.1\\automapper.16.1.1.nupkg.sha512",
     "C:\\Users\\louay\\.nuget\\packages\\bcrypt.net-next\\4.1.0\\bcrypt.net-next.4.1.0.nupkg.sha512",
     "C:\\Users\\louay\\.nuget\\packages\\fluentvalidation\\12.1.1\\fluentvalidation.12.1.1.nupkg.sha512",
     "C:\\Users\\louay\\.nuget\\packages\\mediatr\\14.1.0\\mediatr.14.1.0.nupkg.sha512",
@@ -26,18 +26,5 @@
     "C:\\Users\\louay\\.nuget\\packages\\microsoft.identitymodel.tokens\\8.14.0\\microsoft.identitymodel.tokens.8.14.0.nupkg.sha512",
     "C:\\Users\\louay\\.nuget\\packages\\system.diagnostics.diagnosticsource\\10.0.0\\system.diagnostics.diagnosticsource.10.0.0.nupkg.sha512"
   ],
-  "logs": [
-    {
-      "code": "NU1903",
-      "level": "Warning",
-      "message": "Package 'AutoMapper' 16.1.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-rvv3-g6hj-g44x",
-      "projectPath": "D:\\MecaRage\\backend\\MecaManage.Application\\MecaManage.Application.csproj",
-      "warningLevel": 1,
-      "filePath": "D:\\MecaRage\\backend\\MecaManage.Application\\MecaManage.Application.csproj",
-      "libraryId": "AutoMapper",
-      "targetGraphs": [
-        "net9.0"
-      ]
-    }
-  ]
+  "logs": []
 }

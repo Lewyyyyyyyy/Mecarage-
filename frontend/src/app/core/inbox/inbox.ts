@@ -4,16 +4,17 @@ import { RouterLink } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../auth/auth.service';
 import { GaragesService } from '../services/garages.service';
-import { SymptomReportService, RepairTaskService, NotificationService, AppointmentService } from '../services/workshop.service';
+import { SymptomReportService, RepairTaskService, NotificationService, AppointmentService, InvoiceService } from '../services/workshop.service';
 import { StaffService } from '../services/staff.service';
-import { ChefInboxItemDto, ClientNotificationDto, MechanicTaskDto, PendingAppointmentDto } from '../models/workshop.models';
+import { ChefInboxItemDto, ClientNotificationDto, MechanicTaskDto, PendingAppointmentDto, InvoiceDto } from '../models/workshop.models';
 import { StaffDto } from '../models/staff.models';
 import { ChefRepairManagementComponent } from '../../admin/chef-repair-management/chef-repair-management';
+import { ChefExaminationReviewComponent } from '../../admin/chef-examination-review/chef-examination-review';
 
 @Component({
   selector: 'app-inbox',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterLink, ChefRepairManagementComponent],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink, ChefRepairManagementComponent, ChefExaminationReviewComponent],
   templateUrl: './inbox.html',
 })
 export class InboxComponent implements OnInit {
@@ -23,6 +24,7 @@ export class InboxComponent implements OnInit {
   private repairTaskService = inject(RepairTaskService);
   private notificationService = inject(NotificationService);
   private appointmentService = inject(AppointmentService);
+  private invoiceService = inject(InvoiceService);
   private staffService = inject(StaffService);
   private fb = inject(FormBuilder);
 
@@ -37,7 +39,7 @@ export class InboxComponent implements OnInit {
   isMechanic = computed(() => this.role() === 'Mecanicien');
 
   // ── Chef tabs ──────────────────────────────────────────────────────────────
-  chefTab = signal<'reports' | 'appointments' | 'repairs'>('reports');
+  chefTab = signal<'reports' | 'appointments' | 'repairs' | 'examinations'>('reports');
 
   // ── Chef inbox (symptom reports) ───────────────────────────────────────────
   chefInbox = signal<ChefInboxItemDto[]>([]);
@@ -56,8 +58,16 @@ export class InboxComponent implements OnInit {
   isCreatingTask = signal(false);
 
   // ── Client notifications ───────────────────────────────────────────────────
+  clientTab = signal<'notifications' | 'invoices'>('notifications');
   notifications = signal<ClientNotificationDto[]>([]);
   unreadCount = computed(() => this.notifications().filter(n => !n.isRead).length);
+
+  // ── Client invoices ────────────────────────────────────────────────────────
+  invoices = signal<InvoiceDto[]>([]);
+  invoicesLoading = signal(false);
+  invoiceActionId = signal<string | null>(null); // which invoice is being approved/rejected
+  downloadingPdfId = signal<string | null>(null);
+  hasAwaitingInvoice = computed(() => this.invoices().some(i => i.status === 'AwaitingApproval'));
 
   // ── Mechanic tasks ─────────────────────────────────────────────────────────
   tasks = signal<MechanicTaskDto[]>([]);
@@ -82,6 +92,7 @@ export class InboxComponent implements OnInit {
       this.initChefInbox();
     } else if (this.isClient()) {
       this.loadNotifications();
+      this.loadInvoices();
     } else if (this.isMechanic()) {
       this.loadTasks();
     }
@@ -330,6 +341,86 @@ export class InboxComponent implements OnInit {
     if (n.appointmentId) return `/appointments`;
     if (n.invoiceId) return `/appointments`;
     return '/symptoms';
+  }
+
+  // ── Client invoices ────────────────────────────────────────────────────────
+
+  loadInvoices(): void {
+    this.invoicesLoading.set(true);
+    this.invoiceService.getMyInvoices().subscribe({
+      next: (items) => {
+        this.invoices.set(items.sort((a, b) => {
+          if (a.status === 'AwaitingApproval' && b.status !== 'AwaitingApproval') return -1;
+          if (b.status === 'AwaitingApproval' && a.status !== 'AwaitingApproval') return 1;
+          return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+        }));
+        this.invoicesLoading.set(false);
+      },
+      error: () => { this.invoicesLoading.set(false); },
+    });
+  }
+
+  approveInvoice(invoiceId: string): void {
+    this.invoiceActionId.set(invoiceId);
+    this.invoiceService.approveInvoice(invoiceId).subscribe({
+      next: () => {
+        this.success.set('✅ Devis accepté ! Les réparations vont commencer.');
+        this.invoiceActionId.set(null);
+        this.loadInvoices();
+        setTimeout(() => this.success.set(null), 4000);
+      },
+      error: (err) => {
+        this.error.set(err.error?.message || 'Erreur lors de l\'approbation.');
+        this.invoiceActionId.set(null);
+      },
+    });
+  }
+
+  rejectInvoice(invoiceId: string): void {
+    if (!confirm('Refuser ce devis ? Des frais d\'examen pourront s\'appliquer.')) return;
+    this.invoiceActionId.set(invoiceId);
+    this.invoiceService.rejectInvoice(invoiceId).subscribe({
+      next: () => {
+        this.success.set('Devis refusé.');
+        this.invoiceActionId.set(null);
+        this.loadInvoices();
+        setTimeout(() => this.success.set(null), 3000);
+      },
+      error: (err) => {
+        this.error.set(err.error?.message || 'Erreur lors du refus.');
+        this.invoiceActionId.set(null);
+      },
+    });
+  }
+
+  downloadPdf(invoiceId: string, invoiceNumber: string): void {
+    this.downloadingPdfId.set(invoiceId);
+    this.invoiceService.downloadPdf(invoiceId).subscribe({
+      next: (blob) => {
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `Facture-${invoiceNumber}.pdf`;
+        link.click();
+        URL.revokeObjectURL(url);
+        this.downloadingPdfId.set(null);
+      },
+      error: () => {
+        this.error.set('Erreur lors du téléchargement du PDF.');
+        this.downloadingPdfId.set(null);
+      },
+    });
+  }
+
+  invoiceStatusBadge(status: string): { label: string; css: string } {
+    const map: Record<string, { label: string; css: string }> = {
+      Draft:            { label: 'Brouillon',     css: 'bg-gray-800 text-gray-400 border-gray-700' },
+      AwaitingApproval: { label: '⏳ En attente', css: 'bg-amber-900/30 text-amber-400 border-amber-800' },
+      Approved:         { label: '✅ Accepté',    css: 'bg-emerald-900/30 text-emerald-400 border-emerald-800' },
+      Rejected:         { label: '❌ Refusé',     css: 'bg-rose-900/30 text-rose-400 border-rose-800' },
+      Paid:             { label: '💳 Payé',       css: 'bg-blue-900/30 text-blue-400 border-blue-800' },
+    };
+    return map[status] ?? { label: status, css: 'bg-gray-800 text-gray-400 border-gray-700' };
   }
 
   // ── Mechanic tasks ─────────────────────────────────────────────────────────

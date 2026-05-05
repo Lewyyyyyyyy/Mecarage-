@@ -129,6 +129,23 @@ export interface MechanicTaskDto {
   startedAt: string | null;
   completedAt: string | null;
   estimatedMinutes: number | null;
+  garageId: string;
+  invoiceApproved: boolean;
+  completionNotes: string | null;
+}
+
+export interface SelectedSparePartDto {
+  sparePartId: string;
+  name: string;
+  quantity: number;
+  unitPrice: number;
+}
+
+export interface UpdateMechanicTaskDto {
+  submitToChef: boolean;
+  mechanicNotes?: string | null;
+  fileUrl?: string | null;
+  parts?: SelectedSparePartDto[];
 }
 
 export interface CreateRepairTaskDto {
@@ -148,6 +165,14 @@ export interface ExaminationPartDto {
   name: string;
   quantity: number;
   estimatedPrice: number;
+  sparePartId?: string;
+}
+
+export interface ReviewPartDto {
+  sparePartId: string;
+  name: string;
+  quantity: number;
+  unitPrice: number;
 }
 
 export interface SubmitExaminationDto {
@@ -247,3 +272,55 @@ export interface ClientNotificationDto {
   repairTaskId: string | null;
   invoiceId: string | null;
 }
+
+// Intervention Lifecycle Models
+export interface InterventionSummaryDto {
+  id: string;
+  status: string;
+  proceedWithIntervention: boolean | null;
+  clientName: string;
+  vehicleInfo: string;
+  garageName: string;
+  invoiceNumber: string | null;
+  paymentAmount: number | null;
+  paymentMethod: string | null;
+  paymentDate: string | null;
+  createdAt: string;
+  updatedAt: string | null;
+}
+
+export interface InterventionDetailDto {
+  id: string;
+  status: string;
+  proceedWithIntervention: boolean | null;
+  tenantId: string;
+  garageId: string;
+  clientId: string;
+  vehicleId: string;
+  appointmentId: string | null;
+  symptomReportId: string | null;
+  invoiceId: string | null;
+  repairTaskId: string | null;
+  clientName: string;
+  clientEmail: string;
+  vehicleInfo: string;
+  garageName: string;
+  examinationNotes: string | null;
+  partsUsedJson: string | null;
+  repairNotes: string | null;
+  invoiceNumber: string | null;
+  invoiceTotal: number | null;
+  invoiceStatus: string | null;
+  paymentAmount: number | null;
+  paymentMethod: string | null;
+  paymentDate: string | null;
+  paidBy: string | null;
+  createdAt: string;
+  updatedAt: string | null;
+}
+
+export interface RegisterPaymentDto {
+  paymentAmount: number;
+  paymentMethod: string;
+}
+

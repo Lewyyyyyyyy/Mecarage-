@@ -2,6 +2,10 @@ using MecaManage.API.Extensions;
 using MecaManage.API.Middleware;
 using MecaManage.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
+using QuestPDF.Infrastructure;
+
+// QuestPDF community license (free for open-source and small businesses)
+QuestPDF.Settings.License = LicenseType.Community;
 
 var builder = WebApplication.CreateBuilder(args);
 

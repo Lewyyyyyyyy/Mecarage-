@@ -44,6 +44,17 @@ public class FinalizeInvoiceCommandHandler : IRequestHandler<FinalizeInvoiceComm
         invoice.FinalizedAt = DateTime.UtcNow;
 
         _context.Invoices.Update(invoice);
+
+        // ── Advance intervention tracker to InvoicePending ───────────────
+        var intervention = await _context.Interventions
+            .FirstOrDefaultAsync(i => i.AppointmentId == invoice.AppointmentId, cancellationToken);
+        if (intervention != null)
+        {
+            intervention.InvoiceId = invoice.Id;
+            intervention.Status    = InterventionLifecycleStatus.InvoicePending;
+            _context.Interventions.Update(intervention);
+        }
+
         await _context.SaveChangesAsync(cancellationToken);
 
         return new FinalizeInvoiceResult(true, "Facture finalisée et envoyée au client");

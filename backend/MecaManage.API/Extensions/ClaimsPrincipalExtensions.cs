@@ -26,4 +26,13 @@ public static class ClaimsPrincipalExtensions
     {
         return user.FindFirst(ClaimTypes.Role)?.Value ?? string.Empty;
     }
+
+    public static string GetUserFullName(this ClaimsPrincipal user)
+    {
+        var name = user.FindFirst(ClaimTypes.Name)?.Value
+                ?? user.FindFirst("name")?.Value
+                ?? user.FindFirst(ClaimTypes.Email)?.Value
+                ?? "Admin";
+        return name;
+    }
 }

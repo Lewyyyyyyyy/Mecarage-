@@ -19,7 +19,10 @@ public record MechanicTaskDto(
     DateTime AssignedAt,
     DateTime? StartedAt,
     DateTime? CompletedAt,
-    int? EstimatedMinutes
+    int? EstimatedMinutes,
+    Guid GarageId,
+    bool InvoiceApproved,
+    string? CompletionNotes
 );
 
 public class GetMechanicTasksQueryHandler : IRequestHandler<GetMechanicTasksQuery, List<MechanicTaskDto>>
@@ -36,9 +39,11 @@ public class GetMechanicTasksQueryHandler : IRequestHandler<GetMechanicTasksQuer
         return await _context.RepairTasks
             .Where(t => t.Assignments.Any(a => a.MechanicId == request.MechanicId))
             .Include(t => t.Appointment)
-            .ThenInclude(a => a.Client)
+                .ThenInclude(a => a.Client)
             .Include(t => t.Appointment)
-            .ThenInclude(a => a.Vehicle)
+                .ThenInclude(a => a.Vehicle)
+            .Include(t => t.Appointment)
+                .ThenInclude(a => a.Invoice)
             .OrderByDescending(t => t.AssignedAt)
             .Select(t => new MechanicTaskDto(
                 t.Id,
@@ -50,7 +55,10 @@ public class GetMechanicTasksQueryHandler : IRequestHandler<GetMechanicTasksQuer
                 t.AssignedAt,
                 t.StartedAt,
                 t.CompletedAt,
-                t.EstimatedMinutes
+                t.EstimatedMinutes,
+                t.GarageId,
+                t.Appointment.Invoice != null && t.Appointment.Invoice.ClientApproved,
+                t.CompletionNotes
             ))
             .ToListAsync(cancellationToken);
     }

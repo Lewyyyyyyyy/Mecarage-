@@ -7,7 +7,7 @@ namespace MecaManage.Application.Features.RepairTasks.Queries;
 
 public record GetPendingExaminationsQuery(Guid ChefId, Guid GarageId) : IRequest<List<PendingExaminationDto>>;
 
-public record ExaminationPartItemDto(string Name, int Quantity, decimal EstimatedPrice);
+public record ExaminationPartItemDto(string Name, int Quantity, decimal EstimatedPrice, Guid? SparePartId = null);
 
 public record PendingExaminationDto(
     Guid RepairTaskId,
@@ -52,14 +52,24 @@ public class GetPendingExaminationsQueryHandler : IRequestHandler<GetPendingExam
             {
                 try
                 {
-                    var raw = JsonSerializer.Deserialize<List<JsonElement>>(a.PartsNeeded);
+                    var opts = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+                    var raw = JsonSerializer.Deserialize<List<JsonElement>>(a.PartsNeeded, opts);
                     if (raw != null)
                     {
-                        parts = raw.Select(p => new ExaminationPartItemDto(
-                            p.GetProperty("name").GetString() ?? "",
-                            p.GetProperty("quantity").GetInt32(),
-                            p.GetProperty("estimatedPrice").GetDecimal()
-                        )).ToList();
+                        parts = raw.Select(p =>
+                        {
+                            string name = TryGetString(p, "name") ?? "";
+                            int qty     = TryGetInt(p, "quantity");
+                            decimal price = TryGetDecimal(p, "unitPrice")
+                                         ?? TryGetDecimal(p, "estimatedPrice")
+                                         ?? 0m;
+                            // Preserve the sparePartId so the chef can round-trip it
+                            Guid? sparePartId = null;
+                            var idStr = TryGetString(p, "sparePartId");
+                            if (!string.IsNullOrEmpty(idStr) && Guid.TryParse(idStr, out var parsed))
+                                sparePartId = parsed;
+                            return new ExaminationPartItemDto(name, qty, price, sparePartId);
+                        }).ToList();
                     }
                 }
                 catch { }
@@ -78,6 +88,30 @@ public class GetPendingExaminationsQueryHandler : IRequestHandler<GetPendingExam
                 a.ExaminationFileUrl
             );
         }).ToList();
+    }
+
+    private static string? TryGetString(JsonElement el, string key)
+    {
+        foreach (var prop in el.EnumerateObject())
+            if (string.Equals(prop.Name, key, StringComparison.OrdinalIgnoreCase))
+                return prop.Value.GetString();
+        return null;
+    }
+
+    private static int TryGetInt(JsonElement el, string key)
+    {
+        foreach (var prop in el.EnumerateObject())
+            if (string.Equals(prop.Name, key, StringComparison.OrdinalIgnoreCase))
+                return prop.Value.TryGetInt32(out var v) ? v : 0;
+        return 0;
+    }
+
+    private static decimal? TryGetDecimal(JsonElement el, string key)
+    {
+        foreach (var prop in el.EnumerateObject())
+            if (string.Equals(prop.Name, key, StringComparison.OrdinalIgnoreCase))
+                return prop.Value.TryGetDecimal(out var v) ? v : null;
+        return null;
     }
 }
 

@@ -1,0 +1,14 @@
+{
+  "metadata": {
+    "timestamp": "2026-05-05T19:27:13.648601+00:00",
+    "vehicle": "toyota corolla (2020)",
+    "symptoms": "trhyrthytuytyuytjgffggf"
+  },
+  "chunks": [
+    "4X4 - EMBRAYAGE HALDEX FATIGUE A BAS REGIME\nSymptomes: motricite arriere faible, voyant AWD, pompe haldex bruyante, plus net a bas regime\nCauses possibles: huile haldex vieille, pompe usee, filtre bouche\nType atelier: mecanique\nUrgence: modere\nCout estime: 500-2000 TND\nActions: vidange haldex test pression et pompe",
+    "ABS - BAGUE MAGNETIQUE FISSUREE ROUE ARRIERE DROITE A BASSE VITESSE\nSymptomes: voyant ABS intermittent, ABS actif a basse vitesse, defaut vitesse roue, plus net a basse vitesse\nCauses possibles: bague fissuree, rouille, montage roulement incorrect\nType atelier: electrique\nUrgence: modere\nCout estime: 120-400 TND\nActions: inspection bague magnetique remplacement roulement ou moyeu",
+    "ADAS - CALIBRATION CAPTEUR D ASSIETTE XENON FAUSSE ARRIERE APRES CHANGEMENT PARE BRISE\nSymptomes: phares trop bas, message nivellement, eclairage route faible, apres changement pare brise\nCauses possibles: biellette capteur casse, capteur grippe, apres geometrie\nType atelier: electrique\nUrgence: faible\nCout estime: 90-260 TND\nActions: controle capteur assiette et recalibration",
+    "AIRBAG - CAPTEUR CHOC LATERAL HS DROITE APRES CHOC LEGER\nSymptomes: voyant airbag, defaut capteur lateral, airbag desactive, apres choc leger\nCauses possibles: capteur humide, cablage endommage, module SRS\nType atelier: electrique\nUrgence: modere\nCout estime: 180-700 TND\nActions: lecture defauts remplacement capteur",
+    "ALLUMAGE - BOUGIE USEE CYLINDRE 1 A CHAUD\nSymptomes: ratés moteur, demarrage difficile, surconsommation legere, plus net a chaud\nCauses possibles: electrode usee, intervalle entretien depasse, melange riche\nType atelier: mecanique\nUrgence: modere\nCout estime: 40-180 TND\nActions: controle bougies remplacement et effacement defauts"
+  ]
+}

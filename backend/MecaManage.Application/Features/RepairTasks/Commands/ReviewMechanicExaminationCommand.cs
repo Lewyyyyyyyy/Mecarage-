@@ -12,10 +12,14 @@ public record ReviewMechanicExaminationCommand(
     Guid ChefId,
     bool IsApproved,
     decimal ServiceFee,
-    string? DeclineReason = null
+    string? DeclineReason = null,
+    string? UpdatedObservations = null,
+    List<ReviewPartInputDto>? UpdatedParts = null
 ) : IRequest<ReviewExaminationResult>;
 
 public record ReviewExaminationResult(bool Success, string Message, Guid? InvoiceId = null);
+
+public record ReviewPartInputDto(Guid? SparePartId, string Name, int Quantity, decimal UnitPrice);
 
 public class ReviewMechanicExaminationCommandHandler : IRequestHandler<ReviewMechanicExaminationCommand, ReviewExaminationResult>
 {
@@ -42,89 +46,170 @@ public class ReviewMechanicExaminationCommandHandler : IRequestHandler<ReviewMec
         if (pendingAssignment == null)
             return new ReviewExaminationResult(false, "Aucun rapport d'examen en attente");
 
+        // ── Apply chef's edits to the assignment ──────────────────────────────
+        if (request.UpdatedObservations != null)
+        {
+            pendingAssignment.ExaminationObservations = request.UpdatedObservations;
+            pendingAssignment.MechanicNotes           = request.UpdatedObservations;
+        }
+
+        if (request.UpdatedParts != null && request.UpdatedParts.Count > 0)
+        {
+            var opts = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
+            pendingAssignment.PartsNeeded = JsonSerializer.Serialize(request.UpdatedParts, opts);
+        }
+
         // Get the appointment client
         var appointment = repairTask.Appointment;
 
         if (request.IsApproved)
         {
             pendingAssignment.ExaminationStatus = "ApprovedByChef";
-            _context.RepairTaskAssignments.Update(pendingAssignment);
 
-            // Parse parts needed to create invoice line items
-            var lineItems = new List<InvoiceLineItemData>();
-            decimal partsTotal = 0;
+            // ── Use existing Draft invoice if already created by mechanic flow ──
+            var existingDraft = await _context.Invoices
+                .Include(i => i.LineItems)
+                .FirstOrDefaultAsync(i => i.AppointmentId == repairTask.AppointmentId
+                                       && i.Status == InvoiceStatus.Draft, cancellationToken);
 
-            if (!string.IsNullOrEmpty(pendingAssignment.PartsNeeded))
+            Guid invoiceId;
+            decimal totalAmount;
+
+            if (existingDraft != null)
             {
-                try
+                // If chef provided updated parts, rebuild line items
+                if (request.UpdatedParts != null && request.UpdatedParts.Count > 0)
                 {
-                    var parts = JsonSerializer.Deserialize<List<ExaminationPartDto>>(pendingAssignment.PartsNeeded);
-                    if (parts != null)
+                    foreach (var li in existingDraft.LineItems.ToList())
+                        _context.InvoiceLineItems.Remove(li);
+
+                    decimal partsTotal = 0m;
+                    foreach (var p in request.UpdatedParts)
                     {
-                        foreach (var part in parts)
+                        _context.InvoiceLineItems.Add(new InvoiceLineItem
                         {
-                            lineItems.Add(new InvoiceLineItemData(part.Name, part.Quantity, part.EstimatedPrice));
-                            partsTotal += part.Quantity * part.EstimatedPrice;
-                        }
+                            InvoiceId   = existingDraft.Id,
+                            SparePartId = p.SparePartId,   // nullable Guid — OK
+                            Description = p.Name,
+                            Quantity    = p.Quantity,
+                            UnitPrice   = p.UnitPrice,
+                            LineTotal   = p.Quantity * p.UnitPrice
+                        });
+                        partsTotal += p.Quantity * p.UnitPrice;
+                    }
+                    existingDraft.PartsTotal  = partsTotal;
+                    existingDraft.ServiceFee  = request.ServiceFee;
+                    existingDraft.TotalAmount = request.ServiceFee + partsTotal;
+                }
+                else
+                {
+                    // Just update service fee if it changed
+                    existingDraft.ServiceFee  = request.ServiceFee;
+                    existingDraft.TotalAmount = request.ServiceFee + existingDraft.PartsTotal;
+                }
+
+                existingDraft.Status      = InvoiceStatus.AwaitingApproval;
+                existingDraft.FinalizedAt = DateTime.UtcNow;
+                invoiceId   = existingDraft.Id;
+                totalAmount = existingDraft.TotalAmount;
+            }
+            else
+            {
+                // No draft from mechanic — build from assignment data
+                var lineItems   = new List<InvoiceLineItemData>();
+                decimal partsTotal = 0;
+
+                var partsSource = request.UpdatedParts;
+                if (partsSource != null && partsSource.Count > 0)
+                {
+                    foreach (var p in partsSource)
+                    {
+                        lineItems.Add(new InvoiceLineItemData(p.Name, p.Quantity, p.UnitPrice));
+                        partsTotal += p.Quantity * p.UnitPrice;
                     }
                 }
-                catch { /* If parsing fails, continue with empty parts */ }
-            }
-
-            // Create invoice
-            var invoice = new Invoice
-            {
-                AppointmentId = repairTask.AppointmentId,
-                TenantId = repairTask.TenantId,
-                ClientId = appointment.ClientId,
-                GarageId = repairTask.GarageId,
-                InvoiceNumber = $"INV-{DateTime.UtcNow:yyyy}-{Guid.NewGuid().ToString()[..6].ToUpper()}",
-                ServiceFee = request.ServiceFee,
-                PartsTotal = partsTotal,
-                TotalAmount = request.ServiceFee + partsTotal,
-                Status = InvoiceStatus.AwaitingApproval,
-                FinalizedAt = DateTime.UtcNow
-            };
-
-            _context.Invoices.Add(invoice);
-            await _context.SaveChangesAsync(cancellationToken);
-
-            // Add line items
-            foreach (var item in lineItems)
-            {
-                var lineItem = new InvoiceLineItem
+                else if (!string.IsNullOrEmpty(pendingAssignment.PartsNeeded))
                 {
-                    InvoiceId = invoice.Id,
-                    Description = item.Description,
-                    Quantity = item.Quantity,
-                    UnitPrice = item.UnitPrice,
-                    LineTotal = item.Quantity * item.UnitPrice
+                    try
+                    {
+                        var opts = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+                        var rawParts = JsonSerializer.Deserialize<List<JsonElement>>(pendingAssignment.PartsNeeded, opts);
+                        if (rawParts != null)
+                        {
+                            foreach (var p in rawParts)
+                            {
+                                string name  = GetStr(p, "name") ?? "";
+                                int    qty   = GetInt(p, "quantity");
+                                decimal price = GetDec(p, "unitPrice") ?? GetDec(p, "estimatedPrice") ?? 0m;
+                                lineItems.Add(new InvoiceLineItemData(name, qty, price));
+                                partsTotal += qty * price;
+                            }
+                        }
+                    }
+                    catch { }
+                }
+
+                var invoice = new Invoice
+                {
+                    AppointmentId = repairTask.AppointmentId,
+                    TenantId      = repairTask.TenantId,
+                    ClientId      = appointment.ClientId,
+                    GarageId      = repairTask.GarageId,
+                    InvoiceNumber = $"INV-{DateTime.UtcNow:yyyy-MM}-{Guid.NewGuid().ToString()[..6].ToUpper()}",
+                    ServiceFee    = request.ServiceFee,
+                    PartsTotal    = partsTotal,
+                    TotalAmount   = request.ServiceFee + partsTotal,
+                    Status        = InvoiceStatus.AwaitingApproval,
+                    FinalizedAt   = DateTime.UtcNow
                 };
-                _context.InvoiceLineItems.Add(lineItem);
+                _context.Invoices.Add(invoice);
+                await _context.SaveChangesAsync(cancellationToken);
+
+                foreach (var item in lineItems)
+                    _context.InvoiceLineItems.Add(new InvoiceLineItem
+                    {
+                        InvoiceId   = invoice.Id,
+                        Description = item.Description,
+                        Quantity    = item.Quantity,
+                        UnitPrice   = item.UnitPrice,
+                        LineTotal   = item.Quantity * item.UnitPrice
+                    });
+
+                invoiceId   = invoice.Id;
+                totalAmount = invoice.TotalAmount;
             }
 
             // Notify client
-            var clientNotification = new Notification
+            _context.Notifications.Add(new Notification
             {
-                RecipientId = appointment.ClientId,
-                InvoiceId = invoice.Id,
-                RepairTaskId = repairTask.Id,
-                Title = "Devis approuvé - Votre accord est requis",
-                Message = $"Le chef d'atelier a préparé un devis pour la réparation. Montant total: {invoice.TotalAmount:F2} EUR. Veuillez approuver ou refuser.",
+                RecipientId      = appointment.ClientId,
+                InvoiceId        = invoiceId,
+                RepairTaskId     = repairTask.Id,
+                Title            = "📋 Devis disponible — Votre accord est requis",
+                Message          = $"Le chef d'atelier a validé le rapport du mécanicien et préparé un devis de {totalAmount:F2} €. " +
+                                   $"Veuillez l'approuver ou le refuser.",
                 NotificationType = "InvoiceReady",
-                CreatedAt = DateTime.UtcNow,
-                IsRead = false
-            };
+                CreatedAt        = DateTime.UtcNow,
+                IsRead           = false
+            });
 
-            _context.Notifications.Add(clientNotification);
+            // ── Advance intervention to ExaminationReviewed + set examination details ──
+            var intervention = await _context.Interventions
+                .FirstOrDefaultAsync(i => i.AppointmentId == repairTask.AppointmentId, cancellationToken);
+            if (intervention != null)
+            {
+                intervention.ExaminationNotes = request.UpdatedObservations ?? pendingAssignment.ExaminationObservations;
+                intervention.PartsUsedJson    = pendingAssignment.PartsNeeded;
+                intervention.Status           = InterventionLifecycleStatus.ExaminationReviewed;
+                _context.Interventions.Update(intervention);
+            }
+
             await _context.SaveChangesAsync(cancellationToken);
-
-            return new ReviewExaminationResult(true, "Examen approuvé et devis envoyé au client", invoice.Id);
+            return new ReviewExaminationResult(true, "Rapport approuvé — devis envoyé au client", invoiceId);
         }
         else
         {
             pendingAssignment.ExaminationStatus = "DeclinedByChef";
-            _context.RepairTaskAssignments.Update(pendingAssignment);
 
             // Create $50 examination fee invoice
             var examinationInvoice = new Invoice
@@ -159,7 +244,6 @@ public class ReviewMechanicExaminationCommandHandler : IRequestHandler<ReviewMec
             if (apt != null)
             {
                 apt.Status = AppointmentStatus.Declined;
-                _context.Appointments.Update(apt);
             }
 
             // Notify client
@@ -183,5 +267,24 @@ public class ReviewMechanicExaminationCommandHandler : IRequestHandler<ReviewMec
     }
 
     private record InvoiceLineItemData(string Description, int Quantity, decimal UnitPrice);
+
+    private static string? GetStr(JsonElement el, string key)
+    {
+        foreach (var p in el.EnumerateObject())
+            if (string.Equals(p.Name, key, StringComparison.OrdinalIgnoreCase)) return p.Value.GetString();
+        return null;
+    }
+    private static int GetInt(JsonElement el, string key)
+    {
+        foreach (var p in el.EnumerateObject())
+            if (string.Equals(p.Name, key, StringComparison.OrdinalIgnoreCase) && p.Value.TryGetInt32(out var v)) return v;
+        return 0;
+    }
+    private static decimal? GetDec(JsonElement el, string key)
+    {
+        foreach (var p in el.EnumerateObject())
+            if (string.Equals(p.Name, key, StringComparison.OrdinalIgnoreCase) && p.Value.TryGetDecimal(out var v)) return v;
+        return null;
+    }
 }
 

@@ -204,6 +204,21 @@
             
              </remarks>
         </member>
+        <member name="M:MecaManage.API.Controllers.InterventionsController.GetGarageInterventions(System.Guid)">
+            <summary>GET all interventions for a garage (chef / admin view)</summary>
+        </member>
+        <member name="M:MecaManage.API.Controllers.InterventionsController.GetMyInterventionLifecycles">
+            <summary>GET my interventions as a client</summary>
+        </member>
+        <member name="M:MecaManage.API.Controllers.InterventionsController.GetInterventionDetail(System.Guid)">
+            <summary>GET intervention detail by id</summary>
+        </member>
+        <member name="M:MecaManage.API.Controllers.InterventionsController.GetByAppointment(System.Guid)">
+            <summary>GET intervention linked to an appointment</summary>
+        </member>
+        <member name="M:MecaManage.API.Controllers.InterventionsController.RegisterPayment(System.Guid,MecaManage.API.Controllers.RegisterPaymentRequest)">
+            <summary>PATCH register payment — transitions to Closed (admin only)</summary>
+        </member>
         <member name="T:MecaManage.API.Controllers.InvoicesController">
             <summary>
             Manages invoices (Factures) for repair services.
@@ -291,6 +306,11 @@
                  PATCH /api/invoices/550e8400-e29b-41d4-a716-446655440000/approve
             
              </remarks>
+        </member>
+        <member name="M:MecaManage.API.Controllers.InvoicesController.DownloadInvoicePdf(System.Guid)">
+            <summary>
+            Downloads a PDF version of an invoice.
+            </summary>
         </member>
         <member name="T:MecaManage.API.Controllers.RepairTasksController">
             <summary>
@@ -407,8 +427,19 @@
             Gets all repair tasks with client-approved invoices — for chef to manage repairs.
             </summary>
         </member>
+        <member name="M:MecaManage.API.Controllers.RepairTasksController.MechanicUpdate(System.Guid,MecaManage.API.Controllers.MechanicUpdateDto)">
+            <summary>
+            Unified mechanic update: sets status, writes notes, attaches file, lists parts used (with garage stock autocomplete).
+            </summary>
+        </member>
+        <member name="M:MecaManage.API.Controllers.RepairTasksController.SubmitRepairCompletion(System.Guid,MecaManage.API.Controllers.SubmitRepairDto)">
+            <summary>
+            Mechanic submits repair completion to chef for validation (one-step, post-invoice-approval).
+            Sets task status to Fixed and notifies the chef.
+            </summary>
+        </member>
         <member name="M:MecaManage.API.Controllers.SparePartsController.GetStock(System.Guid,System.String,System.String)">
-            <summary>GET /api/garages/{garageId}/stock — list all parts (AdminEntreprise or ChefAtelier)</summary>
+            <summary>GET /api/garages/{garageId}/stock — list all parts (AdminEntreprise, ChefAtelier, or Mecanicien)</summary>
         </member>
         <member name="M:MecaManage.API.Controllers.SparePartsController.CreatePart(System.Guid,MecaManage.API.Controllers.CreateSparePartRequest)">
             <summary>POST /api/garages/{garageId}/stock — AdminEntreprise only</summary>
@@ -585,6 +616,9 @@
             <summary>
             Request model for updating tenant information.
             </summary>
+        </member>
+        <member name="M:MecaManage.API.Pdf.InvoicePdfDocument.GeneratePdf">
+            <summary>Generates the PDF and returns it as a byte array.</summary>
         </member>
     </members>
 </doc>

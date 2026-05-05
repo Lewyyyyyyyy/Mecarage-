@@ -31,30 +31,63 @@ public class RejectInvoiceCommandHandler : IRequestHandler<RejectInvoiceCommand,
         if (invoice.Status != InvoiceStatus.AwaitingApproval)
             return new RejectInvoiceResult(false, "Cette facture ne peut plus être modifiée");
 
-        invoice.Status = InvoiceStatus.ClientRejected;
+        // Client declined the repair — no parts will be used, no payment due
+        invoice.Status      = InvoiceStatus.ClientRejected;
+        invoice.ServiceFee  = 0m;  // examination was free
+        invoice.PartsTotal  = 0m;
+        invoice.TotalAmount = 0m;
         _context.Invoices.Update(invoice);
 
-        // Notify chef of rejection
         var repairTask = await _context.RepairTasks
+            .Include(t => t.Assignments)
             .FirstOrDefaultAsync(t => t.AppointmentId == invoice.AppointmentId, cancellationToken);
 
         if (repairTask != null)
         {
-            var chefNotification = new Notification
+            // Notify chef
+            _context.Notifications.Add(new Notification
             {
-                RecipientId = repairTask.AssignedByChefId,
-                InvoiceId = invoice.Id,
-                Title = "Devis refusé par le client",
-                Message = $"Le client a refusé le devis #{invoice.InvoiceNumber}. La réparation ne sera pas effectuée.",
+                RecipientId      = repairTask.AssignedByChefId,
+                InvoiceId        = invoice.Id,
+                RepairTaskId     = repairTask.Id,
+                Title            = "❌ Devis refusé par le client",
+                Message          = $"Le client a refusé le devis #{invoice.InvoiceNumber}. " +
+                                   $"Aucune pièce ne sera utilisée — le stock reste inchangé. " +
+                                   $"Montant facturé : 0 €.",
                 NotificationType = "InvoiceRejectedByClient",
-                CreatedAt = DateTime.UtcNow,
-                IsRead = false
-            };
-            _context.Notifications.Add(chefNotification);
+                CreatedAt        = DateTime.UtcNow,
+                IsRead           = false
+            });
+
+            // Notify each assigned mechanic
+            foreach (var assignment in repairTask.Assignments)
+            {
+                _context.Notifications.Add(new Notification
+                {
+                    RecipientId      = assignment.MechanicId,
+                    RepairTaskId     = repairTask.Id,
+                    Title            = "❌ Devis refusé — Réparation annulée",
+                    Message          = $"Le client a refusé le devis pour la tâche « {repairTask.TaskTitle} ». " +
+                                       $"Aucune intervention ne sera effectuée. Le stock n'a pas été modifié.",
+                    NotificationType = "InvoiceRejectedByClient",
+                    CreatedAt        = DateTime.UtcNow,
+                    IsRead           = false
+                });
+            }
+        }
+
+        // ── Advance intervention tracker: client rejected ─────────────────
+        var intervention = await _context.Interventions
+            .FirstOrDefaultAsync(i => i.AppointmentId == invoice.AppointmentId, cancellationToken);
+        if (intervention != null)
+        {
+            intervention.ProceedWithIntervention = false;
+            intervention.Status                  = InterventionLifecycleStatus.Rejected;
+            _context.Interventions.Update(intervention);
         }
 
         await _context.SaveChangesAsync(cancellationToken);
-        return new RejectInvoiceResult(true, "Devis refusé avec succès");
+        return new RejectInvoiceResult(true, "Devis refusé — aucun paiement requis");
     }
 }
 

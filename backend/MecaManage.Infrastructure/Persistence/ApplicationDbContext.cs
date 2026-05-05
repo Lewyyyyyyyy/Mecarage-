@@ -24,6 +24,7 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     public DbSet<RepairTask> RepairTasks => Set<RepairTask>();
     public DbSet<RepairTaskAssignment> RepairTaskAssignments => Set<RepairTaskAssignment>();
     public DbSet<Notification> Notifications => Set<Notification>();
+    public DbSet<Intervention> Interventions => Set<Intervention>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -44,6 +45,7 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
         modelBuilder.Entity<RepairTask>().HasQueryFilter(e => !e.IsDeleted);
         modelBuilder.Entity<RepairTaskAssignment>().HasQueryFilter(e => !e.IsDeleted);
         modelBuilder.Entity<Notification>().HasQueryFilter(e => !e.IsDeleted);
+        modelBuilder.Entity<Intervention>().HasQueryFilter(e => !e.IsDeleted);
     }
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

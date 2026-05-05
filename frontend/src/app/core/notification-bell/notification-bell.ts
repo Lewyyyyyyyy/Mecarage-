@@ -59,14 +59,15 @@ export class NotificationBellComponent implements OnInit, OnDestroy {
       case 'ChefFeedbackApproved':
         return '/appointments?book=1';
       case 'InvoiceReady':
+        return '/history?tab=invoices';
       case 'ExaminationDeclined':
-        return '/appointments';
+        return '/history?tab=appointments';
       case 'ReadyForPickup':
-        return '/appointments';
+        return '/history?tab=appointments';
       case 'ChefFeedbackDeclined':
         return notif.symptomReportId ? `/symptoms/${notif.symptomReportId}` : '/symptoms';
       default:
-        return null;
+        return '/history';
     }
   }
 

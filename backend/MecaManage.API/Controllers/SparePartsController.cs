@@ -19,9 +19,9 @@ public class SparePartsController : ControllerBase
         _mediator = mediator;
     }
 
-    /// <summary>GET /api/garages/{garageId}/stock — list all parts (AdminEntreprise or ChefAtelier)</summary>
+    /// <summary>GET /api/garages/{garageId}/stock — list all parts (AdminEntreprise, ChefAtelier, or Mecanicien)</summary>
     [HttpGet]
-    [Authorize(Roles = "AdminEntreprise,ChefAtelier")]
+    [Authorize(Roles = "AdminEntreprise,ChefAtelier,Mecanicien")]
     public async Task<IActionResult> GetStock(
         Guid garageId,
         [FromQuery] string? category = null,

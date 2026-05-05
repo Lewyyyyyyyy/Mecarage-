@@ -1,5 +1,7 @@
 using MecaManage.Application.Features.Invoices.Commands;
-using MecaManage.Application.Features.Invoices.Queries;using MecaManage.API.Extensions;
+using MecaManage.Application.Features.Invoices.Queries;
+using MecaManage.API.Extensions;
+using MecaManage.API.Pdf;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -169,6 +171,28 @@ public class InvoicesController : ControllerBase
         if (!result.Success)
             return BadRequest(new { message = result.Message });
         return Ok(new { message = result.Message });
+    }
+
+    /// <summary>
+    /// Downloads a PDF version of an invoice.
+    /// </summary>
+    [HttpGet("{invoiceId}/pdf")]
+    [Authorize(Roles = "Client,ChefAtelier,AdminEntreprise")]
+    [Produces("application/pdf")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> DownloadInvoicePdf(Guid invoiceId)
+    {
+        var userId = User.GetUserId();
+        var dto = await _mediator.Send(new GetInvoicePdfQuery(invoiceId, userId));
+
+        if (dto is null)
+            return NotFound(new { message = "Facture introuvable ou accès non autorisé." });
+
+        var doc = new InvoicePdfDocument(dto);
+        var pdfBytes = doc.GeneratePdf();
+
+        return File(pdfBytes, "application/pdf", $"Facture-{dto.InvoiceNumber}.pdf");
     }
 }
 

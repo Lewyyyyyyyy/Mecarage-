@@ -8,17 +8,20 @@ import { StaffManagementComponent } from '../staff-management/staff-management';
 import { InboxComponent } from '../../core/inbox/inbox';
 import { ChefExaminationReviewComponent } from '../chef-examination-review/chef-examination-review';
 import { ChefRepairManagementComponent } from '../chef-repair-management/chef-repair-management';
+import { InterventionTrackerComponent } from '../intervention-tracker/intervention-tracker';
+import { RepairTaskService } from '../../core/services/workshop.service';
 
 @Component({
   selector: 'app-garage-admin-dashboard',
   standalone: true,
-  imports: [CommonModule, StaffManagementComponent, InboxComponent, ChefExaminationReviewComponent, ChefRepairManagementComponent, RouterLink],
+  imports: [CommonModule, StaffManagementComponent, InboxComponent, ChefExaminationReviewComponent, ChefRepairManagementComponent, InterventionTrackerComponent, RouterLink],
   templateUrl: './garage-admin-dashboard.html',
   styleUrls: ['./garage-admin-dashboard.css'],
 })
 export class GarageAdminDashboardComponent implements OnInit {
   garageId: string = '';
-  selectedTab = signal<'dashboard' | 'staff' | 'inbox' | 'examinations' | 'repairs'>('dashboard');
+  selectedTab = signal<'dashboard' | 'staff' | 'inbox' | 'examinations' | 'repairs' | 'interventions'>('dashboard');
+  pendingExaminationsCount = signal(0);
   interventions = signal<GarageInterventionDto[]>([]);
   clients = signal<GarageClientDto[]>([]);
   loading = signal(false);

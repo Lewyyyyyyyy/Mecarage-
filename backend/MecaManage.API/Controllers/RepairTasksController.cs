@@ -246,7 +246,10 @@ public class RepairTasksController : ControllerBase
     public async Task<IActionResult> ReviewExamination(Guid taskId, [FromBody] ReviewExaminationDto dto)
     {
         var chefId = User.GetUserId();
-        var result = await _mediator.Send(new ReviewMechanicExaminationCommand(taskId, chefId, dto.IsApproved, dto.ServiceFee, dto.DeclineReason));
+        var updatedParts = dto.UpdatedParts?.Select(p =>
+            new MecaManage.Application.Features.RepairTasks.Commands.ReviewPartInputDto(p.SparePartId, p.Name, p.Quantity, p.UnitPrice)).ToList();        var result = await _mediator.Send(new ReviewMechanicExaminationCommand(
+            taskId, chefId, dto.IsApproved, dto.ServiceFee, dto.DeclineReason,
+            dto.UpdatedObservations, updatedParts));
         if (!result.Success)
             return BadRequest(new { message = result.Message });
         return Ok(new { message = result.Message, invoiceId = result.InvoiceId });
@@ -288,12 +291,51 @@ public class RepairTasksController : ControllerBase
         return Ok(result);
     }
 
+    /// <summary>
+    /// Unified mechanic update: sets status, writes notes, attaches file, lists parts used (with garage stock autocomplete).
+    /// </summary>
+    [HttpPatch("{taskId}/mechanic-update")]
+    [Authorize(Roles = "Mecanicien")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> MechanicUpdate(Guid taskId, [FromBody] MechanicUpdateDto dto)
+    {
+        var mechanicId = User.GetUserId();
+        var parts = dto.Parts?.Select(p => new TaskPartDto(p.SparePartId, p.Name, p.Quantity, p.UnitPrice)).ToList();
+        var result = await _mediator.Send(new UpdateMechanicTaskCommand(
+            taskId,
+            mechanicId,
+            dto.SubmitToChef,
+            dto.MechanicNotes,
+            dto.FileUrl,
+            parts
+        ));
+        if (!result.Success)
+            return BadRequest(new { message = result.Message });
+        return Ok(new { message = result.Message });
+    }
+
     [HttpPatch("{taskId}/ready-for-pickup")]
-    [Authorize(Roles = "ChefAtelier")]
+    [Authorize(Roles = "ChefAtelier,AdminEntreprise")]
     public async Task<IActionResult> SignalReadyForPickup(Guid taskId)
     {
         var chefId = User.GetUserId();
         var result = await _mediator.Send(new SignalReadyForPickupCommand(taskId, chefId));
+        if (!result.Success)
+            return BadRequest(new { message = result.Message });
+        return Ok(new { message = result.Message });
+    }
+
+    /// <summary>
+    /// Mechanic submits repair completion to chef for validation (one-step, post-invoice-approval).
+    /// Sets task status to Fixed and notifies the chef.
+    /// </summary>
+    [HttpPatch("{taskId}/submit-repair")]
+    [Authorize(Roles = "Mecanicien")]
+    public async Task<IActionResult> SubmitRepairCompletion(Guid taskId, [FromBody] SubmitRepairDto dto)
+    {
+        var mechanicId = User.GetUserId();
+        var result = await _mediator.Send(new SubmitRepairCompletionCommand(taskId, mechanicId, dto.CompletionNotes, dto.FileUrl));
         if (!result.Success)
             return BadRequest(new { message = result.Message });
         return Ok(new { message = result.Message });
@@ -324,6 +366,34 @@ public record ExaminationPartInputDto(
 public record ReviewExaminationDto(
     bool IsApproved,
     decimal ServiceFee,
-    string? DeclineReason = null
+    string? DeclineReason = null,
+    string? UpdatedObservations = null,
+    List<ReviewPartInputDto>? UpdatedParts = null
+);
+
+public record ReviewPartInputDto(
+    Guid? SparePartId,
+    string Name,
+    int Quantity,
+    decimal UnitPrice
+);
+
+public record MechanicUpdateDto(
+    bool SubmitToChef = false,
+    string? MechanicNotes = null,
+    string? FileUrl = null,
+    List<TaskPartInputDto>? Parts = null
+);
+
+public record TaskPartInputDto(
+    Guid SparePartId,
+    string Name,
+    int Quantity,
+    decimal UnitPrice
+);
+
+public record SubmitRepairDto(
+    string? CompletionNotes = null,
+    string? FileUrl = null
 );
 

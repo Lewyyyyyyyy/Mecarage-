@@ -1,5 +1,6 @@
 using MecaManage.Application.Common.Interfaces;
 using MecaManage.Domain.Entities;
+using MecaManage.Domain.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -69,6 +70,18 @@ public class SubmitMechanicExaminationReportCommandHandler : IRequestHandler<Sub
         };
 
         _context.Notifications.Add(chefNotification);
+
+        // ── Advance intervention to UnderExamination ─────────────────────
+        var appointmentId = repairTask.AppointmentId;
+        var intervention = await _context.Interventions
+            .FirstOrDefaultAsync(i => i.AppointmentId == appointmentId, cancellationToken);
+        if (intervention != null &&
+            intervention.Status == InterventionLifecycleStatus.Created)
+        {
+            intervention.Status = InterventionLifecycleStatus.UnderExamination;
+            _context.Interventions.Update(intervention);
+        }
+
         await _context.SaveChangesAsync(cancellationToken);
 
         return new SubmitExaminationResult(true, "Rapport d'examen soumis avec succès");

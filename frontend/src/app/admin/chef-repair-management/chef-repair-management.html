@@ -69,17 +69,17 @@
       }
     </div>
 
-    <!-- SECTION 2: Tasks marked as Fixed - waiting for chef test -->
+    <!-- SECTION 2: Tasks submitted by mechanic — awaiting chef validation -->
     <div>
       <h3 class="text-lg font-bold text-gray-800 dark:text-gray-200 mb-3 flex items-center gap-2">
-        🧪 À tester
+        ✅ Réparations terminées — À valider
         <span class="text-xs bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-300 px-2 py-0.5 rounded-full">
           {{ getFixedTasks().length }}
         </span>
       </h3>
       @if (getFixedTasks().length === 0) {
         <div class="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-8 text-center">
-          <p class="text-gray-500 dark:text-gray-400 text-sm">Aucun véhicule à tester pour le moment</p>
+          <p class="text-gray-500 dark:text-gray-400 text-sm">Aucune réparation soumise en attente de validation</p>
         </div>
       } @else {
         <div class="space-y-3">
@@ -93,16 +93,16 @@
                     <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">👷 {{ task.assignedMechanics.join(', ') }}</p>
                   }
                 </div>
-                <span class="px-3 py-1 text-xs font-semibold rounded-full bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300 shrink-0">
-                  ✅ Réparé – À tester
+                <span class="px-3 py-1 text-xs font-semibold rounded-full bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300 shrink-0 animate-pulse">
+                  🔧 Soumis — En attente
                 </span>
               </div>
               <div class="p-3 bg-purple-50 dark:bg-purple-900/20 rounded text-sm text-purple-700 dark:text-purple-300 mb-3">
-                Le mécanicien a terminé les réparations. Veuillez tester le véhicule et valider la qualité.
+                Le mécanicien a terminé la réparation et attend votre validation. Vérifiez le travail, puis validez pour notifier le client.
               </div>
-              <button (click)="markTested(task.taskId)"
-                class="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white text-sm rounded-lg font-semibold transition">
-                🧪 Test réussi — Marquer comme testé
+              <button (click)="signalReadyForPickup(task.taskId)"
+                class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-sm rounded-lg font-bold transition">
+                🚗 Valider & Notifier le client
               </button>
             </div>
           }
@@ -110,7 +110,8 @@
       }
     </div>
 
-    <!-- SECTION 3: Tasks tested - ready for client pickup -->
+    <!-- SECTION 3: Tasks tested (legacy) — ready for client pickup -->
+    @if (getTestedTasks().length > 0) {
     <div>
       <h3 class="text-lg font-bold text-gray-800 dark:text-gray-200 mb-3 flex items-center gap-2">
         🚗 Prêt pour la livraison
@@ -118,35 +119,27 @@
           {{ getTestedTasks().length }}
         </span>
       </h3>
-      @if (getTestedTasks().length === 0) {
-        <div class="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-8 text-center">
-          <p class="text-gray-500 dark:text-gray-400 text-sm">Aucun véhicule prêt à livrer</p>
-        </div>
-      } @else {
-        <div class="space-y-3">
-          @for (task of getTestedTasks(); track task.taskId) {
-            <div class="bg-white dark:bg-gray-900 rounded-lg border border-green-200 dark:border-green-800 p-5">
-              <div class="flex items-start justify-between mb-3">
-                <div>
-                  <h4 class="font-bold text-gray-900 dark:text-white">{{ task.taskTitle }}</h4>
-                  <p class="text-sm text-gray-600 dark:text-gray-400">{{ task.clientName }} — {{ task.vehicleInfo }}</p>
-                </div>
-                <span class="px-3 py-1 text-xs font-semibold rounded-full bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 shrink-0">
-                  🧪 Testé
-                </span>
+      <div class="space-y-3">
+        @for (task of getTestedTasks(); track task.taskId) {
+          <div class="bg-white dark:bg-gray-900 rounded-lg border border-green-200 dark:border-green-800 p-5">
+            <div class="flex items-start justify-between mb-3">
+              <div>
+                <h4 class="font-bold text-gray-900 dark:text-white">{{ task.taskTitle }}</h4>
+                <p class="text-sm text-gray-600 dark:text-gray-400">{{ task.clientName }} — {{ task.vehicleInfo }}</p>
               </div>
-              <div class="p-3 bg-green-50 dark:bg-green-900/20 rounded text-sm text-green-700 dark:text-green-300 mb-3">
-                Le véhicule a passé le test. Informez le client qu'il peut venir récupérer son véhicule.
-              </div>
-              <button (click)="signalReadyForPickup(task.taskId)"
-                class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-sm rounded-lg font-semibold transition">
-                📢 Notifier le client — Véhicule prêt !
-              </button>
+              <span class="px-3 py-1 text-xs font-semibold rounded-full bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 shrink-0">
+                🧪 Testé
+              </span>
             </div>
-          }
-        </div>
-      }
+            <button (click)="signalReadyForPickup(task.taskId)"
+              class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-sm rounded-lg font-semibold transition">
+              📢 Notifier le client — Véhicule prêt !
+            </button>
+          </div>
+        }
+      </div>
     </div>
+    }
 
   }<!-- end !loading -->
 </div>

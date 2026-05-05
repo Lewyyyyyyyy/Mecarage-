@@ -1,10 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "Dy7Pn64R+Aw=",
+  "dgSpecHash": "ZMjxWkD8XkI=",
   "success": true,
   "projectFilePath": "D:\\MecaRage\\backend\\MecaManage.Tests\\MecaManage.Tests.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\louay\\.nuget\\packages\\automapper\\16.1.0\\automapper.16.1.0.nupkg.sha512",
+    "C:\\Users\\louay\\.nuget\\packages\\automapper\\16.1.1\\automapper.16.1.1.nupkg.sha512",
     "C:\\Users\\louay\\.nuget\\packages\\bcrypt.net-next\\4.1.0\\bcrypt.net-next.4.1.0.nupkg.sha512",
     "C:\\Users\\louay\\.nuget\\packages\\castle.core\\5.1.1\\castle.core.5.1.1.nupkg.sha512",
     "C:\\Users\\louay\\.nuget\\packages\\coverlet.collector\\6.0.0\\coverlet.collector.6.0.0.nupkg.sha512",

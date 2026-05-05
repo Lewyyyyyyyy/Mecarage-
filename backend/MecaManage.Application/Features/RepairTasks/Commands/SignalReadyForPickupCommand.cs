@@ -31,10 +31,10 @@ public class SignalReadyForPickupCommandHandler : IRequestHandler<SignalReadyFor
         if (repairTask == null)
             return new SignalReadyResult(false, "Tâche non trouvée ou accès refusé");
 
-        if (repairTask.Status != RepairTaskStatus.Tested)
-            return new SignalReadyResult(false, "La tâche doit être testée avant de signaler la disponibilité");
+        if (repairTask.Status != RepairTaskStatus.Fixed && repairTask.Status != RepairTaskStatus.Tested)
+            return new SignalReadyResult(false, "La tâche doit être réparée (Fixed) ou testée avant de signaler la disponibilité");
 
-        // Update task and appointment status
+        // Update task and appointment status — mark as Tested + Done in one step
         repairTask.Status = RepairTaskStatus.Done;
         repairTask.CompletedAt = DateTime.UtcNow;
         _context.RepairTasks.Update(repairTask);
@@ -49,14 +49,24 @@ public class SignalReadyForPickupCommandHandler : IRequestHandler<SignalReadyFor
             RecipientId = appointment.ClientId,
             AppointmentId = appointment.Id,
             RepairTaskId = repairTask.Id,
-            Title = "Votre véhicule est prêt !",
-            Message = "Les réparations sont terminées et votre véhicule a été testé avec succès. Vous pouvez venir récupérer votre voiture et procéder au paiement.",
+            Title = "🚗 Votre véhicule est prêt à être récupéré !",
+            Message = "Les réparations sont terminées et validées par le chef d'atelier. Vous pouvez venir récupérer votre voiture et procéder au paiement.",
             NotificationType = "ReadyForPickup",
             CreatedAt = DateTime.UtcNow,
             IsRead = false
         };
 
         _context.Notifications.Add(clientNotification);
+
+        // ── Advance intervention tracker to ReadyForPickup ────────────────
+        var intervention = await _context.Interventions
+            .FirstOrDefaultAsync(i => i.AppointmentId == appointment.Id, cancellationToken);
+        if (intervention != null)
+        {
+            intervention.Status = InterventionLifecycleStatus.ReadyForPickup;
+            _context.Interventions.Update(intervention);
+        }
+
         await _context.SaveChangesAsync(cancellationToken);
 
         return new SignalReadyResult(true, "Client notifié que le véhicule est prêt");

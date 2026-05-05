@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MecaManage.Infrastructure")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ae0cab6f763b64161f8e6cf6b9926e96aee15f1b")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4ace09b3aaec43f3811922f3668f22075f448538")]
 [assembly: System.Reflection.AssemblyProductAttribute("MecaManage.Infrastructure")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MecaManage.Infrastructure")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
