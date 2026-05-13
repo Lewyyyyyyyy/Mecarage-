@@ -20,7 +20,7 @@ import { RepairTaskService } from '../../core/services/workshop.service';
 })
 export class GarageAdminDashboardComponent implements OnInit {
   garageId: string = '';
-  selectedTab = signal<'dashboard' | 'staff' | 'inbox' | 'examinations' | 'repairs' | 'interventions'>('dashboard');
+  selectedTab = signal<'dashboard' | 'staff' | 'reports' | 'appointments' | 'examinations' | 'repairs' | 'interventions'>('dashboard');
   pendingExaminationsCount = signal(0);
   interventions = signal<GarageInterventionDto[]>([]);
   clients = signal<GarageClientDto[]>([]);
@@ -70,9 +70,9 @@ export class GarageAdminDashboardComponent implements OnInit {
   constructor(private garagesService: GaragesService, private route: ActivatedRoute, private authService: AuthService) {}
 
   ngOnInit() {
-    // Chef d'atelier lands directly on the inbox tab
+    // Chef d'atelier lands directly on the reports tab
     if (this.authService.user()?.role === 'ChefAtelier') {
-      this.selectedTab.set('inbox');
+      this.selectedTab.set('reports');
     }
 
     this.route.params.subscribe(params => {

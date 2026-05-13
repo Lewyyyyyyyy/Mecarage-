@@ -1,4 +1,4 @@
-<div class="relative">
+s<div class="relative">
 
   <!-- Search + refresh bar -->
   <div class="flex gap-3 mb-6">
@@ -6,7 +6,7 @@
       [(ngModel)]="searchQuery"
       type="text"
       placeholder="Rechercher par client, véhicule ou statut…"
-      class="flex-1 bg-gray-800 border border-gray-700 rounded-xl px-4 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-indigo-500"
+      class="flex-1 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl px-4 py-2.5 text-sm text-[var(--color-text)] placeholder-[var(--color-muted)] focus:outline-none focus:border-indigo-500"
     />
     <button (click)="load()"
       class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2.5 rounded-xl text-sm font-medium transition">
@@ -15,13 +15,13 @@
   </div>
 
   @if (error()) {
-    <div class="mb-4 px-4 py-3 rounded-xl bg-rose-900/30 border border-rose-700 text-rose-300 text-sm">
+    <div class="mb-4 px-4 py-3 rounded-xl bg-rose-50 dark:bg-rose-900/30 border border-rose-300 dark:border-rose-700 text-rose-700 dark:text-rose-300 text-sm">
       ⚠️ {{ error() }}
     </div>
   }
 
   @if (loading()) {
-    <div class="flex items-center gap-3 py-10 text-gray-400 text-sm">
+    <div class="flex items-center gap-3 py-10 text-[var(--color-muted)] text-sm">
       <div class="w-5 h-5 border-2 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
       Chargement…
     </div>
@@ -31,17 +31,17 @@
   @if (selected()) {
     <div class="fixed inset-0 z-50 flex">
       <div class="fixed inset-0 bg-black/60" (click)="closeDetail()"></div>
-      <div class="relative ml-auto w-full max-w-2xl bg-gray-900 border-l border-gray-800 overflow-y-auto h-full p-6 z-10">
+      <div class="relative ml-auto w-full max-w-2xl bg-[var(--color-surface)] border-l border-[var(--color-border)] overflow-y-auto h-full p-6 z-10">
 
-        <button (click)="closeDetail()" class="text-gray-500 hover:text-white text-sm mb-6 flex items-center gap-1">
+        <button (click)="closeDetail()" class="text-[var(--color-muted)] hover:text-[var(--color-text)] text-sm mb-6 flex items-center gap-1">
           ← Fermer
         </button>
 
         <div class="flex items-start justify-between mb-6">
           <div>
-            <h2 class="text-xl font-black text-white">{{ selected()!.clientName }}</h2>
-            <p class="text-gray-400 text-sm">{{ selected()!.vehicleInfo }} · {{ selected()!.garageName }}</p>
-            <p class="text-gray-500 text-xs mt-0.5">{{ selected()!.clientEmail }}</p>
+            <h2 class="text-xl font-black text-[var(--color-text)]">{{ selected()!.clientName }}</h2>
+            <p class="text-[var(--color-muted)] text-sm">{{ selected()!.vehicleInfo }} · {{ selected()!.garageName }}</p>
+            <p class="text-[var(--color-muted)] text-xs mt-0.5">{{ selected()!.clientEmail }}</p>
           </div>
           <span class="text-xs px-2.5 py-1 rounded-full border font-semibold shrink-0"
                 [class]="statusCss(selected()!.status)">
@@ -52,19 +52,19 @@
         <!-- Timeline -->
         @if (!isRejected(selected()!.status)) {
           <div class="mb-8">
-            <p class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-4">Progression</p>
+            <p class="text-xs font-bold text-[var(--color-muted)] uppercase tracking-wider mb-4">Progression</p>
             <div class="relative">
-              <div class="absolute left-4 top-0 bottom-0 w-px bg-gray-800"></div>
+              <div class="absolute left-4 top-0 bottom-0 w-px bg-gray-200 dark:bg-gray-800"></div>
               @for (step of steps; track step.key; let i = $index) {
                 @let current = stepIndex(selected()!.status);
                 <div class="relative flex items-start gap-4 mb-4">
                   <div class="z-10 w-8 h-8 rounded-full flex items-center justify-center text-sm shrink-0"
-                       [class]="i < current ? 'bg-emerald-600 text-white' : i === current ? 'bg-indigo-600 text-white ring-4 ring-indigo-500/30' : 'bg-gray-800 text-gray-600'">
+                       [class]="i < current ? 'bg-emerald-600 text-white' : i === current ? 'bg-indigo-600 text-white ring-4 ring-indigo-500/30' : 'bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-600'">
                     @if (i < current) { ✓ } @else { {{ step.icon }} }
                   </div>
                   <div class="pt-1">
                     <p class="text-sm font-semibold"
-                       [class]="i === current ? 'text-indigo-300' : i < current ? 'text-emerald-400' : 'text-gray-600'">
+                       [class]="i === current ? 'text-indigo-600 dark:text-indigo-300' : i < current ? 'text-emerald-600 dark:text-emerald-400' : 'text-gray-400 dark:text-gray-600'">
                       {{ step.label }}
                     </p>
                   </div>
@@ -73,21 +73,21 @@
             </div>
           </div>
         } @else {
-          <div class="mb-8 p-4 bg-rose-900/20 border border-rose-800 rounded-xl">
-            <p class="text-rose-300 font-bold">❌ Intervention refusée par le client</p>
+          <div class="mb-8 p-4 bg-rose-50 dark:bg-rose-900/20 border border-rose-200 dark:border-rose-800 rounded-xl">
+            <p class="text-rose-700 dark:text-rose-300 font-bold">❌ Intervention refusée par le client</p>
           </div>
         }
 
         <!-- Examination -->
         @if (selected()!.examinationNotes) {
-          <div class="mb-4 p-4 bg-blue-900/20 border border-blue-800/40 rounded-xl">
-            <p class="text-xs font-bold text-blue-400 mb-2">🔍 Rapport d'examen</p>
-            <p class="text-sm text-blue-200">{{ selected()!.examinationNotes }}</p>
+          <div class="mb-4 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800/40 rounded-xl">
+            <p class="text-xs font-bold text-blue-600 dark:text-blue-400 mb-2">🔍 Rapport d'examen</p>
+            <p class="text-sm text-blue-800 dark:text-blue-200">{{ selected()!.examinationNotes }}</p>
             @if (parseParts(selected()!.partsUsedJson).length > 0) {
               <div class="mt-3 space-y-1">
-                <p class="text-xs text-blue-500 font-semibold">Pièces :</p>
+                <p class="text-xs text-blue-600 dark:text-blue-500 font-semibold">Pièces :</p>
                 @for (part of parseParts(selected()!.partsUsedJson); track $index) {
-                  <div class="flex justify-between text-xs text-blue-300">
+                  <div class="flex justify-between text-xs text-blue-700 dark:text-blue-300">
                     <span>{{ part.name }}</span>
                     <span>×{{ part.quantity }}</span>
                   </div>
@@ -99,38 +99,38 @@
 
         <!-- Invoice -->
         @if (selected()!.invoiceNumber) {
-          <div class="mb-4 p-4 bg-amber-900/20 border border-amber-800/40 rounded-xl">
-            <p class="text-xs font-bold text-amber-400 mb-1">💰 Devis</p>
+          <div class="mb-4 p-4 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800/40 rounded-xl">
+            <p class="text-xs font-bold text-amber-600 dark:text-amber-400 mb-1">💰 Devis</p>
             <div class="flex justify-between">
-              <span class="text-sm text-amber-200 font-mono">{{ selected()!.invoiceNumber }}</span>
-              <span class="text-sm font-bold text-white">{{ selected()!.invoiceTotal | number:'1.2-2' }} €</span>
+              <span class="text-sm text-amber-800 dark:text-amber-200 font-mono">{{ selected()!.invoiceNumber }}</span>
+              <span class="text-sm font-bold text-[var(--color-text)]">{{ selected()!.invoiceTotal | number:'1.2-2' }} €</span>
             </div>
-            <p class="text-xs text-amber-500 mt-1">
+            <p class="text-xs text-amber-600 dark:text-amber-500 mt-1">
               Statut : {{ selected()!.invoiceStatus }} ·
-              @if (selected()!.proceedWithIntervention === true) { <span class="text-emerald-400 font-semibold">✅ Approuvé par client</span> }
-              @else if (selected()!.proceedWithIntervention === false) { <span class="text-rose-400 font-semibold">❌ Refusé par client</span> }
-              @else { <span class="text-amber-400">En attente</span> }
+              @if (selected()!.proceedWithIntervention === true) { <span class="text-emerald-600 dark:text-emerald-400 font-semibold">✅ Approuvé par client</span> }
+              @else if (selected()!.proceedWithIntervention === false) { <span class="text-rose-600 dark:text-rose-400 font-semibold">❌ Refusé par client</span> }
+              @else { <span class="text-amber-600 dark:text-amber-400">En attente</span> }
             </p>
           </div>
         }
 
         <!-- Repair notes -->
         @if (selected()!.repairNotes) {
-          <div class="mb-4 p-4 bg-violet-900/20 border border-violet-800/40 rounded-xl">
-            <p class="text-xs font-bold text-violet-400 mb-1">🔧 Notes de réparation</p>
-            <p class="text-sm text-violet-200">{{ selected()!.repairNotes }}</p>
+          <div class="mb-4 p-4 bg-violet-50 dark:bg-violet-900/20 border border-violet-200 dark:border-violet-800/40 rounded-xl">
+            <p class="text-xs font-bold text-violet-600 dark:text-violet-400 mb-1">🔧 Notes de réparation</p>
+            <p class="text-sm text-violet-800 dark:text-violet-200">{{ selected()!.repairNotes }}</p>
           </div>
         }
 
         <!-- Payment section -->
         @if (selected()!.status === 'Closed' && selected()!.paymentAmount !== null) {
-          <div class="mb-4 p-4 bg-emerald-900/20 border border-emerald-800/40 rounded-xl">
-            <p class="text-xs font-bold text-emerald-400 mb-1">💳 Paiement enregistré</p>
+          <div class="mb-4 p-4 bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800/40 rounded-xl">
+            <p class="text-xs font-bold text-emerald-600 dark:text-emerald-400 mb-1">💳 Paiement enregistré</p>
             <div class="flex justify-between">
-              <span class="text-sm text-emerald-200">{{ selected()!.paymentMethod }}</span>
-              <span class="text-xl font-black text-white">{{ selected()!.paymentAmount | number:'1.2-2' }} €</span>
+              <span class="text-sm text-emerald-800 dark:text-emerald-200">{{ selected()!.paymentMethod }}</span>
+              <span class="text-xl font-black text-[var(--color-text)]">{{ selected()!.paymentAmount | number:'1.2-2' }} €</span>
             </div>
-            <p class="text-xs text-emerald-500 mt-1">Enregistré par {{ selected()!.paidBy }} · {{ formatDate(selected()!.paymentDate) }}</p>
+            <p class="text-xs text-emerald-600 dark:text-emerald-500 mt-1">Enregistré par {{ selected()!.paidBy }} · {{ formatDate(selected()!.paymentDate) }}</p>
           </div>
         }
 
@@ -144,25 +144,40 @@
                 💳 Enregistrer le paiement et clôturer
               </button>
             } @else {
-              <div class="p-5 bg-gray-800 border border-gray-700 rounded-xl space-y-4">
-                <p class="text-white font-bold text-sm">Enregistrement du paiement</p>
+              <div class="p-5 bg-gray-50 dark:bg-gray-800 border border-[var(--color-border)] rounded-xl space-y-4">
+                <p class="text-[var(--color-text)] font-bold text-sm">Enregistrement du paiement</p>
 
+                <!-- Parts total (auto) -->
+                <div class="flex items-center justify-between px-3 py-2.5 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800/40 rounded-lg">
+                  <span class="text-xs font-semibold text-blue-700 dark:text-blue-300">🔩 Pièces (auto)</span>
+                  <span class="text-sm font-bold text-blue-800 dark:text-blue-200">{{ partsTotal | number:'1.2-2' }} €</span>
+                </div>
+
+                <!-- Labor cost (manual) -->
                 <div>
-                  <label class="text-xs text-gray-400 mb-1 block">Montant (€)</label>
+                  <label class="text-xs text-[var(--color-muted)] mb-1 block">🔧 Coût de la main d'œuvre (€)</label>
                   <input
-                    [(ngModel)]="payAmount"
+                    [(ngModel)]="laborCost"
                     type="number"
                     step="0.01"
                     min="0"
-                    class="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-emerald-500"
+                    placeholder="0.00"
+                    class="w-full bg-white dark:bg-gray-700 border border-[var(--color-border)] rounded-lg px-3 py-2 text-[var(--color-text)] text-sm focus:outline-none focus:border-emerald-500"
                   />
                 </div>
 
+                <!-- Grand total -->
+                <div class="flex items-center justify-between px-3 py-2.5 bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800/40 rounded-lg">
+                  <span class="text-xs font-bold text-emerald-700 dark:text-emerald-300">💰 Total à encaisser</span>
+                  <span class="text-lg font-black text-emerald-800 dark:text-emerald-200">{{ payTotal | number:'1.2-2' }} €</span>
+                </div>
+
+                <!-- Payment method -->
                 <div>
-                  <label class="text-xs text-gray-400 mb-1 block">Mode de paiement</label>
+                  <label class="text-xs text-[var(--color-muted)] mb-1 block">Mode de paiement</label>
                   <select
                     [(ngModel)]="payMethod"
-                    class="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-emerald-500"
+                    class="w-full bg-white dark:bg-gray-700 border border-[var(--color-border)] rounded-lg px-3 py-2 text-[var(--color-text)] text-sm focus:outline-none focus:border-emerald-500"
                   >
                     <option value="Cash">💵 Espèces</option>
                     <option value="Card">💳 Carte bancaire</option>
@@ -173,7 +188,7 @@
 
                 @if (paymentMsg()) {
                   <div class="px-3 py-2 rounded-lg text-sm"
-                       [class]="paymentMsg()!.ok ? 'bg-emerald-900/30 text-emerald-300 border border-emerald-700' : 'bg-rose-900/30 text-rose-300 border border-rose-700'">
+                       [class]="paymentMsg()!.ok ? 'bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-700' : 'bg-rose-50 dark:bg-rose-900/30 text-rose-700 dark:text-rose-300 border border-rose-300 dark:border-rose-700'">
                     {{ paymentMsg()!.text }}
                   </div>
                 }
@@ -181,12 +196,12 @@
                 <div class="flex gap-3">
                   <button
                     (click)="registerPayment()"
-                    [disabled]="paymentLoading() || payAmount <= 0"
+                    [disabled]="paymentLoading() || payTotal <= 0"
                     class="flex-1 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white py-2.5 rounded-xl font-bold text-sm transition">
                     @if (paymentLoading()) { ⏳ Traitement… } @else { ✅ Confirmer le paiement }
                   </button>
                   <button (click)="showPaymentForm = false"
-                    class="px-4 py-2.5 rounded-xl text-sm text-gray-400 hover:text-white border border-gray-700 transition">
+                    class="px-4 py-2.5 rounded-xl text-sm text-[var(--color-muted)] hover:text-[var(--color-text)] border border-[var(--color-border)] transition">
                     Annuler
                   </button>
                 </div>
@@ -196,7 +211,7 @@
         }
 
         <!-- Timestamps -->
-        <div class="pt-4 border-t border-gray-800 text-xs text-gray-600 space-y-1">
+        <div class="pt-4 border-t border-[var(--color-border)] text-xs text-[var(--color-muted)] space-y-1">
           <p>Créé le {{ formatDate(selected()!.createdAt) }}</p>
           @if (selected()!.updatedAt) {
             <p>Mis à jour : {{ formatDate(selected()!.updatedAt) }}</p>
@@ -219,7 +234,7 @@
   <!-- List -->
   @if (!loading()) {
     @if (filtered.length === 0) {
-      <div class="text-center py-16 text-gray-600">
+      <div class="text-center py-16 text-[var(--color-muted)]">
         <p class="text-4xl mb-3">🔩</p>
         <p class="font-semibold">Aucune intervention trouvée.</p>
         <p class="text-sm mt-1">Les interventions apparaissent automatiquement lors de l'approbation d'un rendez-vous.</p>
@@ -230,7 +245,7 @@
       @for (item of filtered; track item.id) {
         <div
           (click)="openDetail(item.id)"
-          class="cursor-pointer bg-gray-800/60 border border-gray-800 hover:border-indigo-700/60 rounded-2xl p-4 transition group"
+          class="cursor-pointer bg-[var(--color-surface)] border border-[var(--color-border)] hover:border-indigo-400 dark:hover:border-indigo-700/60 rounded-2xl p-4 transition group"
         >
           <div class="flex items-center justify-between gap-4">
             <div class="flex-1 min-w-0">
@@ -240,28 +255,28 @@
                   {{ statusLabel(item.status) }}
                 </span>
                 @if (item.status === 'ReadyForPickup') {
-                  <span class="text-xs bg-teal-900/40 text-teal-300 border border-teal-700 rounded-full px-2 py-0.5 font-bold animate-pulse">
+                  <span class="text-xs bg-teal-100 dark:bg-teal-900/40 text-teal-700 dark:text-teal-300 border border-teal-300 dark:border-teal-700 rounded-full px-2 py-0.5 font-bold animate-pulse">
                     💳 Paiement requis
                   </span>
                 }
               </div>
-              <p class="text-white font-bold text-sm truncate">{{ item.clientName }}</p>
-              <p class="text-gray-400 text-xs truncate">{{ item.vehicleInfo }}</p>
+              <p class="text-[var(--color-text)] font-bold text-sm truncate">{{ item.clientName }}</p>
+              <p class="text-[var(--color-muted)] text-xs truncate">{{ item.vehicleInfo }}</p>
             </div>
             <div class="text-right shrink-0">
               @if (item.status === 'Closed' && item.paymentAmount !== null) {
-                <p class="text-base font-black text-white">{{ item.paymentAmount | number:'1.2-2' }} €</p>
-                <p class="text-xs text-gray-500">{{ item.paymentMethod }}</p>
+                <p class="text-base font-black text-[var(--color-text)]">{{ item.paymentAmount | number:'1.2-2' }} €</p>
+                <p class="text-xs text-[var(--color-muted)]">{{ item.paymentMethod }}</p>
               } @else if (item.invoiceNumber) {
-                <p class="text-xs font-mono text-gray-400">{{ item.invoiceNumber }}</p>
+                <p class="text-xs font-mono text-[var(--color-muted)]">{{ item.invoiceNumber }}</p>
               }
-              <p class="text-xs text-gray-600 mt-0.5">{{ formatDate(item.createdAt) }}</p>
+              <p class="text-xs text-[var(--color-muted)] mt-0.5">{{ formatDate(item.createdAt) }}</p>
             </div>
           </div>
 
           @if (!isRejected(item.status)) {
             @let progress = ((stepIndex(item.status) + 1) / steps.length) * 100;
-            <div class="mt-3 bg-gray-700 rounded-full h-1">
+            <div class="mt-3 bg-gray-200 dark:bg-gray-700 rounded-full h-1">
               <div class="bg-indigo-500 h-1 rounded-full transition-all" [style.width.%]="progress"></div>
             </div>
           }

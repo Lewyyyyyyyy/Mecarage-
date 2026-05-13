@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, signal } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { RepairTaskService } from '../../core/services/workshop.service';
@@ -14,6 +14,7 @@ import { StaffDto } from '../../core/models/staff.models';
 })
 export class ChefRepairManagementComponent implements OnInit {
   @Input() garageId = '';
+  @Output() countChanged = new EventEmitter<number>();
 
   repairTasks = signal<RepairReadyTaskDto[]>([]);
   mechanics = signal<StaffDto[]>([]);
@@ -51,6 +52,7 @@ export class ChefRepairManagementComponent implements OnInit {
       next: (tasks) => {
         this.repairTasks.set(tasks || []);
         this.loading.set(false);
+        this.countChanged.emit(tasks?.length ?? 0);
       },
       error: () => {
         this.error.set('Erreur lors du chargement des réparations');

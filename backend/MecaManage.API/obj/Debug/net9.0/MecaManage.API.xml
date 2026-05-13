@@ -81,6 +81,11 @@
             
              </remarks>
         </member>
+        <member name="M:MecaManage.API.Controllers.AppointmentsController.GetGarageAppointments(System.Guid)">
+            <summary>
+            Gets ALL appointments for a garage (all statuses) for traceability — newest first.
+            </summary>
+        </member>
         <member name="M:MecaManage.API.Controllers.AppointmentsController.ApproveAppointment(System.Guid)">
              <summary>
              Approves a pending appointment request.
@@ -434,6 +439,11 @@
             <summary>
             Chef marks a repair task as Tested after successfully testing the repaired vehicle.
             This triggers the final quality confirmation step before notifying the client.
+            </summary>
+        </member>
+        <member name="M:MecaManage.API.Controllers.RepairTasksController.GetAllExaminations(System.Guid)">
+            <summary>
+            Gets ALL examination reports for a garage (all statuses) — newest first.
             </summary>
         </member>
         <member name="M:MecaManage.API.Controllers.RepairTasksController.GetRepairReadyTasks(System.Guid)">

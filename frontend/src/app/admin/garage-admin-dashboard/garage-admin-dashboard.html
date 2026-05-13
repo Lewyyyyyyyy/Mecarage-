@@ -20,11 +20,18 @@
         <span class="mr-2">📊</span> Dashboard
       </button>
       <button
-        (click)="selectedTab.set('inbox')"
+        (click)="selectedTab.set('reports')"
         class="px-6 py-3 font-bold transition-all duration-200 border-b-2"
-        [ngClass]="selectedTab() === 'inbox' ? 'border-indigo-500 text-indigo-400 bg-indigo-500/5' : 'border-transparent text-gray-500 hover:text-gray-300'"
+        [ngClass]="selectedTab() === 'reports' ? 'border-indigo-500 text-indigo-400 bg-indigo-500/5' : 'border-transparent text-gray-500 hover:text-gray-300'"
       >
-        <span class="mr-2">📥</span> Inbox
+        <span class="mr-2">📋</span> Rapports
+      </button>
+      <button
+        (click)="selectedTab.set('appointments')"
+        class="px-6 py-3 font-bold transition-all duration-200 border-b-2"
+        [ngClass]="selectedTab() === 'appointments' ? 'border-orange-500 text-orange-400 bg-orange-500/5' : 'border-transparent text-gray-500 hover:text-gray-300'"
+      >
+        <span class="mr-2">📅</span> Rendez-vous
       </button>
       <button
         (click)="selectedTab.set('examinations')"
@@ -194,9 +201,15 @@
       </div>
     }
 
-    @if (selectedTab() === 'inbox') {
+    @if (selectedTab() === 'reports') {
       <div class="animate-in slide-in-from-bottom-4 duration-500">
-        <app-inbox></app-inbox>
+        <app-inbox section="reports"></app-inbox>
+      </div>
+    }
+
+    @if (selectedTab() === 'appointments') {
+      <div class="animate-in slide-in-from-bottom-4 duration-500">
+        <app-inbox section="appointments"></app-inbox>
       </div>
     }
 

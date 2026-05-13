@@ -84,6 +84,22 @@ export interface PendingAppointmentDto {
   createdAt: string;
 }
 
+// All appointments for a garage (includes closed/past ones for traceability)
+export interface GarageAppointmentDto {
+  id: string;
+  clientId: string;
+  clientName: string;
+  vehicleId: string;
+  vehicleInfo: string;
+  preferredDate: string;
+  preferredTime: string;
+  symptomSummary: string | null;
+  createdAt: string;
+  status: string;
+  declineReason: string | null;
+  approvedAt: string | null;
+}
+
 // Invoice Models
 export interface InvoiceLineItemDto {
   description: string;
@@ -192,6 +208,21 @@ export interface PendingExaminationDto {
   examinationObservations: string;
   partsNeeded: ExaminationPartDto[];
   examinationSubmittedAt: string;
+  fileUrl?: string | null;
+}
+
+// All examinations for a garage (includes reviewed/closed ones for traceability)
+export interface GarageExaminationDto {
+  repairTaskId: string;
+  assignmentId: string;
+  taskTitle: string;
+  clientName: string;
+  vehicleInfo: string;
+  mechanicName: string;
+  examinationObservations: string;
+  partsNeeded: ExaminationPartDto[];
+  examinationSubmittedAt: string;
+  examinationStatus: string;   // "Pending" | "Approved" | "DeclinedByChef"
   fileUrl?: string | null;
 }
 
