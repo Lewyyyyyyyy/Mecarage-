@@ -16,32 +16,32 @@
       <div class="hidden xl:flex items-center gap-4">
         <a routerLink="/" routerLinkActive="text-indigo-600 dark:text-indigo-400" [routerLinkActiveOptions]="{ exact: true }"
            class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">
-          {{ 'NAV.HOME' | translate }}
+          Accueil
         </a>
 
         @if (!isAuthenticated()) {
           <a routerLink="/about" routerLinkActive="text-indigo-600 dark:text-indigo-400"
              class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">
-            {{ 'NAV.ABOUT' | translate }}
+            À propos
           </a>
           <a routerLink="/contact" routerLinkActive="text-indigo-600 dark:text-indigo-400"
              class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">
-            {{ 'NAV.CONTACT' | translate }}
+            Contact
           </a>
         }
 
         @if (isClient()) {
-          <a routerLink="/symptoms" routerLinkActive="text-indigo-600 dark:text-indigo-400" class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">{{ 'NAV.SYMPTOMS' | translate }}</a>
-          <a routerLink="/appointments" routerLinkActive="text-indigo-600 dark:text-indigo-400" class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">{{ 'NAV.APPOINTMENTS' | translate }}</a>
-          <a routerLink="/interventions" routerLinkActive="text-indigo-600 dark:text-indigo-400" class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">{{ 'NAV.INTERVENTIONS' | translate }}</a>
-          <a routerLink="/vehicles" routerLinkActive="text-indigo-600 dark:text-indigo-400" class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">{{ 'NAV.VEHICLES' | translate }}</a>
-          <a routerLink="/history" routerLinkActive="text-indigo-600 dark:text-indigo-400" class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">{{ 'NAV.HISTORY' | translate }}</a>
+          <a routerLink="/symptoms" routerLinkActive="text-indigo-600 dark:text-indigo-400" class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">Symptômes</a>
+          <a routerLink="/appointments" routerLinkActive="text-indigo-600 dark:text-indigo-400" class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">Rendez-vous</a>
+          <a routerLink="/interventions" routerLinkActive="text-indigo-600 dark:text-indigo-400" class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">Interventions</a>
+          <a routerLink="/vehicles" routerLinkActive="text-indigo-600 dark:text-indigo-400" class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">Véhicules</a>
+          <a routerLink="/history" routerLinkActive="text-indigo-600 dark:text-indigo-400" class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">Historique</a>
         }
 
         @if (isMechanic()) {
-          <a routerLink="/mechanic/tasks" routerLinkActive="text-indigo-600 dark:text-indigo-400" class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">{{ 'NAV.MY_TASKS' | translate }}</a>
+          <a routerLink="/mechanic/tasks" routerLinkActive="text-indigo-600 dark:text-indigo-400" class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">Mes tâches</a>
           <a routerLink="/inbox" routerLinkActive="text-indigo-600 dark:text-indigo-400" class="relative text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">
-            {{ 'NAV.INBOX' | translate }}
+            Boîte de réception
             @if (inboxBadge() > 0) {
               <span class="absolute -top-2 -right-3 h-4 min-w-4 px-1 flex items-center justify-center text-[10px] font-black text-white bg-red-500 rounded-full">
                 {{ inboxBadge() > 99 ? '99+' : inboxBadge() }}
@@ -51,9 +51,9 @@
         }
 
         @if (isChef()) {
-          <a routerLink="/admin" routerLinkActive="text-indigo-600 dark:text-indigo-400" class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">{{ 'NAV.GARAGE_DASHBOARD' | translate }}</a>
+          <a routerLink="/admin" routerLinkActive="text-indigo-600 dark:text-indigo-400" class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">Tableau de bord</a>
           <a routerLink="/inbox" routerLinkActive="text-indigo-600 dark:text-indigo-400" class="relative text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">
-            {{ 'NAV.INBOX' | translate }}
+            Boîte de réception
             @if (inboxBadge() > 0) {
               <span class="absolute -top-2 -right-3 h-4 min-w-4 px-1 flex items-center justify-center text-[10px] font-black text-white bg-red-500 rounded-full">
                 {{ inboxBadge() > 99 ? '99+' : inboxBadge() }}
@@ -63,15 +63,15 @@
         }
 
         @if (isAdminEntreprise()) {
-          <a routerLink="/admin" routerLinkActive="text-indigo-600 dark:text-indigo-400" class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">{{ 'NAV.GARAGE_DASHBOARD' | translate }}</a>
-          <a routerLink="/inventory" routerLinkActive="text-indigo-600 dark:text-indigo-400" class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">{{ 'NAV.INVENTORY' | translate }}</a>
-          <a routerLink="/customers" routerLinkActive="text-indigo-600 dark:text-indigo-400" class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">{{ 'NAV.CUSTOMERS' | translate }}</a>
-          <a routerLink="/services" routerLinkActive="text-indigo-600 dark:text-indigo-400" class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">{{ 'NAV.SERVICES' | translate }}</a>
+          <a routerLink="/admin" routerLinkActive="text-indigo-600 dark:text-indigo-400" class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">Tableau de bord</a>
+          <a routerLink="/inventory" routerLinkActive="text-indigo-600 dark:text-indigo-400" class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">Inventaire</a>
+          <a routerLink="/customers" routerLinkActive="text-indigo-600 dark:text-indigo-400" class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">Clients</a>
+          <a routerLink="/services" routerLinkActive="text-indigo-600 dark:text-indigo-400" class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">Services</a>
         }
 
         @if (isSuperAdmin()) {
-          <a routerLink="/super-admin" routerLinkActive="text-indigo-600 dark:text-indigo-400" class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">{{ 'NAV.SUPER_ADMIN' | translate }}</a>
-          <a routerLink="/tenants" routerLinkActive="text-indigo-600 dark:text-indigo-400" class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">{{ 'NAV.TENANTS' | translate }}</a>
+          <a routerLink="/super-admin" routerLinkActive="text-indigo-600 dark:text-indigo-400" class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">Super Admin</a>
+          <a routerLink="/tenants" routerLinkActive="text-indigo-600 dark:text-indigo-400" class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">Tenants</a>
         }
 
         <div class="h-5 w-px bg-gray-200 dark:bg-gray-700"></div>
@@ -80,97 +80,37 @@
           <app-notification-bell />
         }
 
-        <!-- Language Switcher -->
-        <div class="relative" (clickOutside)="closeLangMenu()">
-          <button (click)="toggleLangMenu()" type="button"
-            class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-full border font-semibold text-xs transition-all duration-200 border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] hover:border-indigo-500 hover:text-indigo-500">
-            <span>{{ getCurrentLanguage().flag }}</span>
-            <span>{{ getCurrentLanguage().code | uppercase }}</span>
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 opacity-60" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-            </svg>
-          </button>
-
-          @if (isLangOpen()) {
-            <div class="absolute right-0 mt-2 w-36 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl shadow-xl z-50 overflow-hidden">
-              @for (lang of languages; track lang.code) {
-                <button (click)="selectLanguage(lang.code)"
-                  class="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm font-semibold text-left transition-colors"
-                  [class.bg-indigo-50]="currentLang() === lang.code"
-                  [class.dark:bg-indigo-900]="currentLang() === lang.code"
-                  [class.text-indigo-600]="currentLang() === lang.code"
-                  [class.dark:text-indigo-400]="currentLang() === lang.code"
-                  [class.text-gray-700]="currentLang() !== lang.code"
-                  [class.dark:text-gray-300]="currentLang() !== lang.code"
-                  [class.hover:bg-gray-50]="currentLang() !== lang.code"
-                  [class.dark:hover:bg-gray-800]="currentLang() !== lang.code">
-                  <span>{{ lang.flag }}</span>
-                  <span>{{ lang.label }}</span>
-                  @if (currentLang() === lang.code) {
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 ml-auto" viewBox="0 0 20 20" fill="currentColor">
-                      <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
-                    </svg>
-                  }
-                </button>
-              }
-            </div>
-          }
-        </div>
-
         <!-- Theme Toggle -->
         <button (click)="toggleTheme()" type="button"
           class="flex items-center gap-1 px-2.5 py-1.5 rounded-full border font-semibold text-xs transition-all duration-300 border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] hover:border-[var(--color-primary)] hover:text-[var(--color-primary)]"
-          [attr.aria-label]="isDark() ? 'Switch to light mode' : 'Switch to dark mode'">
+          [attr.aria-label]="isDark() ? 'Passer en mode clair' : 'Passer en mode sombre'">
           @if (isDark()) {
             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-yellow-400" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd" /></svg>
-            <span>{{ 'NAV.LIGHT' | translate }}</span>
+            <span>Clair</span>
           } @else {
             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-indigo-400" viewBox="0 0 20 20" fill="currentColor"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" /></svg>
-            <span>{{ 'NAV.DARK' | translate }}</span>
+            <span>Sombre</span>
           }
         </button>
 
         @if (!isAuthenticated()) {
-          <a routerLink="/login" class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">{{ 'NAV.SIGN_IN' | translate }}</a>
+          <a routerLink="/login" class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">Connexion</a>
           <a routerLink="/signup" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-bold rounded-full shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 transition-all">
-            {{ 'NAV.GET_STARTED' | translate }}
+            Commencer
           </a>
         } @else {
           <a routerLink="/profile" class="w-9 h-9 bg-indigo-100 dark:bg-indigo-900/30 rounded-full flex items-center justify-center text-indigo-600 dark:text-indigo-400 font-bold border border-transparent hover:border-indigo-500 transition-all">
             {{ user()?.initials }}
           </a>
-          <button (click)="logout()" class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">{{ 'NAV.LOGOUT' | translate }}</button>
+          <button (click)="logout()" class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">Déconnexion</button>
         }
       </div>
 
       <!-- Mobile Button -->
       <div class="xl:hidden flex items-center space-x-2">
-        <!-- Mobile Language Button -->
-        <div class="relative">
-          <button (click)="toggleLangMenu()" type="button"
-            class="flex items-center gap-1 px-2 py-1 rounded-full border font-semibold text-xs transition-all duration-200 border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)]">
-            <span>{{ getCurrentLanguage().flag }}</span>
-            <span>{{ getCurrentLanguage().code | uppercase }}</span>
-          </button>
-          @if (isLangOpen()) {
-            <div class="absolute right-0 mt-2 w-36 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl shadow-xl z-50 overflow-hidden">
-              @for (lang of languages; track lang.code) {
-                <button (click)="selectLanguage(lang.code)"
-                  class="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm font-semibold text-left transition-colors"
-                  [class.text-indigo-600]="currentLang() === lang.code"
-                  [class.text-gray-700]="currentLang() !== lang.code"
-                  [class.dark:text-gray-300]="currentLang() !== lang.code">
-                  <span>{{ lang.flag }}</span>
-                  <span>{{ lang.label }}</span>
-                </button>
-              }
-            </div>
-          }
-        </div>
-
         <button (click)="toggleTheme()" type="button"
           class="flex items-center gap-1 px-2 py-1 rounded-full border font-semibold text-xs transition-all duration-300 border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)]"
-          [attr.aria-label]="isDark() ? 'Switch to light mode' : 'Switch to dark mode'">
+          [attr.aria-label]="isDark() ? 'Passer en mode clair' : 'Passer en mode sombre'">
           @if (isDark()) {
             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-yellow-400" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd" /></svg>
           } @else {
@@ -206,26 +146,26 @@
       </div>
 
       <div class="flex-1 overflow-y-auto px-4 py-5 space-y-2">
-        <a routerLink="/" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400" [routerLinkActiveOptions]="{exact: true}" class="flex items-center px-4 py-2.5 rounded-xl font-semibold text-gray-700 dark:text-gray-300">{{ 'NAV.HOME' | translate }}</a>
+        <a routerLink="/" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400" [routerLinkActiveOptions]="{exact: true}" class="flex items-center px-4 py-2.5 rounded-xl font-semibold text-gray-700 dark:text-gray-300">Accueil</a>
 
         @if (!isAuthenticated()) {
-          <a routerLink="/about" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400" class="flex items-center px-4 py-2.5 rounded-xl font-semibold text-gray-700 dark:text-gray-300">{{ 'NAV.ABOUT' | translate }}</a>
-          <a routerLink="/contact" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400" class="flex items-center px-4 py-2.5 rounded-xl font-semibold text-gray-700 dark:text-gray-300">{{ 'NAV.CONTACT' | translate }}</a>
+          <a routerLink="/about" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400" class="flex items-center px-4 py-2.5 rounded-xl font-semibold text-gray-700 dark:text-gray-300">À propos</a>
+          <a routerLink="/contact" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400" class="flex items-center px-4 py-2.5 rounded-xl font-semibold text-gray-700 dark:text-gray-300">Contact</a>
         }
 
         @if (isClient()) {
-          <a routerLink="/symptoms" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400" class="flex items-center px-4 py-2.5 rounded-xl font-semibold text-gray-700 dark:text-gray-300">{{ 'NAV.SYMPTOMS' | translate }}</a>
-          <a routerLink="/appointments" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400" class="flex items-center px-4 py-2.5 rounded-xl font-semibold text-gray-700 dark:text-gray-300">{{ 'NAV.APPOINTMENTS' | translate }}</a>
-          <a routerLink="/interventions" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400" class="flex items-center px-4 py-2.5 rounded-xl font-semibold text-gray-700 dark:text-gray-300">{{ 'NAV.INTERVENTIONS' | translate }}</a>
-          <a routerLink="/vehicles" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400" class="flex items-center px-4 py-2.5 rounded-xl font-semibold text-gray-700 dark:text-gray-300">{{ 'NAV.VEHICLES' | translate }}</a>
-          <a routerLink="/history" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400" class="flex items-center px-4 py-2.5 rounded-xl font-semibold text-gray-700 dark:text-gray-300">{{ 'NAV.HISTORY' | translate }}</a>
-          <a routerLink="/inbox" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400" class="flex items-center px-4 py-2.5 rounded-xl font-semibold text-gray-700 dark:text-gray-300">{{ 'NAV.NOTIFICATIONS' | translate }}</a>
+          <a routerLink="/symptoms" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400" class="flex items-center px-4 py-2.5 rounded-xl font-semibold text-gray-700 dark:text-gray-300">Symptômes</a>
+          <a routerLink="/appointments" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400" class="flex items-center px-4 py-2.5 rounded-xl font-semibold text-gray-700 dark:text-gray-300">Rendez-vous</a>
+          <a routerLink="/interventions" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400" class="flex items-center px-4 py-2.5 rounded-xl font-semibold text-gray-700 dark:text-gray-300">Interventions</a>
+          <a routerLink="/vehicles" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400" class="flex items-center px-4 py-2.5 rounded-xl font-semibold text-gray-700 dark:text-gray-300">Véhicules</a>
+          <a routerLink="/history" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400" class="flex items-center px-4 py-2.5 rounded-xl font-semibold text-gray-700 dark:text-gray-300">Historique</a>
+          <a routerLink="/inbox" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400" class="flex items-center px-4 py-2.5 rounded-xl font-semibold text-gray-700 dark:text-gray-300">Notifications</a>
         }
 
         @if (isMechanic()) {
-          <a routerLink="/mechanic/tasks" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400" class="flex items-center px-4 py-2.5 rounded-xl font-semibold text-gray-700 dark:text-gray-300">{{ 'NAV.MY_TASKS' | translate }}</a>
+          <a routerLink="/mechanic/tasks" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400" class="flex items-center px-4 py-2.5 rounded-xl font-semibold text-gray-700 dark:text-gray-300">Mes tâches</a>
           <a routerLink="/inbox" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400" class="flex items-center justify-between px-4 py-2.5 rounded-xl font-semibold text-gray-700 dark:text-gray-300">
-            <span>{{ 'NAV.INBOX' | translate }}</span>
+            <span>Boîte de réception</span>
             @if (inboxBadge() > 0) {
               <span class="h-5 min-w-5 px-1.5 flex items-center justify-center text-xs font-black text-white bg-red-500 rounded-full">{{ inboxBadge() > 99 ? '99+' : inboxBadge() }}</span>
             }
@@ -233,9 +173,9 @@
         }
 
         @if (isChef()) {
-          <a routerLink="/admin" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400" class="flex items-center px-4 py-2.5 rounded-xl font-semibold text-gray-700 dark:text-gray-300">{{ 'NAV.GARAGE_DASHBOARD' | translate }}</a>
+          <a routerLink="/admin" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400" class="flex items-center px-4 py-2.5 rounded-xl font-semibold text-gray-700 dark:text-gray-300">Tableau de bord</a>
           <a routerLink="/inbox" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400" class="flex items-center justify-between px-4 py-2.5 rounded-xl font-semibold text-gray-700 dark:text-gray-300">
-            <span>{{ 'NAV.INBOX' | translate }}</span>
+            <span>Boîte de réception</span>
             @if (inboxBadge() > 0) {
               <span class="h-5 min-w-5 px-1.5 flex items-center justify-center text-xs font-black text-white bg-red-500 rounded-full">{{ inboxBadge() > 99 ? '99+' : inboxBadge() }}</span>
             }
@@ -243,28 +183,28 @@
         }
 
         @if (isAdminEntreprise()) {
-          <a routerLink="/admin" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400" class="flex items-center px-4 py-2.5 rounded-xl font-semibold text-gray-700 dark:text-gray-300">{{ 'NAV.GARAGE_DASHBOARD' | translate }}</a>
-          <a routerLink="/inventory" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400" class="flex items-center px-4 py-2.5 rounded-xl font-semibold text-gray-700 dark:text-gray-300">{{ 'NAV.INVENTORY' | translate }}</a>
-          <a routerLink="/customers" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400" class="flex items-center px-4 py-2.5 rounded-xl font-semibold text-gray-700 dark:text-gray-300">{{ 'NAV.CUSTOMERS' | translate }}</a>
-          <a routerLink="/services" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400" class="flex items-center px-4 py-2.5 rounded-xl font-semibold text-gray-700 dark:text-gray-300">{{ 'NAV.SERVICES' | translate }}</a>
+          <a routerLink="/admin" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400" class="flex items-center px-4 py-2.5 rounded-xl font-semibold text-gray-700 dark:text-gray-300">Tableau de bord</a>
+          <a routerLink="/inventory" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400" class="flex items-center px-4 py-2.5 rounded-xl font-semibold text-gray-700 dark:text-gray-300">Inventaire</a>
+          <a routerLink="/customers" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400" class="flex items-center px-4 py-2.5 rounded-xl font-semibold text-gray-700 dark:text-gray-300">Clients</a>
+          <a routerLink="/services" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400" class="flex items-center px-4 py-2.5 rounded-xl font-semibold text-gray-700 dark:text-gray-300">Services</a>
         }
 
         @if (isSuperAdmin()) {
-          <a routerLink="/super-admin" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400" class="flex items-center px-4 py-2.5 rounded-xl font-semibold text-gray-700 dark:text-gray-300">{{ 'NAV.SUPER_ADMIN' | translate }}</a>
-          <a routerLink="/tenants" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400" class="flex items-center px-4 py-2.5 rounded-xl font-semibold text-gray-700 dark:text-gray-300">{{ 'NAV.TENANTS' | translate }}</a>
+          <a routerLink="/super-admin" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400" class="flex items-center px-4 py-2.5 rounded-xl font-semibold text-gray-700 dark:text-gray-300">Super Admin</a>
+          <a routerLink="/tenants" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400" class="flex items-center px-4 py-2.5 rounded-xl font-semibold text-gray-700 dark:text-gray-300">Tenants</a>
         }
 
         <div class="my-4 border-t border-gray-100 dark:border-gray-800"></div>
         @if (isAuthenticated()) {
-          <a routerLink="/profile" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400" class="flex items-center px-4 py-2.5 rounded-xl font-semibold text-gray-700 dark:text-gray-300">{{ 'NAV.MY_PROFILE' | translate }}</a>
-          <button (click)="logout(); toggleMenu()" class="flex items-center px-4 py-2.5 rounded-xl font-semibold text-gray-700 dark:text-gray-300 w-full text-left">{{ 'NAV.LOGOUT' | translate }}</button>
+          <a routerLink="/profile" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400" class="flex items-center px-4 py-2.5 rounded-xl font-semibold text-gray-700 dark:text-gray-300">Mon profil</a>
+          <button (click)="logout(); toggleMenu()" class="flex items-center px-4 py-2.5 rounded-xl font-semibold text-gray-700 dark:text-gray-300 w-full text-left">Déconnexion</button>
         }
       </div>
 
       @if (!isAuthenticated()) {
         <div class="p-5 border-t border-gray-100 dark:border-gray-800 space-y-3">
-          <a routerLink="/login" (click)="toggleMenu()" class="block w-full text-center px-4 py-2.5 rounded-xl font-bold text-gray-700 dark:text-gray-200 bg-gray-100 dark:bg-gray-800">{{ 'NAV.SIGN_IN' | translate }}</a>
-          <a routerLink="/signup" (click)="toggleMenu()" class="block w-full text-center px-4 py-2.5 rounded-xl font-bold text-white bg-indigo-600">{{ 'NAV.GET_STARTED' | translate }}</a>
+          <a routerLink="/login" (click)="toggleMenu()" class="block w-full text-center px-4 py-2.5 rounded-xl font-bold text-gray-700 dark:text-gray-200 bg-gray-100 dark:bg-gray-800">Connexion</a>
+          <a routerLink="/signup" (click)="toggleMenu()" class="block w-full text-center px-4 py-2.5 rounded-xl font-bold text-white bg-indigo-600">Commencer</a>
         </div>
       }
     </div>

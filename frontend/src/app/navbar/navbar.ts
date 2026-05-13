@@ -1,29 +1,23 @@
 import { Component, signal, inject, computed, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
 import { ThemeService } from '../theme';
 import { AuthService } from '../auth/auth.service';
 import { NotificationBellComponent } from '../core/notification-bell/notification-bell';
-import { LanguageService, LANGUAGES } from '../core/language/language.service';
 import { InboxBadgeService } from '../core/services/inbox-badge.service';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule, RouterModule, NotificationBellComponent, TranslateModule],
+  imports: [CommonModule, RouterModule, NotificationBellComponent],
   templateUrl: './navbar.html',
 })
 export class NavbarComponent implements OnInit {
   isMenuOpen = signal(false);
-  isLangOpen = signal(false);
   themeService = inject(ThemeService);
   authService = inject(AuthService);
   router = inject(Router);
-  langService = inject(LanguageService);
   badgeService = inject(InboxBadgeService);
-
-  languages = LANGUAGES;
 
   isAuthenticated = this.authService.isAuthenticated;
   user = computed(() => {
@@ -55,17 +49,6 @@ export class NavbarComponent implements OnInit {
 
   toggleMenu = () => this.isMenuOpen.update(v => !v);
   isMenuOpenFn = () => this.isMenuOpen();
-
-  toggleLangMenu = () => this.isLangOpen.update(v => !v);
-  closeLangMenu = () => this.isLangOpen.set(false);
-
-  currentLang = this.langService.currentLang;
-  getCurrentLanguage = () => this.langService.getCurrentLanguage();
-
-  selectLanguage(code: string) {
-    this.langService.setLanguage(code);
-    this.isLangOpen.set(false);
-  }
 
   toggleTheme() { this.themeService.toggleDarkMode(); }
   isDark() { return this.themeService.isDarkMode(); }
