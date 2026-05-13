@@ -10,6 +10,7 @@ import { ChefInboxItemDto, ClientNotificationDto, MechanicTaskDto, PendingAppoin
 import { StaffDto } from '../models/staff.models';
 import { ChefRepairManagementComponent } from '../../admin/chef-repair-management/chef-repair-management';
 import { ChefExaminationReviewComponent } from '../../admin/chef-examination-review/chef-examination-review';
+import { InboxBadgeService } from '../services/inbox-badge.service';
 
 @Component({
   selector: 'app-inbox',
@@ -27,6 +28,7 @@ export class InboxComponent implements OnInit {
   private invoiceService = inject(InvoiceService);
   private staffService = inject(StaffService);
   private fb = inject(FormBuilder);
+  private badgeService = inject(InboxBadgeService);
 
   // ── Shared state ──────────────────────────────────────────────────────────
   loading = signal(false);
@@ -57,6 +59,9 @@ export class InboxComponent implements OnInit {
   taskForm: FormGroup;
   isCreatingTask = signal(false);
 
+  // ── My notifications (Chef / Mechanic — removed, badge uses business state) ─
+  // (notifications tab removed — badge counts pending business items instead)
+
   // ── Client notifications ───────────────────────────────────────────────────
   clientTab = signal<'notifications' | 'invoices'>('notifications');
   notifications = signal<ClientNotificationDto[]>([]);
@@ -65,7 +70,7 @@ export class InboxComponent implements OnInit {
   // ── Client invoices ────────────────────────────────────────────────────────
   invoices = signal<InvoiceDto[]>([]);
   invoicesLoading = signal(false);
-  invoiceActionId = signal<string | null>(null); // which invoice is being approved/rejected
+  invoiceActionId = signal<string | null>(null);
   downloadingPdfId = signal<string | null>(null);
   hasAwaitingInvoice = computed(() => this.invoices().some(i => i.status === 'AwaitingApproval'));
 
@@ -83,7 +88,7 @@ export class InboxComponent implements OnInit {
       taskTitle: ['', [Validators.required, Validators.minLength(5)]],
       description: ['', [Validators.required, Validators.minLength(10)]],
       estimatedMinutes: [null],
-      mechanicIds: [[], Validators.required],
+      mechanicIds: [[]],
     });
   }
 
@@ -156,6 +161,7 @@ export class InboxComponent implements OnInit {
       next: (items) => {
         this.chefInbox.set(items);
         this.loading.set(false);
+        this.badgeService.refresh(); // update navbar badge
       },
       error: () => {
         this.error.set("Erreur lors du chargement de l'inbox.");
@@ -187,9 +193,19 @@ export class InboxComponent implements OnInit {
 
   submitFeedback(): void {
     if (!this.feedbackForm.valid || !this.selectedItemId()) return;
+    const v = this.feedbackForm.value;
+    if (v.newStatus === 'Approved' && v.availablePeriodStart && v.availablePeriodEnd) {
+      const start = new Date(v.availablePeriodStart);
+      const end = new Date(v.availablePeriodEnd);
+      if (start > end) {
+        this.error.set('La date de debut ne peut pas etre superieure a la date de fin.');
+        return;
+      }
+    }
+
     this.isSubmitting.set(true);
     this.error.set(null);
-    const v = this.feedbackForm.value;
+
     this.symptomService
       .addFeedback(this.selectedItemId()!, {
         feedback: v.feedback,
@@ -224,7 +240,10 @@ export class InboxComponent implements OnInit {
 
   loadAppointments(garageId: string): void {
     this.appointmentService.getPendingAppointments(garageId).subscribe({
-      next: (items) => this.appointments.set(items),
+      next: (items) => {
+        this.appointments.set(items);
+        this.badgeService.refresh();
+      },
       error: () => {},
     });
   }
@@ -269,21 +288,25 @@ export class InboxComponent implements OnInit {
     // Step 1: approve the appointment
     this.appointmentService.approveAppointment(appt.id).subscribe({
       next: () => {
-        // Step 2: create repair task with mechanic assignment
+        // Step 2: create the examination task (mechanic assignment is optional here)
         const v = this.taskForm.value;
+        const mechanicIds: string[] = v.mechanicIds ?? [];
         this.repairTaskService.createTask({
           appointmentId: appt.id,
           taskTitle: v.taskTitle,
           description: v.description,
           estimatedMinutes: v.estimatedMinutes || undefined,
-          mechanicIds: v.mechanicIds,
+          mechanicIds: mechanicIds.length > 0 ? mechanicIds : undefined,
         }).subscribe({
           next: () => {
-            this.success.set(`Rendez-vous confirmé et tâche assignée à ${v.mechanicIds.length} mécanicien(s).`);
+            const mecMsg = mechanicIds.length > 0
+              ? ` Tâche assignée à ${mechanicIds.length} mécanicien(s) pour l'examen.`
+              : ' Assignez un mécanicien depuis l\'onglet Réparations après approbation du devis.';
+            this.success.set(`Rendez-vous confirmé.${mecMsg}`);
             this.closeTaskModal();
             this.isCreatingTask.set(false);
             this.loadAppointments(this.garageId());
-            setTimeout(() => this.success.set(null), 4000);
+            setTimeout(() => this.success.set(null), 5000);
           },
           error: (err) => {
             this.error.set(err.error?.message || 'Erreur lors de la création de la tâche.');
@@ -327,12 +350,18 @@ export class InboxComponent implements OnInit {
   }
 
   markRead(id: string): void {
+    const notif = this.notifications().find(n => n.id === id);
+    if (!notif || notif.isRead) return;
+
+    // Optimistic update
+    this.notifications.update(list => list.map(n => n.id === id ? { ...n, isRead: true } : n));
+    this.badgeService.refresh();
+
     this.notificationService.markAsRead(id).subscribe({
-      next: () => {
-        this.notifications.update(list =>
-          list.map(n => n.id === id ? { ...n, isRead: true } : n)
-        );
-      },
+      error: () => {
+        this.notifications.update(list => list.map(n => n.id === id ? { ...n, isRead: false } : n));
+        this.badgeService.refresh();
+      }
     });
   }
 
@@ -431,12 +460,21 @@ export class InboxComponent implements OnInit {
       next: (items) => {
         this.tasks.set(items);
         this.loading.set(false);
+        this.badgeService.refresh();
       },
       error: () => {
         this.error.set('Erreur lors du chargement des tâches.');
         this.loading.set(false);
       },
     });
+  }
+
+  // ── My notifications (removed) ────────────────────────────────────────────
+  // Notifications tab removed. Badge now counts pending business items (reports + appointments + exams / assigned tasks).
+
+  formatNotifDate(dateStr: string): string {
+    const d = new Date(dateStr);
+    return d.toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
   }
 
   taskStatusColor(status: string): string {

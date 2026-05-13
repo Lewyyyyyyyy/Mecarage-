@@ -1,70 +1,75 @@
-<div class="space-y-6">
+<div class="mx-auto max-w-6xl space-y-6 px-4 py-6 md:px-6">
   <!-- Header -->
-  <div class="flex items-center justify-between">
+  <div class="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+    <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
     <div>
       <h2 class="text-3xl font-bold text-gray-900 dark:text-white">Mes Rapports de Symptômes</h2>
-      <p class="text-gray-600 dark:text-gray-400 mt-2">Voir vos rapports de diagnostic et les retours du chef d'atelier</p>
+      <p class="mt-2 text-gray-600 dark:text-gray-400">Voir vos diagnostics, les retours atelier et réserver rapidement quand un dossier est approuvé.</p>
     </div>
     <a
       routerLink="/symptoms/new"
-      class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition duration-200"
+      class="inline-flex items-center justify-center rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700"
     >
-      + Nouveau Rapport
+      + Nouveau rapport
     </a>
+    </div>
   </div>
 
   <!-- Error Message -->
   @if (error()) {
-    <div class="p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
-      <p class="text-red-800 dark:text-red-300">{{ error() }}</p>
+    <div class="rounded-xl border border-red-200 bg-red-50 p-4 dark:border-red-800 dark:bg-red-900/20">
+      <p class="text-sm font-medium text-red-800 dark:text-red-300">{{ error() }}</p>
     </div>
   }
 
   <!-- Loading State -->
   @if (loading()) {
-    <div class="flex justify-center py-12">
-      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+    <div class="rounded-2xl border border-gray-200 bg-white py-16 dark:border-gray-800 dark:bg-gray-900">
+      <div class="flex flex-col items-center justify-center gap-3">
+        <div class="h-12 w-12 animate-spin rounded-full border-4 border-blue-100 border-b-blue-600"></div>
+        <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Chargement de vos rapports...</p>
+      </div>
     </div>
   } @else {
     @if (reports().length === 0) {
       <!-- Empty State -->
-      <div class="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-12 text-center">
-        <p class="text-gray-600 dark:text-gray-400 mb-4">Aucun rapport pour le moment</p>
+      <div class="rounded-2xl border border-dashed border-gray-300 bg-white p-12 text-center dark:border-gray-700 dark:bg-gray-900">
+        <p class="mb-2 text-lg font-semibold text-gray-900 dark:text-white">Aucun rapport pour le moment</p>
+        <p class="mb-4 text-sm text-gray-600 dark:text-gray-400">Créez votre premier rapport pour lancer un diagnostic.</p>
         <a
           routerLink="/symptoms/new"
-          class="text-blue-600 dark:text-blue-400 hover:underline font-semibold"
+          class="inline-flex items-center justify-center rounded-xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-700"
         >
-          Créer votre premier rapport →
+          Créer mon premier rapport
         </a>
       </div>
     } @else {
       <!-- Reports Grid -->
-      <div class="grid gap-6">
+      <div class="grid gap-5">
         @for (report of reports(); track report.id) {
-          <div class="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 overflow-hidden hover:shadow-lg transition">
+          <article class="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm transition hover:shadow-md dark:border-gray-800 dark:bg-gray-900">
             <!-- Card Header -->
-            <div class="p-6 border-b border-gray-200 dark:border-gray-800">
+            <div class="border-b border-gray-200 p-6 dark:border-gray-800">
               <div class="flex items-start justify-between mb-4">
                 <div class="flex-1">
-                  <h3 class="text-lg font-bold text-gray-900 dark:text-white">
+                  <h3 class="text-xl font-bold text-gray-900 dark:text-white">
                     {{ report.vehicleBrand }} {{ report.vehicleModel }}
                   </h3>
-                  <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                  <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
                     Rapport créé le {{ formatDate(report.submittedAt) }}
                   </p>
                 </div>
                 <span
-                  [ngClass]="getStatusBadge(report.status).bg"
-                  class="px-3 py-1 text-xs font-semibold rounded-full"
-                  [ngClass]="getStatusBadge(report.status).text"
+                  [class]="'rounded-full px-3 py-1 text-xs font-semibold ' + getStatusBadge(report.status).bg + ' ' + getStatusBadge(report.status).text"
                 >
                   {{ getStatusBadge(report.status).label }}
                 </span>
               </div>
 
               <!-- Symptoms Description -->
-              <div class="bg-gray-50 dark:bg-gray-800 rounded p-4 text-sm">
-                <p class="text-gray-700 dark:text-gray-300">{{ report.symptomsDescription }}</p>
+              <div class="rounded-xl bg-gray-50 p-4 text-sm dark:bg-gray-800">
+                <p class="font-medium text-gray-900 dark:text-white mb-1">Symptômes signalés</p>
+                <p class="text-gray-700 dark:text-gray-300 leading-relaxed">{{ report.symptomsDescription }}</p>
               </div>
             </div>
 
@@ -73,11 +78,11 @@
               <!-- AI Diagnosis -->
               @if (report.aiPredictedIssue) {
                 <div>
-                  <h4 class="text-sm font-semibold text-gray-900 dark:text-white mb-2">Diagnostic IA</h4>
-                  <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded p-3">
+                  <h4 class="mb-2 text-sm font-semibold text-gray-900 dark:text-white">Diagnostic IA</h4>
+                  <div class="rounded-xl border border-blue-200 bg-blue-50 p-4 dark:border-blue-800 dark:bg-blue-900/20">
                     <p class="text-sm text-blue-800 dark:text-blue-300">{{ report.aiPredictedIssue }}</p>
                     @if (report.aiConfidenceScore) {
-                      <p class="text-xs text-blue-600 dark:text-blue-400 mt-2">
+                      <p class="mt-2 text-xs font-medium text-blue-600 dark:text-blue-400">
                         Confiance: {{ (report.aiConfidenceScore * 100).toFixed(1) }}%
                       </p>
                     }
@@ -88,18 +93,18 @@
               <!-- Chef Feedback -->
               @if (report.chefFeedback) {
                 <div>
-                  <h4 class="text-sm font-semibold text-gray-900 dark:text-white mb-2">Retour du Chef d'Atelier</h4>
-                  <div class="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded p-3">
+                  <h4 class="mb-2 text-sm font-semibold text-gray-900 dark:text-white">Retour du Chef d'Atelier</h4>
+                  <div class="rounded-xl border border-green-200 bg-green-50 p-4 dark:border-green-800 dark:bg-green-900/20">
                     <p class="text-sm text-green-800 dark:text-green-300">{{ report.chefFeedback }}</p>
                     @if (report.reviewedAt) {
-                      <p class="text-xs text-green-600 dark:text-green-400 mt-2">
+                      <p class="mt-2 text-xs font-medium text-green-600 dark:text-green-400">
                         Examiné le {{ formatDate(report.reviewedAt) }}
                       </p>
                     }
                   </div>
                 </div>
               } @else if (report.status === 'PendingReview' || report.status === 'Submitted') {
-                <div class="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded p-3">
+                <div class="rounded-xl border border-yellow-200 bg-yellow-50 p-4 dark:border-yellow-800 dark:bg-yellow-900/20">
                   <p class="text-sm text-yellow-800 dark:text-yellow-300">
                     En attente d'examen par le chef d'atelier...
                   </p>
@@ -109,22 +114,22 @@
 
             <!-- Card Footer -->
             @if (report.status === 'Approved') {
-              <div class="p-6 border-t border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-800">
+              <div class="border-t border-gray-200 bg-gray-50 p-6 dark:border-gray-800 dark:bg-gray-800">
                 @if (report.availablePeriodStart && report.availablePeriodEnd) {
-                  <p class="text-xs text-green-600 dark:text-green-400 mb-2">
+                  <p class="mb-3 text-xs font-medium text-green-600 dark:text-green-400">
                     📅 Période disponible: du {{ formatDate(report.availablePeriodStart) }} au {{ formatDate(report.availablePeriodEnd) }}
                   </p>
                 }
                 <a
                   routerLink="/appointments"
                   [queryParams]="{ book: '1', symptomReportId: report.id }"
-                  class="text-blue-600 dark:text-blue-400 hover:underline font-semibold text-sm"
+                  class="inline-flex items-center rounded-lg bg-blue-600 px-3 py-2 text-sm font-semibold text-white transition hover:bg-blue-700"
                 >
-                  Prendre un rendez-vous →
+                  Prendre un rendez-vous
                 </a>
               </div>
             }
-          </div>
+          </article>
         }
       </div>
     }

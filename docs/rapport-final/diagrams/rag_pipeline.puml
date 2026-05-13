@@ -1,0 +1,32 @@
+@startuml rag_pipeline
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontName Arial
+skinparam defaultFontSize 11
+skinparam ComponentBorderColor #1D4ED8
+skinparam ComponentBackgroundColor #EFF6FF
+skinparam ArrowColor #374151
+skinparam ArrowThickness 1.5
+skinparam DatabaseBorderColor #1D4ED8
+skinparam DatabaseBackgroundColor #EFF6FF
+skinparam TitleFontSize 13
+skinparam TitleFontStyle bold
+
+title Pipeline RAG — Service de Diagnostic IA
+
+[1. Texte des\nSymptômes] as s1
+[2. BM25\nRetrieval] as s2
+[3. Contexte\nEnrichi] as s3
+[4. Ollama\nLLM (Local)] as s4
+[5. Diagnostic\nJSON Structuré] as s5
+database "knowledge_base.txt\n(Fiches techniques)" as kb
+
+s1 --> s2 : texte brut
+s2 --> s3 : passages\npertinents
+s3 --> s4 : prompt\nenrichi
+s4 --> s5 : réponse\nstructurée
+kb --> s2 : recherche BM25
+
+note bottom of s5 : aiPredictedIssue\naiConfidenceScore\naiRecommendations
+
+@enduml
+

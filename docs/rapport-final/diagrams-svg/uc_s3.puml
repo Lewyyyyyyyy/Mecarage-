@@ -1,0 +1,53 @@
+@startuml uc_s3
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontName Arial
+skinparam defaultFontSize 12
+skinparam ActorBorderColor #1D4ED8
+skinparam ActorBackgroundColor #DBEAFE
+skinparam ActorFontStyle bold
+skinparam ActorFontSize 12
+skinparam UsecaseBorderColor #1D4ED8
+skinparam UsecaseBackgroundColor #EFF6FF
+skinparam UsecaseFontSize 12
+skinparam ArrowColor #4B5563
+skinparam ArrowThickness 1.5
+skinparam ArrowFontSize 13
+skinparam ArrowFontStyle bold
+skinparam ArrowFontColor #1E40AF
+skinparam RectangleBorderColor #1D4ED8
+skinparam RectangleBorderThickness 2
+skinparam RectangleBackgroundColor #FFFFFF
+skinparam RectangleFontSize 13
+skinparam RectangleFontStyle bold
+skinparam TitleFontSize 14
+skinparam TitleFontStyle bold
+skinparam padding 8
+
+title Sprint 3 — Symptômes, Diagnostic IA et Rendez-vous
+
+left to right direction
+
+actor "Client" as cli
+actor "Chef d'Atelier" as che
+
+rectangle "Sprint 3 : Diagnostic et RDV" {
+  usecase "Soumettre Symptômes (US10)" as UC10
+  usecase "Réviser Rapport + Plage RDV (US12)" as UC12
+  usecase "Réserver Rendez-vous (US13)" as UC13
+  usecase "Approuver / Refuser RDV (US14)" as UC14
+}
+
+rectangle "Système IA (Ollama + RAG)" as iasys {
+  usecase "Diagnostic IA Automatique (US11)" as UC11
+}
+
+cli --> UC10
+cli --> UC13
+che --> UC12
+che --> UC14
+
+UC10 ..> UC11 : <<include>>
+UC12 ..> UC13 : <<extend>>
+
+@enduml
+

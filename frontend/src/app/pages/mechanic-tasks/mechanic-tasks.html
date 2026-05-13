@@ -1,98 +1,102 @@
+<div class="min-h-screen bg-[var(--color-bg)] text-[var(--color-text)] font-sans transition-colors duration-300">
+<div class="container mx-auto px-6 py-8 max-w-4xl">
 <div class="space-y-6">
   <!-- Header -->
   <div>
-    <h2 class="text-3xl font-bold text-gray-900 dark:text-white">Mes Tâches</h2>
-    <p class="text-gray-600 dark:text-gray-400 mt-2">Gérez vos tâches de réparation en temps réel</p>
+    <h2 class="text-3xl font-black text-white tracking-tight">🔧 Mes Tâches</h2>
+    <p class="text-gray-400 mt-1 font-medium">Gérez vos tâches de réparation en temps réel</p>
   </div>
 
-  <!-- Success -->
   @if (success()) {
-    <div class="p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg">
-      <p class="text-green-800 dark:text-green-300">{{ success() }}</p>
+    <div class="p-4 bg-emerald-900/20 border border-emerald-800 rounded-2xl text-emerald-400 font-semibold flex items-center gap-3">
+      ✅ {{ success() }}
     </div>
   }
-
-  <!-- Global error -->
   @if (error() && !showTaskModal() && !showRepairModal()) {
-    <div class="p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
-      <p class="text-red-800 dark:text-red-300">{{ error() }}</p>
+    <div class="p-4 bg-rose-900/20 border border-rose-800 rounded-2xl text-rose-400 font-semibold flex justify-between items-center">
+      <span>⚠️ {{ error() }}</span>
     </div>
   }
 
-  <!-- Loading -->
   @if (loading()) {
-    <div class="flex justify-center py-12">
-      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+    <div class="flex flex-col items-center py-20 gap-4">
+      <div class="h-10 w-10 border-4 border-gray-800 border-t-indigo-500 rounded-full animate-spin"></div>
+      <p class="text-gray-500 font-bold">Chargement...</p>
     </div>
   } @else {
     @if (tasks().length === 0) {
-      <div class="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-12 text-center">
-        <p class="text-4xl mb-3">🔧</p>
-        <p class="text-gray-600 dark:text-gray-400">Aucune tâche pour le moment</p>
+      <div class="text-center py-20 border-2 border-dashed border-gray-800 rounded-2xl">
+        <p class="text-5xl mb-4">🔧</p>
+        <p class="text-gray-400 font-bold text-lg">Aucune tâche pour le moment</p>
+        <p class="text-gray-600 text-sm mt-2">Vos tâches assignées apparaîtront ici.</p>
       </div>
     } @else {
 
       <!-- Active Tasks -->
       @if (getActiveTasks().length > 0) {
         <div>
-          <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Tâches Actives</h3>
+          <h3 class="text-xs font-black text-gray-500 uppercase tracking-widest mb-4 flex items-center gap-2">
+            🔵 Tâches Actives
+            <span class="bg-indigo-900/40 text-indigo-400 border border-indigo-800 px-2 py-0.5 rounded-full font-bold">
+              {{ getActiveTasks().length }}
+            </span>
+          </h3>
           <div class="space-y-4">
             @for (task of getActiveTasks(); track task.id) {
-              <div class="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-6 hover:shadow-lg transition">
-                <div class="flex items-start justify-between mb-3">
-                  <div class="flex-1">
-                    <h4 class="text-lg font-bold text-gray-900 dark:text-white">{{ task.taskTitle }}</h4>
-                    <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">{{ task.clientName }} — {{ task.vehicleInfo }}</p>
-                    <p class="text-xs text-gray-400 dark:text-gray-500 mt-1">Assignée le {{ formatDate(task.assignedAt) }}</p>
+              <div class="bg-gray-900 border rounded-2xl p-6 transition-all"
+                   [ngClass]="task.invoiceApproved ? 'border-emerald-800/50 hover:border-emerald-700/70' : 'border-gray-800 hover:border-indigo-700/50'">
+                <div class="flex items-start justify-between mb-4">
+                  <div class="flex-1 min-w-0">
+                    <h4 class="text-lg font-black text-white">{{ task.taskTitle }}</h4>
+                    <p class="text-indigo-400 text-sm font-medium mt-0.5">🚗 {{ task.vehicleInfo }} — {{ task.clientName }}</p>
+                    <p class="text-gray-600 text-xs font-mono mt-1">Assignée le {{ formatDate(task.assignedAt) }}</p>
                   </div>
                   <span [ngClass]="[getStatusBadge(task.status).bg, getStatusBadge(task.status).text]"
-                        class="px-3 py-1 text-xs font-semibold rounded-full shrink-0 ml-3">
+                        class="px-3 py-1 text-xs font-black rounded-full shrink-0 ml-4 uppercase tracking-wide">
                     {{ getStatusBadge(task.status).label }}
                   </span>
                 </div>
 
-                <p class="text-sm text-gray-700 dark:text-gray-300 mb-4">{{ task.description }}</p>
+                <p class="text-gray-400 text-sm leading-relaxed mb-4">{{ task.description }}</p>
 
-                <!-- Phase indicator -->
                 @if (task.invoiceApproved) {
-                  <div class="mb-4 px-3 py-2 rounded-lg bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 text-xs font-semibold text-emerald-700 dark:text-emerald-300 flex items-center gap-2">
-                    ✅ Devis approuvé — Phase réparation
+                  <div class="mb-4 px-4 py-2.5 rounded-xl bg-emerald-900/20 border border-emerald-800/50 text-xs font-bold text-emerald-400 flex items-center gap-2">
+                    ✅ Devis approuvé — Phase réparation autorisée
                   </div>
                 }
 
-                <div class="grid grid-cols-2 gap-3 mb-4 text-sm">
-                  @if (task.estimatedMinutes) {
-                    <div class="bg-gray-50 dark:bg-gray-800 p-3 rounded">
-                      <p class="text-gray-500 dark:text-gray-400 text-xs">Temps estimé</p>
-                      <p class="font-semibold text-gray-900 dark:text-white">{{ task.estimatedMinutes }} min</p>
-                    </div>
-                  }
-                  @if (task.startedAt) {
-                    <div class="bg-gray-50 dark:bg-gray-800 p-3 rounded">
-                      <p class="text-gray-500 dark:text-gray-400 text-xs">Commencée</p>
-                      <p class="font-semibold text-gray-900 dark:text-white">{{ formatDate(task.startedAt) }}</p>
-                    </div>
-                  }
-                </div>
+                @if (task.estimatedMinutes || task.startedAt) {
+                  <div class="grid grid-cols-2 gap-3 mb-4">
+                    @if (task.estimatedMinutes) {
+                      <div class="bg-gray-800 rounded-xl p-3 border border-gray-700">
+                        <p class="text-gray-500 text-xs font-bold uppercase tracking-wide mb-0.5">Temps estimé</p>
+                        <p class="font-black text-white">{{ task.estimatedMinutes }} min</p>
+                      </div>
+                    }
+                    @if (task.startedAt) {
+                      <div class="bg-gray-800 rounded-xl p-3 border border-gray-700">
+                        <p class="text-gray-500 text-xs font-bold uppercase tracking-wide mb-0.5">Commencée</p>
+                        <p class="font-bold text-white text-sm">{{ formatDate(task.startedAt) }}</p>
+                      </div>
+                    }
+                  </div>
+                }
 
                 @if (task.status === 'Fixed') {
-                  <!-- Submitted to chef — awaiting validation -->
-                  <div class="w-full px-4 py-3 bg-amber-50 dark:bg-amber-900/20 border border-amber-300 dark:border-amber-700 rounded-lg text-sm font-semibold text-amber-800 dark:text-amber-300 text-center">
+                  <div class="w-full px-4 py-3 bg-amber-900/20 border border-amber-700/50 rounded-xl text-sm font-bold text-amber-400 text-center">
                     ⏳ Soumis au chef — En attente de validation
                   </div>
                   @if (task.completionNotes) {
-                    <p class="text-xs text-gray-500 dark:text-gray-400 text-center mt-1">Notes : {{ task.completionNotes }}</p>
+                    <p class="text-xs text-gray-500 text-center mt-2">Notes : {{ task.completionNotes }}</p>
                   }
                 } @else if (canSubmitRepair(task)) {
-                  <!-- Repair phase: submit completion to chef -->
                   <button (click)="openRepairModal(task.id)"
-                    class="w-full px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-bold transition text-sm">
-                    🏁 Terminer & Soumettre au chef
+                    class="w-full px-4 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-black transition text-sm flex items-center justify-center gap-2">
+                    🏁 Terminer la réparation &amp; Soumettre au chef
                   </button>
                 } @else if (canOpenModal(task.status)) {
-                  <!-- Examination phase: open examination report modal -->
                   <button (click)="openTaskModal(task.id)"
-                    class="w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition text-sm">
+                    class="w-full px-4 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold transition text-sm flex items-center justify-center gap-2">
                     ✏️ Rédiger / Mettre à jour le rapport d'examen
                   </button>
                 }
@@ -105,22 +109,27 @@
       <!-- Completed Tasks -->
       @if (getCompletedTasks().length > 0) {
         <div class="mt-8">
-          <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Tâches Terminées</h3>
+          <h3 class="text-xs font-black text-gray-500 uppercase tracking-widest mb-4 flex items-center gap-2">
+            ✅ Tâches Terminées
+            <span class="bg-emerald-900/40 text-emerald-400 border border-emerald-800 px-2 py-0.5 rounded-full font-bold text-xs">
+              {{ getCompletedTasks().length }}
+            </span>
+          </h3>
           <div class="space-y-3">
             @for (task of getCompletedTasks(); track task.id) {
-              <div class="bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-5 opacity-75">
+              <div class="bg-gray-900/50 border border-gray-800 rounded-2xl p-5 opacity-70 hover:opacity-90 transition">
                 <div class="flex items-start justify-between">
                   <div>
-                    <h4 class="font-bold text-gray-900 dark:text-white">{{ task.taskTitle }}</h4>
-                    <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">{{ task.clientName }}</p>
+                    <h4 class="font-bold text-white">{{ task.taskTitle }}</h4>
+                    <p class="text-indigo-400 text-sm mt-0.5">🚗 {{ task.vehicleInfo }} — {{ task.clientName }}</p>
                   </div>
                   <span [ngClass]="[getStatusBadge(task.status).bg, getStatusBadge(task.status).text]"
-                        class="px-3 py-1 text-xs font-semibold rounded-full">
+                        class="px-3 py-1 text-xs font-black rounded-full uppercase">
                     {{ getStatusBadge(task.status).label }}
                   </span>
                 </div>
                 @if (task.completedAt) {
-                  <p class="text-xs text-gray-500 dark:text-gray-400 mt-2">Complétée le {{ formatDate(task.completedAt) }}</p>
+                  <p class="text-xs text-gray-600 font-mono mt-3">Complétée le {{ formatDate(task.completedAt) }}</p>
                 }
               </div>
             }
@@ -130,230 +139,192 @@
     }
   }
 
-  <!-- ════════════════════════════ TASK MODAL ════════════════════════════ -->
+  <!-- ════════════════════ EXAM REPORT MODAL ════════════════════ -->
   @if (showTaskModal()) {
     @if (getSelectedTask(); as task) {
-      <div class="fixed inset-0 bg-black/50 dark:bg-black/70 flex items-center justify-center z-50 p-4">
-        <div class="bg-white dark:bg-gray-900 rounded-xl max-w-2xl w-full border border-gray-200 dark:border-gray-700 max-h-[92vh] overflow-y-auto shadow-2xl">
-
-          <!-- Modal header -->
-          <div class="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700 sticky top-0 bg-white dark:bg-gray-900 z-10">
+      <div class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-gray-900 border border-gray-800 rounded-2xl max-w-2xl w-full shadow-2xl max-h-[92vh] flex flex-col animate-in zoom-in-95 duration-200">
+          <div class="flex items-center justify-between p-6 border-b border-gray-800 sticky top-0 bg-gray-900 z-10">
             <div>
-              <h3 class="text-xl font-bold text-gray-900 dark:text-white">📋 {{ task.taskTitle }}</h3>
-              <p class="text-sm text-gray-500 dark:text-gray-400 mt-0.5">{{ task.clientName }} — {{ task.vehicleInfo }}</p>
+              <h3 class="text-xl font-black text-white">📋 {{ task.taskTitle }}</h3>
+              <p class="text-gray-400 text-sm mt-0.5">{{ task.clientName }} — {{ task.vehicleInfo }}</p>
             </div>
-            <button (click)="closeTaskModal()" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 text-2xl leading-none">✕</button>
+            <button (click)="closeTaskModal()" class="text-gray-500 hover:text-white transition text-2xl leading-none">✕</button>
           </div>
 
-          <form [formGroup]="taskForm" class="p-6 space-y-6">
-
-            <!-- Error -->
+          <form [formGroup]="taskForm" class="p-6 space-y-6 overflow-y-auto flex-1">
             @if (error()) {
-              <div class="p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
-                <p class="text-sm text-red-800 dark:text-red-300">{{ error() }}</p>
-              </div>
+              <div class="p-3 bg-rose-900/20 border border-rose-800 rounded-xl text-sm text-rose-400 font-semibold">⚠️ {{ error() }}</div>
             }
-
-            <!-- Info banner -->
-            <div class="p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700 rounded-lg text-sm text-blue-800 dark:text-blue-300">
-              💡 Remplissez ce rapport au fur et à mesure. Vous pouvez <strong>sauvegarder en brouillon</strong> et revenir plus tard, ou <strong>soumettre au chef</strong> quand vous avez terminé l'examen.
+            <div class="p-4 bg-indigo-900/20 border border-indigo-800/50 rounded-xl text-sm text-indigo-300 font-medium">
+              💡 Remplissez ce rapport au fur et à mesure. Vous pouvez <strong class="text-white">sauvegarder en brouillon</strong> et revenir plus tard, ou <strong class="text-white">soumettre au chef</strong> quand vous avez terminé.
             </div>
 
-            <!-- ── Notes ──────────────────────────────────────────────────── -->
             <div>
-              <label class="block text-sm font-semibold text-gray-900 dark:text-white mb-2">
-                📝 Observations / Travaux effectués (optionnel)
-              </label>
+              <label class="block text-sm font-bold text-gray-300 mb-2">📝 Observations / Travaux effectués</label>
               <textarea formControlName="mechanicNotes" rows="4"
-                class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none text-sm"
+                class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none text-sm placeholder-gray-600"
                 placeholder="Décrivez les travaux effectués, observations, problèmes rencontrés...">
               </textarea>
             </div>
 
-            <!-- ── Parts autocomplete ─────────────────────────────────────── -->
             <div>
-              <label class="block text-sm font-semibold text-gray-900 dark:text-white mb-2">
-                🔩 Pièces nécessaires (depuis le stock du garage)
-              </label>
-
-              <div class="relative">
-                <input type="text"
-                  [value]="partSearchTerm()"
-                  (input)="onPartSearchChange($any($event.target).value)"
-                  placeholder="Tapez un nom de pièce (ex: filtre, courroie…)"
-                  class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm" />
-
-                @if (showPartDropdown() && partSearchResults().length > 0) {
-                  <div class="absolute z-20 top-full left-0 right-0 mt-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-lg shadow-lg max-h-52 overflow-y-auto">
-                    @for (part of partSearchResults(); track part.id) {
-                      <button type="button" (click)="selectPart(part)"
-                        class="w-full flex items-center justify-between px-4 py-2.5 hover:bg-blue-50 dark:hover:bg-blue-900/20 text-left transition">
-                        <div>
-                          <p class="text-sm font-semibold text-gray-900 dark:text-white">{{ part.name }}</p>
-                          <p class="text-xs text-gray-500 dark:text-gray-400">{{ part.code }}
-                            @if (part.manufacturer) { · {{ part.manufacturer }} }
-                          </p>
-                        </div>
-                        <div class="text-right shrink-0 ml-4">
-                          <p class="text-xs font-semibold text-blue-600 dark:text-blue-400">{{ part.unitPrice | number:'1.2-2' }} €</p>
-                          <p class="text-xs text-gray-400">Stock: {{ part.stockQuantity }}</p>
-                        </div>
-                      </button>
-                    }
-                  </div>
-                }
-              </div>
+              <label class="block text-sm font-bold text-gray-300 mb-2">🔩 Pièces nécessaires (stock du garage)</label>
+              <input type="text"
+                [value]="partSearchTerm()"
+                (input)="onPartSearchChange($any($event.target).value)"
+                placeholder="Tapez un nom de pièce (ex: filtre, courroie…)"
+                class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm placeholder-gray-600" />
+              @if (showPartDropdown() && partSearchResults().length > 0) {
+                <div class="mt-1 bg-gray-800 border border-gray-700 rounded-xl shadow-2xl max-h-52 overflow-y-auto">
+                  @for (part of partSearchResults(); track part.id) {
+                    <button type="button" (click)="selectPart(part)"
+                      class="w-full flex items-center justify-between px-4 py-3 hover:bg-indigo-900/30 text-left transition border-b border-gray-700 last:border-0">
+                      <div>
+                        <p class="text-sm font-bold text-white">{{ part.name }}</p>
+                        <p class="text-xs text-gray-500">{{ part.code }}
+                          @if (part.manufacturer) { · {{ part.manufacturer }} }
+                        </p>
+                      </div>
+                      <div class="text-right shrink-0 ml-4">
+                        <p class="text-xs font-bold text-indigo-400">{{ part.unitPrice | number:'1.2-2' }} €</p>
+                        <p class="text-xs text-gray-500">Stock: {{ part.stockQuantity }}</p>
+                      </div>
+                    </button>
+                  }
+                </div>
+              }
 
               @if (selectedParts().length > 0) {
                 <div class="mt-3 space-y-2">
                   @for (part of selectedParts(); track $index) {
-                    <div class="flex items-center gap-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 px-3 py-2 rounded-lg">
+                    <div class="flex items-center gap-3 bg-indigo-900/20 border border-indigo-800/50 px-4 py-2.5 rounded-xl">
                       <div class="flex-1 min-w-0">
-                        <p class="text-sm font-semibold text-gray-900 dark:text-white truncate">{{ part.name }}</p>
-                        <p class="text-xs text-gray-500 dark:text-gray-400">{{ part.unitPrice | number:'1.2-2' }} € / unité</p>
+                        <p class="text-sm font-bold text-white truncate">{{ part.name }}</p>
+                        <p class="text-xs text-gray-500">{{ part.unitPrice | number:'1.2-2' }} € / unité</p>
                       </div>
                       <div class="flex items-center gap-2 shrink-0">
-                        <label class="text-xs text-gray-500 dark:text-gray-400">Qté</label>
+                        <label class="text-xs text-gray-500">Qté</label>
                         <input type="number" [value]="part.quantity" min="1"
                           (change)="updatePartQty($index, +$any($event.target).value)"
-                          class="w-16 px-2 py-1 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-900 text-gray-900 dark:text-white text-sm text-center focus:outline-none focus:ring-1 focus:ring-blue-500" />
+                          class="w-16 px-2 py-1.5 bg-gray-700 border border-gray-600 rounded-lg text-white text-sm text-center focus:outline-none focus:ring-1 focus:ring-indigo-500" />
                         <button type="button" (click)="removePart($index)"
-                          class="w-7 h-7 flex items-center justify-center bg-red-100 hover:bg-red-200 dark:bg-red-900/30 dark:hover:bg-red-900/50 text-red-600 dark:text-red-400 rounded font-bold text-sm transition">✕</button>
+                          class="w-7 h-7 flex items-center justify-center bg-rose-900/30 hover:bg-rose-900/60 text-rose-400 rounded-lg font-bold text-sm transition">✕</button>
                       </div>
                     </div>
                   }
-                  <p class="text-xs text-gray-500 dark:text-gray-400 text-right">
-                    Total pièces : <strong>{{ getPartsTotal() | number:'1.2-2' }} €</strong>
-                    &nbsp;+&nbsp;50 € main d'œuvre&nbsp;=&nbsp;<strong>{{ (getPartsTotal() + 50) | number:'1.2-2' }} €</strong>
+                  <p class="text-xs text-gray-500 text-right font-mono">
+                    Pièces : <strong class="text-white">{{ getPartsTotal() | number:'1.2-2' }} €</strong>
+                    &nbsp;+ 50 € main d'œuvre =
+                    <strong class="text-emerald-400">{{ (getPartsTotal() + 50) | number:'1.2-2' }} €</strong>
                   </p>
                 </div>
               } @else {
-                <p class="text-xs text-gray-400 dark:text-gray-500 italic mt-2">Aucune pièce ajoutée (optionnel)</p>
+                <p class="text-xs text-gray-500 italic mt-2">Aucune pièce ajoutée (optionnel)</p>
               }
             </div>
 
-            <!-- ── File attachment ─────────────────────────────────────────── -->
             <div>
-              <label class="block text-sm font-semibold text-gray-900 dark:text-white mb-2">
-                📎 Pièce jointe — photo ou document (optionnel)
-              </label>
+              <label class="block text-sm font-bold text-gray-300 mb-2">📎 Pièce jointe — photo ou document (optionnel)</label>
               <input type="file" accept="image/jpeg,image/png,image/webp,application/pdf"
                 (change)="onFileSelected($event)"
-                class="block w-full text-sm text-gray-500 dark:text-gray-400
+                class="block w-full text-sm text-gray-500
                        file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0
-                       file:text-sm file:font-semibold
-                       file:bg-blue-50 file:text-blue-700
-                       hover:file:bg-blue-100 dark:file:bg-blue-900/30 dark:file:text-blue-300 cursor-pointer" />
+                       file:text-sm file:font-bold
+                       file:bg-indigo-900/40 file:text-indigo-300
+                       hover:file:bg-indigo-900/60 cursor-pointer" />
               @if (selectedFile()) {
-                <p class="text-xs text-green-600 dark:text-green-400 mt-1">✓ {{ selectedFile()!.name }}</p>
+                <p class="text-xs text-emerald-400 mt-1 font-semibold">✓ {{ selectedFile()!.name }}</p>
               }
               @if (isUploadingFile()) {
-                <p class="text-xs text-blue-500 mt-1 animate-pulse">📤 Envoi du fichier...</p>
+                <p class="text-xs text-indigo-400 mt-1 animate-pulse font-semibold">📤 Envoi du fichier...</p>
               }
             </div>
 
-            <!-- ── Actions ────────────────────────────────────────────────── -->
-            <div class="border-t border-gray-200 dark:border-gray-700 pt-4 space-y-3">
-
-              <!-- Submit to chef — primary action -->
+            <div class="border-t border-gray-800 pt-5 space-y-3">
               <button type="button" (click)="submitToChef()" [disabled]="isSubmitting()"
-                class="w-full px-4 py-3 bg-orange-600 hover:bg-orange-700 disabled:bg-gray-400 text-white rounded-lg font-bold transition text-sm flex items-center justify-center gap-2">
+                class="w-full px-4 py-3 bg-orange-600 hover:bg-orange-700 disabled:opacity-50 text-white rounded-xl font-black transition flex items-center justify-center gap-2">
                 @if (isSubmitting() && submitMode() === 'submit') {
-                  <span class="inline-block animate-spin">⏳</span> Envoi en cours...
+                  <span class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></span> Envoi en cours...
                 } @else {
                   ✅ Soumettre le rapport au chef
                 }
               </button>
-              <p class="text-xs text-center text-gray-500 dark:text-gray-400">
-                Le chef pourra modifier le rapport avant de l'envoyer au client avec le devis.
-              </p>
-
+              <p class="text-xs text-center text-gray-600">Le chef pourra modifier le rapport avant d'envoyer le devis au client.</p>
               <div class="flex gap-3">
-                <!-- Save draft — secondary action -->
                 <button type="button" (click)="saveProgress()" [disabled]="isSubmitting()"
-                  class="flex-1 px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 font-semibold transition text-sm disabled:opacity-50">
-                  @if (isSubmitting() && submitMode() === 'save') {
-                    ⏳ Sauvegarde...
-                  } @else {
-                    💾 Sauvegarder le brouillon
-                  }
+                  class="flex-1 px-4 py-2.5 bg-gray-800 hover:bg-gray-700 border border-gray-700 rounded-xl text-gray-300 font-bold transition text-sm disabled:opacity-50">
+                  @if (isSubmitting() && submitMode() === 'save') { ⏳ Sauvegarde... } @else { 💾 Brouillon }
                 </button>
                 <button type="button" (click)="closeTaskModal()" [disabled]="isSubmitting()"
-                  class="px-4 py-2.5 rounded-lg text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 font-semibold transition text-sm disabled:opacity-50">
+                  class="px-4 py-2.5 rounded-xl text-gray-500 hover:text-white border border-gray-700 hover:border-gray-500 font-bold transition text-sm">
                   Annuler
                 </button>
               </div>
             </div>
-
           </form>
         </div>
       </div>
     }
   }
 
-  <!-- ════════════════════════════ REPAIR COMPLETION MODAL ═════════════════ -->
+  <!-- ════════════════════ REPAIR COMPLETION MODAL ════════════════════ -->
   @if (showRepairModal()) {
-    <div class="fixed inset-0 bg-black/50 dark:bg-black/70 flex items-center justify-center z-50 p-4">
-      <div class="bg-white dark:bg-gray-900 rounded-xl max-w-lg w-full border border-gray-200 dark:border-gray-700 shadow-2xl">
-        <!-- Header -->
-        <div class="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
+    <div class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+      <div class="bg-gray-900 border border-gray-800 rounded-2xl max-w-lg w-full shadow-2xl animate-in zoom-in-95 duration-200">
+        <div class="flex items-center justify-between p-6 border-b border-gray-800">
           <div>
-            <h3 class="text-xl font-bold text-gray-900 dark:text-white">🏁 Terminer la réparation</h3>
-            <p class="text-sm text-gray-500 dark:text-gray-400 mt-0.5">Soumettez au chef pour validation finale</p>
+            <h3 class="text-xl font-black text-white">🏁 Terminer la réparation</h3>
+            <p class="text-gray-400 text-sm mt-0.5">Soumettez au chef pour validation finale</p>
           </div>
-          <button (click)="closeRepairModal()" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 text-2xl leading-none">✕</button>
+          <button (click)="closeRepairModal()" class="text-gray-500 hover:text-white transition text-2xl leading-none">✕</button>
         </div>
 
         <form [formGroup]="repairForm" class="p-6 space-y-5">
           @if (error()) {
-            <div class="p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
-              <p class="text-sm text-red-800 dark:text-red-300">{{ error() }}</p>
-            </div>
+            <div class="p-3 bg-rose-900/20 border border-rose-800 rounded-xl text-sm text-rose-400 font-semibold">⚠️ {{ error() }}</div>
           }
 
-          <div class="p-3 bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-700 rounded-lg text-sm text-emerald-800 dark:text-emerald-300">
+          <div class="p-4 bg-emerald-900/20 border border-emerald-800/50 rounded-xl text-sm text-emerald-300 font-medium">
             ✅ Le devis a été approuvé. Décrivez les travaux effectués puis soumettez — le chef validera et notifiera le client.
           </div>
 
-          <!-- Completion notes -->
           <div>
-            <label class="block text-sm font-semibold text-gray-900 dark:text-white mb-2">
-              📝 Notes de clôture (optionnel)
-            </label>
+            <label class="block text-sm font-bold text-gray-300 mb-2">📝 Notes de clôture (optionnel)</label>
             <textarea formControlName="completionNotes" rows="4"
-              class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 resize-none text-sm"
+              class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 resize-none text-sm placeholder-gray-600"
               placeholder="Décrivez les réparations effectuées, résultats, observations finales...">
             </textarea>
           </div>
 
-          <!-- File attachment -->
           <div>
-            <label class="block text-sm font-semibold text-gray-900 dark:text-white mb-2">
-              📎 Photo / document (optionnel)
-            </label>
+            <label class="block text-sm font-bold text-gray-300 mb-2">📎 Photo / document (optionnel)</label>
             <input type="file" accept="image/jpeg,image/png,image/webp,application/pdf"
               (change)="onFileSelected($event)"
-              class="block w-full text-sm text-gray-500 dark:text-gray-400
+              class="block w-full text-sm text-gray-500
                      file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0
-                     file:text-sm file:font-semibold
-                     file:bg-emerald-50 file:text-emerald-700
-                     hover:file:bg-emerald-100 dark:file:bg-emerald-900/30 dark:file:text-emerald-300 cursor-pointer" />
+                     file:text-sm file:font-bold
+                     file:bg-emerald-900/40 file:text-emerald-300
+                     hover:file:bg-emerald-900/60 cursor-pointer" />
             @if (selectedFile()) {
-              <p class="text-xs text-green-600 dark:text-green-400 mt-1">✓ {{ selectedFile()!.name }}</p>
+              <p class="text-xs text-emerald-400 mt-1 font-semibold">✓ {{ selectedFile()!.name }}</p>
             }
             @if (isUploadingFile()) {
-              <p class="text-xs text-blue-500 mt-1 animate-pulse">📤 Envoi du fichier...</p>
+              <p class="text-xs text-indigo-400 mt-1 animate-pulse font-semibold">📤 Envoi du fichier...</p>
             }
           </div>
 
-          <!-- Actions -->
           <div class="flex gap-3 pt-2">
             <button type="button" (click)="submitRepairToChef()" [disabled]="isSubmitting()"
-              class="flex-1 px-4 py-3 bg-emerald-600 hover:bg-emerald-700 disabled:opacity-60 text-white rounded-lg font-bold transition text-sm">
-              @if (isSubmitting()) { ⏳ Envoi en cours... } @else { ✅ Soumettre au chef }
+              class="flex-1 px-4 py-3 bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 text-white rounded-xl font-black transition">
+              @if (isSubmitting()) {
+                <span class="inline-flex items-center justify-center gap-2">
+                  <span class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></span> Envoi...
+                </span>
+              } @else { ✅ Soumettre au chef }
             </button>
             <button type="button" (click)="closeRepairModal()" [disabled]="isSubmitting()"
-              class="px-4 py-3 rounded-lg text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 font-semibold transition text-sm">
+              class="px-4 py-3 rounded-xl text-gray-500 hover:text-white border border-gray-700 hover:border-gray-500 font-bold transition">
               Annuler
             </button>
           </div>
@@ -362,4 +333,5 @@
     </div>
   }
 </div>
-
+</div>
+</div>

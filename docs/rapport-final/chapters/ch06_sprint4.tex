@@ -1,0 +1,96 @@
+﻿% ============================================================
+%  CHAPITRE 6 â€” SPRINT 4 : OPÃ‰RATIONS D'ATELIER ET CYCLE DE VIE
+% ============================================================
+\chapter{Sprint 4 : OpÃ©rations d'Atelier et Cycle de Vie des Interventions}
+
+\chapintro{Ce sprint reprÃ©sente le c\oe ur des opÃ©rations de l'atelier~:
+affectation des mÃ©caniciens, examens, facturation, approbation client, rÃ©paration,
+validation et paiement. Toutes ces Ã©tapes sont tracÃ©es automatiquement par le
+\textbf{Intervention Lifecycle Tracker} sur 10 Ã©tats.}
+
+\section{Introduction}
+
+Une fois le rendez-vous confirmÃ©, le flux opÃ©rationnel passe entre les mains de
+l'Ã©quipe de l'atelier. Un tracker transverse se met Ã  jour automatiquement Ã  chaque
+transition, offrant une visibilitÃ© totale sur l'Ã©tat de chaque intervention.
+
+\section{Identification du Backlog Sprint 4}
+
+\begin{table}[H]
+\centering
+\begin{tabularx}{\textwidth}{|l|X|l|c|}
+\hline
+\rowcolor{gray!20}
+\textbf{ID} & \textbf{User Story} & \textbf{PrioritÃ©} & \textbf{SP} \\
+\hline
+US15 & Chef~: assigner des mÃ©caniciens Ã  une tÃ¢che & \prio{H} & 5 \\[2pt]\hline
+US16 & MÃ©canicien~: consulter ses tÃ¢ches assignÃ©es & \prio{H} & 3 \\[2pt]\hline
+US17 & MÃ©canicien~: soumettre un rapport d'examen & \prio{H} & 5 \\[2pt]\hline
+US18 & Chef~: rÃ©viser et valider le rapport d'examen & \prio{H} & 3 \\[2pt]\hline
+US19 & Chef~: crÃ©er et finaliser un devis (facture) & \prio{H} & 5 \\[2pt]\hline
+US20 & Client~: approuver ou refuser le devis & \prio{H} & 3 \\[2pt]\hline
+US21 & MÃ©canicien~: soumettre la fin de rÃ©paration & \prio{H} & 3 \\[2pt]\hline
+US22 & Chef~: valider la rÃ©paration et notifier le client & \prio{H} & 3 \\[2pt]\hline
+US23 & Admin~: enregistrer le paiement & \prio{H} & 3 \\[2pt]\hline
+US24 & SystÃ¨me~: tracer le cycle de vie (10 Ã©tats) & \prio{H} & 8 \\[2pt]\hline
+US25 & Utilisateurs~: notifications in-app et push FCM & \prio{M} & 5 \\[2pt]\hline
+US26 & Client~: tÃ©lÃ©charger la facture en PDF & \prio{M} & 3 \\[2pt]\hline
+US27 & Client / MÃ©canicien~: application Android native & \prio{M} & 13 \\[2pt]\hline
+\multicolumn{3}{|r|}{\textbf{Total Sprint 4}} & \textbf{62 SP} \\
+\hline
+\end{tabularx}
+\caption{Backlog Sprint 4 --- OpÃ©rations d'Atelier}
+\label{tab:backlog-s4}
+\end{table}
+
+\section{Conception}
+
+\subsection{Diagramme de cas d'utilisation --- Sprint 4}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth,height=0.58\textheight,keepaspectratio]{diagrams-svg/uc_s4.png}
+\caption{Diagramme de cas d'utilisation --- Sprint 4}
+\label{fig:uc-s4}
+\end{figure}
+
+\subsection*{Machine d'Ã©tats --- Intervention Lifecycle Tracker}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.72\textwidth]{diagrams-svg/lifecycle.png}
+\caption{Machine d'Ã©tats --- Intervention Lifecycle Tracker}
+\label{fig:lifecycle}
+\end{figure}
+
+\subsection{Diagramme de classes --- Sprint 4}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth,height=0.62\textheight,keepaspectratio]{diagrams-svg/class_s4.png}
+\caption{Diagramme de classes --- Sprint 4 (Atelier et Cycle de Vie)}
+\label{fig:class-s4}
+\end{figure}
+
+\subsection{Diagramme de sÃ©quence}
+
+\subsubsection*{SC6 --- Finalisation de Facture et Approbation Client (US19+US20) :
+fonctionnalitÃ© principale}
+
+\noindent Le chef finalise le devis, le client reÃ§oit une notification et l'approuve.
+Le tracker passe Ã  \texttt{InvoicePending} puis \texttt{RepairInProgress}.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.92\textheight,keepaspectratio]{diagrams-svg/seq_s4_invoice.png}
+\caption{Diagramme de sÃ©quence SC6 --- Finalisation et Approbation du Devis}
+\label{fig:seq-s4-invoice}
+\end{figure}
+
+\section{Conclusion}
+
+Le Sprint 4 a rÃ©alisÃ© l'ensemble des opÃ©rations mÃ©tier de l'atelier, de l'affectation
+des mÃ©caniciens jusqu'Ã  la clÃ´ture de l'intervention. Le \textit{Intervention
+Lifecycle Tracker}, mis Ã  jour automatiquement Ã  chaque Ã©tape via MediatR, offre
+une traÃ§abilitÃ© complÃ¨te. La gÃ©nÃ©ration de facture PDF (QuestPDF), les notifications
+la synchronisation SQLite → MySQL via FastAPI et l'application mobile Android complètent l'expérience utilisateur.

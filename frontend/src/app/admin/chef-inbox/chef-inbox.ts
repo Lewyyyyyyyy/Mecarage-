@@ -95,10 +95,19 @@ export class ChefInboxComponent implements OnInit {
       return;
     }
 
+    const formValue = this.feedbackForm.value;
+    if (formValue.newStatus === 'Approved' && formValue.availablePeriodStart && formValue.availablePeriodEnd) {
+      const start = new Date(formValue.availablePeriodStart);
+      const end = new Date(formValue.availablePeriodEnd);
+      if (start > end) {
+        this.error = 'La date de debut ne peut pas etre superieure a la date de fin.';
+        return;
+      }
+    }
+
     this.isSubmitting = true;
     this.error = null;
 
-    const formValue = this.feedbackForm.value;
     const feedbackData = {
       feedback: formValue.feedback,
       newStatus: formValue.newStatus,

@@ -1,0 +1,49 @@
+@startuml uc_s2
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontName Arial
+skinparam defaultFontSize 12
+skinparam ActorBorderColor #1D4ED8
+skinparam ActorBackgroundColor #DBEAFE
+skinparam ActorFontStyle bold
+skinparam ActorFontSize 12
+skinparam UsecaseBorderColor #1D4ED8
+skinparam UsecaseBackgroundColor #EFF6FF
+skinparam UsecaseFontSize 12
+skinparam ArrowColor #4B5563
+skinparam ArrowThickness 1.5
+skinparam ArrowFontSize 13
+skinparam ArrowFontStyle bold
+skinparam ArrowFontColor #1E40AF
+skinparam RectangleBorderColor #1D4ED8
+skinparam RectangleBorderThickness 2
+skinparam RectangleBackgroundColor #FFFFFF
+skinparam RectangleFontSize 13
+skinparam RectangleFontStyle bold
+skinparam TitleFontSize 14
+skinparam TitleFontStyle bold
+skinparam padding 8
+
+title Sprint 2 — Gestion des Données de Référence
+
+left to right direction
+
+actor "Super Admin" as sad
+actor "Admin Entreprise" as adm
+actor "Client" as cli
+
+rectangle "Sprint 2 : Données de Référence" {
+  usecase "Gérer Tenants (US05)" as UC05
+  usecase "Créer / Gérer Garages (US06)" as UC06
+  usecase "Gérer Personnel (US07)" as UC07
+  usecase "Gérer Inventaire Pièces (US09)" as UC09
+  usecase "Enregistrer Véhicule (US08)" as UC08
+}
+
+sad --> UC05
+adm --> UC06
+adm --> UC07
+adm --> UC09
+cli --> UC08
+
+@enduml
+

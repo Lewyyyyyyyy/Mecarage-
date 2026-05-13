@@ -4,6 +4,11 @@
         <name>MecaManage.API</name>
     </assembly>
     <members>
+        <member name="M:MecaManage.API.Controllers.AdminController.GetPublicTrustKpis">
+            <summary>
+            Public trust KPIs for landing page (no authentication required)
+            </summary>
+        </member>
         <member name="M:MecaManage.API.Controllers.AdminController.GetKpis">
             <summary>
             Get KPIs for SuperAdmin dashboard
@@ -311,6 +316,15 @@
             <summary>
             Downloads a PDF version of an invoice.
             </summary>
+        </member>
+        <member name="M:MecaManage.API.Controllers.NotificationsController.GetMyNotifications">
+            <summary>GET /api/notifications/me — returns notifications for the current user (any role)</summary>
+        </member>
+        <member name="M:MecaManage.API.Controllers.NotificationsController.GetUnreadCount">
+            <summary>GET /api/notifications/unread-count — returns unread count for the current user (any role)</summary>
+        </member>
+        <member name="M:MecaManage.API.Controllers.NotificationsController.MarkAllRead">
+            <summary>PATCH /api/notifications/mark-all-read — marks all current user's notifications as read</summary>
         </member>
         <member name="T:MecaManage.API.Controllers.RepairTasksController">
             <summary>

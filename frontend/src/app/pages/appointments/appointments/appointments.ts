@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, computed, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -26,6 +26,7 @@ export class AppointmentsComponent implements OnInit {
   bookingForm: FormGroup;
 
   activeTab = signal<'appointments' | 'book'>('appointments');
+  selectedDayKey = signal<string | null>(null);
 
   constructor(
     private appointmentService: AppointmentService,
@@ -53,6 +54,63 @@ export class AppointmentsComponent implements OnInit {
     });
   }
 
+  readonly weekLabel = computed(() => {
+    const today = new Date();
+    const start = this.getWeekStart(today);
+    const end = new Date(start);
+    end.setDate(start.getDate() + 6);
+    return `${start.toLocaleDateString('fr-FR')} - ${end.toLocaleDateString('fr-FR')}`;
+  });
+
+  readonly currentWeekDays = computed(() => {
+    const start = this.getWeekStart(new Date());
+
+    const days: Array<{
+      date: Date;
+      dayNumber: number;
+      key: string;
+      hasAppointments: boolean;
+      count: number;
+    }> = [];
+
+    for (let i = 0; i < 7; i++) {
+      const date = new Date(start);
+      date.setDate(start.getDate() + i);
+      const key = this.dateKey(date);
+      const count = this.getAppointmentsByDay(key).length;
+      days.push({
+        date,
+        dayNumber: date.getDate(),
+        key,
+        hasAppointments: count > 0,
+        count,
+      });
+    }
+
+    return days;
+  });
+
+  readonly selectedDayAppointments = computed(() => {
+    const key = this.selectedDayKey();
+    if (!key) return [];
+    return this.getAppointmentsByDay(key).sort((a, b) => this.toDateTime(a).getTime() - this.toDateTime(b).getTime());
+  });
+
+  readonly nextAppointment = computed(() => {
+    const now = new Date();
+    return this.appointments()
+      .filter(a => !['Cancelled', 'Declined', 'Completed'].includes(a.status))
+      .map(a => ({ apt: a, at: this.toDateTime(a) }))
+      .filter(item => item.at.getTime() >= now.getTime())
+      .sort((a, b) => a.at.getTime() - b.at.getTime())[0]?.apt ?? null;
+  });
+
+  readonly nextAppointmentMessage = computed(() => {
+    const next = this.nextAppointment();
+    if (!next) return null;
+    return `Prochain RDV: ${new Date(next.preferredDate).toLocaleDateString('fr-FR')} a ${this.formatTime(next.preferredTime)}`;
+  });
+
   loadData(): void {
     this.loading.set(true);
     this.error.set(null);
@@ -61,6 +119,7 @@ export class AppointmentsComponent implements OnInit {
     this.appointmentService.getMyAppointments().subscribe({
       next: (apts) => {
         this.appointments.set(apts || []);
+        this.bootstrapSelectedDate(apts || []);
         this.loading.set(false);
       },
       error: (err) => {
@@ -87,10 +146,68 @@ export class AppointmentsComponent implements OnInit {
     });
   }
 
+  setActiveTab(tab: 'appointments' | 'book'): void {
+    this.activeTab.set(tab);
+  }
+
+  selectDay(dayKey: string): void {
+    this.selectedDayKey.set(dayKey);
+  }
+
+  isToday(day: Date): boolean {
+    return this.dateKey(day) === this.dateKey(new Date());
+  }
+
+  isSelected(dayKey: string): boolean {
+    return this.selectedDayKey() === dayKey;
+  }
+
+  formatTime(time: string): string {
+    const [h = '00', m = '00'] = (time || '').split(':');
+    return `${h.padStart(2, '0')}:${m.padStart(2, '0')}`;
+  }
+
+  formatCompactDate(dateString: string): string {
+    return new Date(dateString).toLocaleDateString('fr-FR', {
+      weekday: 'short',
+      day: '2-digit',
+      month: 'short',
+    });
+  }
+
+  hasBookedAppointmentForReport(reportId: string): boolean {
+    return this.appointments().some(a => a.symptomReportId === reportId);
+  }
+
+  getReportBookingLabel(reportId: string): string {
+    const appointment = this.appointments().find(a => a.symptomReportId === reportId);
+    if (!appointment) return '';
+    return `RDV deja cree (${this.getStatusBadge(appointment.status).label})`;
+  }
+
   openBookingModal(report: SymptomReportDto): void {
     this.selectedReport = report;
-    this.bookingForm.patchValue({ vehicleId: report.vehicleId });
+    const minDate = this.getInputDate(report.availablePeriodStart);
+    const maxDate = this.getInputDate(report.availablePeriodEnd);
+    const today = this.toInputDate(new Date());
+
+    let preferredDate = today;
+    if (minDate && preferredDate < minDate) preferredDate = minDate;
+    if (maxDate && preferredDate > maxDate) preferredDate = maxDate;
+
+    this.bookingForm.patchValue({
+      vehicleId: report.vehicleId,
+      preferredDate,
+    });
     this.showBookingModal.set(true);
+  }
+
+  getBookingMinDate(): string {
+    return this.getInputDate(this.selectedReport?.availablePeriodStart ?? null);
+  }
+
+  getBookingMaxDate(): string {
+    return this.getInputDate(this.selectedReport?.availablePeriodEnd ?? null);
   }
 
   submitBooking(): void {
@@ -182,5 +299,64 @@ export class AppointmentsComponent implements OnInit {
 
   get pendingInvoices(): InvoiceDto[] {
     return this.myInvoices().filter(i => i.status === 'AwaitingApproval');
+  }
+
+  private dateKey(date: Date): string {
+    const y = date.getFullYear();
+    const m = String(date.getMonth() + 1).padStart(2, '0');
+    const d = String(date.getDate()).padStart(2, '0');
+    return `${y}-${m}-${d}`;
+  }
+
+  private toDateTime(apt: AppointmentDto): Date {
+    const base = new Date(apt.preferredDate);
+    const [h = '00', m = '00'] = (apt.preferredTime || '').split(':');
+    base.setHours(Number(h), Number(m), 0, 0);
+    return base;
+  }
+
+  private getAppointmentsByDay(dayKey: string): AppointmentDto[] {
+    return this.appointments().filter(a => this.dateKey(new Date(a.preferredDate)) === dayKey);
+  }
+
+  private bootstrapSelectedDate(apts: AppointmentDto[]): void {
+    const next = apts
+      .map(a => ({ apt: a, at: this.toDateTime(a) }))
+      .filter(item => item.at.getTime() >= Date.now())
+      .sort((a, b) => a.at.getTime() - b.at.getTime())[0]?.apt;
+
+    if (next) {
+      const date = new Date(next.preferredDate);
+      this.selectedDayKey.set(this.dateKey(date));
+      return;
+    }
+
+    const today = new Date();
+    this.selectedDayKey.set(this.dateKey(today));
+  }
+
+  private getWeekStart(date: Date): Date {
+    const d = new Date(date);
+    const day = d.getDay();
+    const diff = day === 0 ? -6 : 1 - day; // Monday
+    d.setDate(d.getDate() + diff);
+    d.setHours(0, 0, 0, 0);
+    return d;
+  }
+
+  private getInputDate(raw: string | null): string {
+    if (!raw) return '';
+    const parsed = new Date(raw);
+    if (Number.isNaN(parsed.getTime())) {
+      return raw.includes('T') ? raw.split('T')[0] : raw;
+    }
+    return this.toInputDate(parsed);
+  }
+
+  private toInputDate(date: Date): string {
+    const y = date.getFullYear();
+    const m = String(date.getMonth() + 1).padStart(2, '0');
+    const d = String(date.getDate()).padStart(2, '0');
+    return `${y}-${m}-${d}`;
   }
 }

@@ -1,0 +1,14 @@
+{
+  "metadata": {
+    "timestamp": "2026-05-12T23:35:24.931058+00:00",
+    "vehicle": "toyota corolla (2020)",
+    "symptoms": "la voiture ne marcha pas   "
+  },
+  "chunks": [
+    "CLIMATISATION - EMBRAYAGE COMPRESSEUR NE COLLE PAS INTERMITTENT\nSymptomes: clim ne s enclenche pas, pas de clic compresseur, air chaud, defaut intermittent\nCauses possibles: bobine embrayage HS, pression basse, relais\nType atelier: electrique\nUrgence: modere\nCout estime: 150-500 TND\nActions: test alimentation compresseur et pression",
+    "CLIMATISATION - EMBRAYAGE COMPRESSEUR NE COLLE PAS SUR ROUTE\nSymptomes: clim ne s enclenche pas, pas de clic compresseur, air chaud, sur route\nCauses possibles: bobine embrayage HS, pression basse, relais\nType atelier: electrique\nUrgence: modere\nCout estime: 150-500 TND\nActions: test alimentation compresseur et pression",
+    "CLIMATISATION - EMBRAYAGE COMPRESSEUR NE COLLE PAS SOUS PLUIE\nSymptomes: clim ne s enclenche pas, pas de clic compresseur, air chaud, surtout sous pluie\nCauses possibles: bobine embrayage HS, pression basse, relais\nType atelier: electrique\nUrgence: modere\nCout estime: 150-500 TND\nActions: test alimentation compresseur et pression",
+    "CLIMATISATION - EMBRAYAGE COMPRESSEUR NE COLLE PAS AU RALENTI\nSymptomes: clim ne s enclenche pas, pas de clic compresseur, air chaud, plus net au ralenti\nCauses possibles: bobine embrayage HS, pression basse, relais\nType atelier: electrique\nUrgence: modere\nCout estime: 150-500 TND\nActions: test alimentation compresseur et pression",
+    "CLIMATISATION - EMBRAYAGE COMPRESSEUR NE COLLE PAS EN EMBOUTEILLAGE\nSymptomes: clim ne s enclenche pas, pas de clic compresseur, air chaud, plus net en embouteillage\nCauses possibles: bobine embrayage HS, pression basse, relais\nType atelier: electrique\nUrgence: modere\nCout estime: 150-500 TND\nActions: test alimentation compresseur et pression"
+  ]
+}

@@ -1,0 +1,102 @@
+﻿% ============================================================
+%  CHAPITRE 5 â€” SPRINT 3 : RAPPORTS, DIAGNOSTIC IA ET RENDEZ-VOUS
+% ============================================================
+\chapter{Sprint 3 : Rapports de SymptÃ´mes, Diagnostic IA et Rendez-vous}
+
+\chapintro{Ce sprint implÃ©mente la boucle de diagnostic prÃ©liminaire et de prise
+de rendez-vous. Le client soumet ses symptÃ´mes, le service IA gÃ©nÃ¨re un diagnostic
+structurÃ©, le chef d'atelier le rÃ©vise puis propose une plage, et le client rÃ©serve
+son rendez-vous.}
+
+\section{Introduction}
+
+La valeur ajoutÃ©e centrale de MecaRage rÃ©side dans son module de diagnostic IA.
+Le service exploite une architecture RAG (Retrieval-Augmented Generation) combinant
+l'algorithme BM25 pour la recherche dans la base de connaissances mÃ©canique
+et le modÃ¨le \textbf{Ollama} (LLM local, open-source) pour la gÃ©nÃ©ration du diagnostic structurÃ©.
+
+\section{Identification du Backlog Sprint 3}
+
+\begin{table}[H]
+\centering
+\begin{tabularx}{\textwidth}{|l|X|l|c|}
+\hline
+\rowcolor{gray!20}
+\textbf{ID} & \textbf{User Story} & \textbf{PrioritÃ©} & \textbf{SP} \\
+\hline
+US10 & Client~: soumettre une description textuelle des symptÃ´mes & \prio{H} & 5 \\[3pt]\hline
+US11 & SystÃ¨me~: dÃ©clencher automatiquement le service IA (RAG + Ollama) & \prio{H} & 8 \\[3pt]\hline
+US12 & ChefAtelier~: rÃ©viser le rapport et proposer une plage de RDV & \prio{H} & 5 \\[3pt]\hline
+US13 & Client~: rÃ©server un rendez-vous dans la plage proposÃ©e & \prio{H} & 3 \\[3pt]\hline
+US14 & ChefAtelier~: approuver ou refuser le rendez-vous & \prio{H} & 3 \\[3pt]\hline
+\multicolumn{3}{|r|}{\textbf{Total Sprint 3}} & \textbf{24 SP} \\
+\hline
+\end{tabularx}
+\caption{Backlog Sprint 3 --- SymptÃ´mes, IA et Rendez-vous}
+\label{tab:backlog-s3}
+\end{table}
+
+\noindent\textbf{TÃ¢ches techniques~:}
+\begin{enumerate}[noitemsep]
+  \item EntitÃ©s \texttt{SymptomReport} et \texttt{Appointment}.
+  \item Service IA FastAPI~: architecture RAG BM25 + Ollama (LLM local), endpoint
+    \texttt{POST /diagnose}.
+  \item Commandes~: \texttt{CreateSymptomReportCommand},
+    \texttt{AddChefFeedbackCommand}, \texttt{CreateAppointmentCommand},
+    \texttt{ApproveAppointmentCommand}.
+  \item IntÃ©gration \texttt{HttpClient} cÃ´tÃ© back-end vers le service IA.
+  \item Notifications automatiques au chef Ã  chaque nouveau rapport.
+  \item Interface Angular~: formulaire de symptÃ´mes, inbox chef, calendrier.
+\end{enumerate}
+
+\section{Conception}
+
+\subsection{Diagramme de cas d'utilisation --- Sprint 3}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\textwidth]{diagrams-svg/uc_s3.png}
+\caption{Diagramme de cas d'utilisation --- Sprint 3}
+\label{fig:uc-s3}
+\end{figure}
+
+\subsection{Pipeline du Diagnostic IA}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\textwidth]{diagrams-svg/rag_pipeline.png}
+\caption{Pipeline RAG --- Service de diagnostic IA}
+\label{fig:rag-pipeline}
+\end{figure}
+
+\subsection{Diagramme de classes --- Sprint 3}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth,height=0.62\textheight,keepaspectratio]{diagrams-svg/class_s3.png}
+\caption{Diagramme de classes --- Sprint 3 (SymptÃ´mes, IA et Rendez-vous)}
+\label{fig:class-s3}
+\end{figure}
+
+\subsection{Diagramme de sÃ©quence}
+
+\subsubsection*{SC5 --- Soumission de SymptÃ´mes et Diagnostic IA (US10+US11) :
+fonctionnalitÃ© principale}
+
+\noindent Le client soumet des symptÃ´mes, le systÃ¨me appelle le service IA, sauvegarde
+le rapport enrichi, et notifie le chef d'atelier.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.92\textheight,keepaspectratio]{diagrams-svg/seq_s3_symptom.png}
+\caption{Diagramme de sÃ©quence SC5 --- Soumission de SymptÃ´mes et Diagnostic IA}
+\label{fig:seq-s3-symptom}
+\end{figure}
+
+\section{Conclusion}
+
+Le Sprint 3 a rÃ©alisÃ© la premiÃ¨re boucle de valeur visible par le client~: soumettre
+des symptÃ´mes, recevoir un diagnostic IA instantanÃ© avec score de confiance, obtenir
+une plage de rendez-vous proposÃ©e par le chef, et Ãªtre notifiÃ© de sa confirmation.
+L'approbation d'un rendez-vous dÃ©clenche automatiquement, via MediatR, la crÃ©ation
+du traceur de cycle de vie de l'intervention.

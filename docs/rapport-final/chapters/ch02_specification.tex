@@ -1,0 +1,182 @@
+﻿% ============================================================
+%  CHAPITRE 2 â€” SPÃ‰CIFICATION FONCTIONNELLE ET TECHNIQUE
+% ============================================================
+\chapter{SpÃ©cification Fonctionnelle et Technique}
+
+\chapintro{Ce chapitre formalise les exigences fonctionnelles et non-fonctionnelles
+de la plateforme Ã  travers le diagramme de cas d'utilisation global, le diagramme
+de classes du domaine, le backlog produit complet et les choix techniques.}
+
+\section{Introduction}
+
+La phase de spÃ©cification garantit que l'Ã©quipe de dÃ©veloppement et les parties
+prenantes partagent une vision commune des fonctionnalitÃ©s Ã  rÃ©aliser. Ce chapitre
+prÃ©sente les outils de modÃ©lisation utilisÃ©s pour formaliser cette vision.
+
+\section{SpÃ©cification Fonctionnelle}
+
+\subsection{Exigences Fonctionnelles}
+
+\begin{longtable}{|p{0.8cm}|p{2.8cm}|p{8cm}|}
+\caption{Exigences fonctionnelles par rÃ´le}\label{tab:exigences}\\
+\hline
+\rowcolor{gray!20}
+\textbf{NÂ°} & \textbf{Acteur} & \textbf{Exigence} \\
+\hline
+\endfirsthead
+\hline
+\rowcolor{gray!20}
+\textbf{NÂ°} & \textbf{Acteur} & \textbf{Exigence} \\
+\hline
+\endhead
+\hline
+\endlastfoot
+EF01 & Tous & S'authentifier avec email et mot de passe (JWT) \\[2pt]\hline
+EF02 & Tous & RafraÃ®chir automatiquement le token d'accÃ¨s \\[2pt]\hline
+EF03 & Tous & Modifier son mot de passe \\[2pt]\hline
+EF04 & SuperAdmin & CrÃ©er et gÃ©rer les tenants (entreprises) \\[2pt]\hline
+EF05 & AdminEntreprise & CrÃ©er et gÃ©rer les garages du tenant \\[2pt]\hline
+EF06 & AdminEntreprise & CrÃ©er et gÃ©rer le personnel (chefs, mÃ©caniciens) \\[2pt]\hline
+EF07 & AdminEntreprise & Consulter les indicateurs de performance (KPI) \\[2pt]\hline
+EF08 & AdminEntreprise & Enregistrer le paiement d'une intervention \\[2pt]\hline
+EF09 & Client & S'inscrire sur la plateforme \\[2pt]\hline
+EF10 & Client & GÃ©rer ses vÃ©hicules (ajout, consultation) \\[2pt]\hline
+EF11 & Client & Soumettre un rapport de symptÃ´mes textuels \\[2pt]\hline
+EF12 & SystÃ¨me & GÃ©nÃ©rer un diagnostic IA (Ollama RAG) automatiquement \\[2pt]\hline
+EF13 & Client & RÃ©server un rendez-vous dans la plage proposÃ©e \\[2pt]\hline
+EF14 & Client & Approuver ou refuser un devis \\[2pt]\hline
+EF15 & Client & Suivre le cycle de vie de son intervention \\[2pt]\hline
+EF16 & Client & TÃ©lÃ©charger sa facture en PDF \\[2pt]\hline
+EF17 & ChefAtelier & RÃ©viser les rapports et proposer une plage RDV \\[2pt]\hline
+EF18 & ChefAtelier & Approuver ou refuser des rendez-vous \\[2pt]\hline
+EF19 & ChefAtelier & Assigner des mÃ©caniciens Ã  une tÃ¢che de rÃ©paration \\[2pt]\hline
+EF20 & ChefAtelier & RÃ©viser le rapport d'examen du mÃ©canicien \\[2pt]\hline
+EF21 & ChefAtelier & CrÃ©er et finaliser une facture (devis) \\[2pt]\hline
+EF22 & ChefAtelier & Valider la rÃ©paration et notifier le client \\[2pt]\hline
+EF23 & MÃ©canicien & Consulter ses tÃ¢ches assignÃ©es \\[2pt]\hline
+EF24 & MÃ©canicien & Soumettre un rapport d'examen (piÃ¨ces, observations) \\[2pt]\hline
+EF25 & MÃ©canicien & Soumettre un rapport de fin de rÃ©paration \\[2pt]\hline
+EF26 & SystÃ¨me & Envoyer notifications in-app (MySQL) et push (FCM) \\[2pt]\hline
+EF27 & AdminEntreprise & GÃ©rer l'inventaire des piÃ¨ces dÃ©tachÃ©es \\[2pt]\hline
+EF28 & Tous & AccÃ©der via application Android (client et mÃ©canicien) \\[2pt]\hline
+\end{longtable}
+
+% â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”
+\subsection{Diagramme de cas d'utilisation global}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.92\textheight,height=0.80\textwidth,keepaspectratio]{diagrams-svg/uc_global.png}
+\caption{Diagramme de cas d'utilisation global --- MecaRage}
+\label{fig:uc-global}
+\end{figure}
+
+% â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”
+\subsection{Diagramme de classes global}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.92\textheight,height=0.80\textwidth,keepaspectratio]{diagrams-svg/class_global.png}
+\caption{Diagramme de classes global --- EntitÃ©s du domaine MecaRage}
+\label{fig:class-global}
+\end{figure}
+
+% â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”
+\subsection{Backlog Produit}
+
+\begin{longtable}{|p{0.8cm}|p{2.4cm}|p{5.4cm}|p{1.4cm}|p{0.7cm}|p{1.3cm}|}
+\caption{Backlog Produit complet --- MecaRage}\label{tab:backlog}\\
+\hline
+\rowcolor{gray!20}
+\textbf{ID} & \textbf{En tant que} & \textbf{Je veux} & \textbf{PrioritÃ©} & \textbf{SP} & \textbf{Sprint} \\
+\hline
+\endfirsthead
+\hline
+\rowcolor{gray!20}
+\textbf{ID} & \textbf{En tant que} & \textbf{Je veux} & \textbf{PrioritÃ©} & \textbf{SP} & \textbf{Sprint} \\
+\hline
+\endhead
+\hline
+\endlastfoot
+US01 & Utilisateur & M'inscrire avec email et mot de passe & \prio{H} & 3 & Sprint 1 \\[2pt]\hline
+US02 & Utilisateur & Me connecter et recevoir un JWT & \prio{H} & 3 & Sprint 1 \\[2pt]\hline
+US03 & Utilisateur & RafraÃ®chir mon token automatiquement & \prio{H} & 2 & Sprint 1 \\[2pt]\hline
+US04 & Utilisateur & Modifier mon mot de passe & \prio{M} & 2 & Sprint 1 \\[2pt]\hline
+US05 & SuperAdmin & CrÃ©er et gÃ©rer les tenants & \prio{H} & 3 & Sprint 2 \\[2pt]\hline
+US06 & AdminEntreprise & CrÃ©er et gÃ©rer des garages & \prio{H} & 5 & Sprint 2 \\[2pt]\hline
+US07 & AdminEntreprise & GÃ©rer le personnel & \prio{H} & 5 & Sprint 2 \\[2pt]\hline
+US08 & Client & Enregistrer et gÃ©rer ses vÃ©hicules & \prio{H} & 3 & Sprint 2 \\[2pt]\hline
+US09 & AdminEntreprise & GÃ©rer l'inventaire des piÃ¨ces & \prio{M} & 5 & Sprint 2 \\[2pt]\hline
+US10 & Client & Soumettre un rapport de symptÃ´mes & \prio{H} & 5 & Sprint 3 \\[2pt]\hline
+US11 & SystÃ¨me & GÃ©nÃ©rer un diagnostic IA (RAG) & \prio{H} & 8 & Sprint 3 \\[2pt]\hline
+US12 & ChefAtelier & RÃ©viser les rapports et proposer une plage RDV & \prio{H} & 5 & Sprint 3 \\[2pt]\hline
+US13 & Client & RÃ©server un rendez-vous & \prio{H} & 3 & Sprint 3 \\[2pt]\hline
+US14 & ChefAtelier & Approuver ou refuser un rendez-vous & \prio{H} & 3 & Sprint 3 \\[2pt]\hline
+US15 & ChefAtelier & Assigner des mÃ©caniciens Ã  une tÃ¢che & \prio{H} & 5 & Sprint 4 \\[2pt]\hline
+US16 & MÃ©canicien & Consulter ses tÃ¢ches assignÃ©es & \prio{H} & 3 & Sprint 4 \\[2pt]\hline
+US17 & MÃ©canicien & Soumettre un rapport d'examen & \prio{H} & 5 & Sprint 4 \\[2pt]\hline
+US18 & ChefAtelier & RÃ©viser et valider le rapport d'examen & \prio{H} & 3 & Sprint 4 \\[2pt]\hline
+US19 & ChefAtelier & CrÃ©er et finaliser une facture & \prio{H} & 5 & Sprint 4 \\[2pt]\hline
+US20 & Client & Approuver ou refuser un devis & \prio{H} & 3 & Sprint 4 \\[2pt]\hline
+US21 & MÃ©canicien & Soumettre la fin de rÃ©paration & \prio{H} & 3 & Sprint 4 \\[2pt]\hline
+US22 & ChefAtelier & Valider et notifier le client & \prio{H} & 3 & Sprint 4 \\[2pt]\hline
+US23 & AdminEntreprise & Enregistrer le paiement & \prio{H} & 3 & Sprint 4 \\[2pt]\hline
+US24 & SystÃ¨me & Tracer le cycle de vie automatiquement & \prio{H} & 8 & Sprint 4 \\[2pt]\hline
+US25 & Utilisateurs & Recevoir notifications in-app et push & \prio{M} & 5 & Sprint 4 \\[2pt]\hline
+US26 & Client & TÃ©lÃ©charger la facture en PDF & \prio{M} & 3 & Sprint 4 \\[2pt]\hline
+US27 & Client/MÃ©canicien & Utiliser l'application Android native & \prio{M} & 13 & Sprint 4 \\[2pt]\hline
+\multicolumn{4}{|r|}{\textbf{Total Story Points}} & \multicolumn{2}{c|}{\textbf{104 SP}} \\
+\hline
+\end{longtable}
+
+\section{SpÃ©cification Technique}
+
+\subsection{Exigences Non-Fonctionnelles}
+
+\begin{table}[H]
+\centering
+\begin{tabularx}{\textwidth}{|l|X|}
+\hline
+\rowcolor{gray!15}
+\textbf{CritÃ¨re} & \textbf{Exigence} \\
+\hline
+Performance & Temps de rÃ©ponse API $<$ 300 ms pour 95\% des requÃªtes \\[2pt]\hline
+SÃ©curitÃ© & JWT HS256, hachage bcrypt, isolation multi-tenant, CORS contrÃ´lÃ© \\[2pt]\hline
+ScalabilitÃ© & Architecture stateless~; front-end dÃ©couplÃ©~; services indÃ©pendants \\[2pt]\hline
+DisponibilitÃ© & Docker Compose avec healthchecks et \texttt{restart: unless-stopped} \\[2pt]\hline
+MaintenabilitÃ© & Clean Architecture, CQRS, tests xUnit, couverture $\geq 70\%$ \\[2pt]\hline
+CompatibilitÃ© & Android 8+ (API 26)~; navigateurs modernes (Chrome, Firefox, Edge) \\[2pt]\hline
+\end{tabularx}
+\caption{Exigences non-fonctionnelles}
+\label{tab:enf}
+\end{table}
+
+\subsection{Outils et Environnement de DÃ©veloppement}
+
+\begin{table}[H]
+\centering
+\begin{tabularx}{\textwidth}{|l|l|X|}
+\hline
+\rowcolor{gray!15}
+\textbf{Couche} & \textbf{Technologie} & \textbf{Version / RÃ´le} \\
+\hline
+Front-end Web & Angular + Tailwind CSS & v21.1 / SPA rÃ©active, dark mode \\[2pt]\hline
+Back-end API & ASP.NET Core + MediatR & v9.0 / API REST, CQRS, Clean Arch. \\[2pt]\hline
+Base de donnÃ©es & MySQL + Pomelo EF Core & 8.0 / ORM relationnel, migrations \\[2pt]\hline
+Cache & Redis & 7.0 / sessions, invalidation cache \\[2pt]\hline
+Service IA & Python FastAPI + Ollama & 3.13 / RAG BM25 + LLM local \\[2pt]\hline
+Mobile & Android Java + SQLite & SDK 26+ / stockage local + sync FastAPI → MySQL \\[2pt]\hline
+PDF & QuestPDF & 2026.x / gÃ©nÃ©ration factures \\[2pt]\hline
+DÃ©ploiement & Docker + Docker Compose & 25+ / containerisation totale \\[2pt]\hline
+Monitoring & Prometheus + Grafana & --- / mÃ©triques et alertes \\[2pt]\hline
+Gestion projet & MÃ©thode Agile Scrum & 4 sprints, 2 semaines/sprint \\[2pt]\hline
+\end{tabularx}
+\caption{Stack technologique de MecaRage}
+\label{tab:stack}
+\end{table}
+
+\section{Conclusion}
+
+Ce chapitre a formalisÃ© les besoins de la plateforme par 27 user stories organisÃ©es
+en 4 sprints (104 story points au total). Les chapitres suivants dÃ©taillent la
+conception et le dÃ©veloppement de chaque sprint.

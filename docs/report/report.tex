@@ -1,0 +1,1672 @@
+% ===========================================================================
+% MECARAGE — Rapport de Projet de Fin d'Études
+% Plateforme Intelligente de Gestion d'Atelier Mécanique
+% ===========================================================================
+
+\documentclass[12pt,a4paper]{report}
+
+%% —— Encodage & Langue ——
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+
+%% —— Mise en page ——
+\usepackage{geometry}
+\geometry{a4paper,left=3cm,right=2.5cm,top=2.5cm,bottom=2.5cm,headheight=15pt}
+
+%% —— Typographie ——
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{setspace}
+\onehalfspacing
+
+%% —— Couleurs ——
+\usepackage{xcolor}
+\definecolor{indigo}{RGB}{79,70,229}
+\definecolor{indigodark}{RGB}{55,48,163}
+\definecolor{indigolite}{RGB}{199,210,254}
+\definecolor{graylight}{RGB}{243,244,246}
+\definecolor{prioH}{RGB}{220,38,38}
+\definecolor{prioM}{RGB}{234,88,12}
+\definecolor{prioL}{RGB}{22,163,74}
+\definecolor{rowA}{RGB}{238,242,255}
+\definecolor{rowB}{RGB}{255,255,255}
+
+%% —— TikZ & PGF ——
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric,shapes.multipart,arrows.meta,positioning,
+  fit,backgrounds,calc,shadows.blur,decorations.pathreplacing}
+\usepackage{pgf-umlsd}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+
+%% —— Graphiques & Flottants ——
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{rotating}
+\usepackage[labelfont=bf,labelsep=period,font=small]{caption}
+\usepackage{subcaption}
+
+%% —— Tableaux ——
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{multirow}
+\usepackage{tabularx}
+\usepackage{colortbl}
+
+%% —— Listes & Code ——
+\usepackage{enumitem}
+\usepackage{listings}
+\lstset{
+  basicstyle=\footnotesize\ttfamily,
+  breaklines=true,frame=tb,
+  backgroundcolor=\color{graylight},
+  keywordstyle=\color{indigo}\bfseries,
+  commentstyle=\itshape\color{gray},
+  numbers=left,numberstyle=\tiny\color{gray},numbersep=5pt}
+
+%% —— En-têtes / Pieds de page ——
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\nouppercase{\leftmark}}
+\fancyhead[R]{\small\textbf{MecaRage — PFE 2025/2026}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+%% —— Style des chapitres ——
+\usepackage{titlesec}
+\titleformat{\chapter}[display]
+  {\normalfont\huge\bfseries\color{indigo}}
+  {{\normalsize\bfseries\color{gray}Chapitre \thechapter}}{10pt}{\huge}
+\titlespacing*{\chapter}{0pt}{-10pt}{25pt}
+\titleformat{\section}{\large\bfseries\color{indigodark}}{\thesection}{1em}{}
+\titleformat{\subsection}{\normalsize\bfseries\color{indigodark}}{\thesubsection}{1em}{}
+
+%% —— Liens hypertextes ——
+\usepackage{hyperref}
+\hypersetup{
+  colorlinks=true,linkcolor=indigo,citecolor=indigo,urlcolor=indigo,
+  pdftitle={MecaRage -- Rapport PFE},pdfauthor={Equipe MecaRage},
+  pdfkeywords={Angular,ASP.NET Core 9,MySQL,Firebase,Clean Architecture,CQRS}}
+
+%% —— TikZ styles UML ——
+\tikzset{
+  umlclass/.style={
+    rectangle split,rectangle split parts=3,
+    rectangle split part fill={indigolite!60,white,white},
+    draw=indigo,thick,font=\scriptsize,text width=4.2cm,align=left},
+  ucboundary/.style={rectangle,draw=indigo,thick,rounded corners=5pt,
+    fill=white!98,inner sep=12pt},
+  ucactor/.style={rectangle,draw=indigo!60,fill=indigolite!30,rounded corners=3pt,
+    font=\footnotesize\bfseries,text width=2.2cm,align=center,
+    minimum height=0.8cm},
+  ucell/.style={ellipse,draw=indigo,fill=indigolite!30,font=\scriptsize,
+    text width=2.6cm,minimum height=0.75cm,align=center},
+  ucline/.style={draw=gray!70,thin},
+  classrel/.style={draw=indigo,thick,-{Stealth[length=6pt]}},
+  classcomp/.style={draw=indigo,thick,{Diamond[length=6pt]}-{Stealth[length=6pt]}},
+  classinh/.style={draw=indigo,thick,-{Triangle[open,length=8pt]}}}
+
+\begin{document}
+
+\pagenumbering{roman}
+\setcounter{page}{1}
+
+% ===========================================================================
+% PAGE DE TITRE
+% ===========================================================================
+\begin{titlepage}
+\centering
+\vspace*{0.4cm}
+
+{\large\scshape Université / École d'Ingénieur\par}
+\vspace{0.2cm}
+{\normalsize Département Informatique \& Génie Logiciel\par}
+\vspace{0.3cm}
+\noindent\rule{\linewidth}{1.5pt}
+\vspace{0.3cm}
+
+{\large Rapport de Projet de Fin d'Études (PFE)\par}
+\vspace{0.8cm}
+
+\begin{tikzpicture}
+\node[rectangle,fill=indigo,rounded corners=8pt,
+  text width=13cm,align=center,inner sep=1cm] {
+  \color{white}
+  \Huge\bfseries MecaRage\\[0.5cm]
+  \Large Plateforme Intelligente de Gestion\\[0.2cm]
+  d'Atelier Mécanique\\[0.4cm]
+  \small Angular 21 \quad|\quad ASP.NET Core 9 \quad|\quad IA Gemini \quad|\quad Android Firebase
+};
+\end{tikzpicture}
+
+\vspace{1.2cm}
+
+\begin{minipage}{0.45\textwidth}
+\begin{flushleft}
+\textbf{Réalisé par~:}\\[0.3cm]
+\hspace{0.5cm}[Prénom NOM]\\
+\hspace{0.5cm}[Prénom NOM]
+\end{flushleft}
+\end{minipage}
+\hfill
+\begin{minipage}{0.45\textwidth}
+\begin{flushright}
+\textbf{Encadrant universitaire~:}\\[0.2cm]
+\hspace{0.5cm}[Dr. Nom Encadrant]\\[0.4cm]
+\textbf{Entreprise partenaire~:}\\[0.2cm]
+\hspace{0.5cm}[Nom de l'entreprise]
+\end{flushright}
+\end{minipage}
+
+\vfill
+{\large Année Universitaire 2025--2026\par}
+\end{titlepage}
+
+% ===========================================================================
+% RÉSUMÉ
+% ===========================================================================
+\chapter*{Résumé}
+\addcontentsline{toc}{chapter}{Résumé}
+
+\textbf{MecaRage} est une plateforme logicielle complète destinée à la gestion
+moderne et intelligente des ateliers mécaniques. Elle repose sur une architecture
+distribuée à trois couches~: un backend \textbf{ASP.NET Core 9} en Clean Architecture
+(CQRS et MediatR), un frontend \textbf{Angular 21} avec Tailwind CSS, un service
+d'intelligence artificielle fondé sur \textbf{FastAPI} et \textbf{Google Gemini}
+pour le diagnostic contextuel par RAG (Retrieval-Augmented Generation), et un
+module mobile \textbf{Android} (Java) intégrant \textbf{Firebase} pour les
+notifications en temps réel.
+
+La plateforme couvre l'intégralité du cycle de vie d'une intervention mécanique~:
+dépôt des symptômes, diagnostic IA, prise de rendez-vous, affectation des mécaniciens,
+rapport d'examen, facturation, approbation client, réparation, contrôle qualité et
+paiement — le tout traçé par un suivi de cycle de vie unifié (\textit{Intervention
+Lifecycle Tracker}).
+
+\bigskip
+\noindent\textbf{Mots-clés~:} Gestion d'atelier, Clean Architecture, CQRS,
+Angular 21, ASP.NET Core 9, Firebase, Intelligence Artificielle, RAG, Android, MySQL.
+
+\chapter*{Abstract}
+\addcontentsline{toc}{chapter}{Abstract}
+
+\textbf{MecaRage} is a comprehensive software platform for the modern and intelligent
+management of mechanical workshops. It is built on a three-layer distributed
+architecture~: an \textbf{ASP.NET Core 9} backend with Clean Architecture (CQRS and
+MediatR), an \textbf{Angular 21} frontend with Tailwind CSS, an AI service based on
+\textbf{FastAPI} and \textbf{Google Gemini} for RAG-based contextual diagnosis, and
+an \textbf{Android} mobile module (Java) integrating \textbf{Firebase} for real-time
+notifications.
+
+The platform covers the complete lifecycle of a mechanical intervention~: symptom
+submission, AI diagnosis, appointment scheduling, mechanic assignment, examination
+report, invoicing, client approval, repair, quality validation and payment — all
+tracked by a unified Intervention Lifecycle Tracker.
+
+\bigskip
+\noindent\textbf{Keywords~:} Workshop management, Clean Architecture, CQRS,
+Angular 21, ASP.NET Core 9, Firebase, Artificial Intelligence, RAG, Android, MySQL.
+
+% ===========================================================================
+% TABLES
+% ===========================================================================
+\tableofcontents
+\listoffigures
+\listoftables
+
+\cleardoublepage
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+% ===========================================================================
+% CHAPITRE 1 — LES BASES
+% ===========================================================================
+\chapter{Les Bases}
+
+\section{Introduction}
+
+Ce chapitre présente le contexte général du projet \textbf{MecaRage~:} la structure
+de l'entreprise commanditaire, la problématique à l'origine du projet et la solution
+proposée. Il s'agit d'établir un cadre de compréhension commun avant d'aborder les
+aspects techniques et fonctionnels dans les chapitres suivants.
+
+\section{Présentation de l'entreprise}
+
+L'entreprise partenaire est spécialisée dans la gestion et l'exploitation de réseaux
+d'ateliers mécaniques multi-sites. Elle coordonne plusieurs \textit{garages}
+(centres de réparation) répartis géographiquement, chacun disposant d'une équipe de
+mécaniciens supervisée par un chef d'atelier. La direction centrale (\textit{Admin
+Entreprise}) assure la supervision de l'ensemble des opérations, des ressources
+humaines et de la facturation.
+
+Confrontée à une forte croissance de sa clientèle et à la multiplication de ses
+ateliers, l'entreprise a identifié la nécessité de doter ses équipes d'un outil
+numérique unifié pour remplacer ses processus manuels.
+
+\subsection*{Organigramme des rôles métier}
+
+\begin{center}
+\begin{tikzpicture}[
+  node distance=1.5cm,
+  box/.style={rectangle,draw=indigo,fill=indigolite!30,rounded corners=3pt,
+    font=\small\bfseries,text width=3.2cm,align=center,minimum height=0.8cm}]
+  \node[box,fill=indigo!80,text=white] (sa) {Super Admin\\(Plateforme)};
+  \node[box,below=of sa] (ae) {Admin Entreprise};
+  \node[box,below left=1.2cm and 1.5cm of ae] (ca) {Chef d'Atelier};
+  \node[box,below right=1.2cm and 1.5cm of ae] (cl) {Client};
+  \node[box,below=1.2cm of ca] (mec) {Mécanicien};
+  \draw[classrel] (sa) -- (ae);
+  \draw[classrel] (ae) -- (ca);
+  \draw[classrel] (ae) -- (cl);
+  \draw[classrel] (ca) -- (mec);
+\end{tikzpicture}
+\end{center}
+
+\section{Présentation du projet}
+
+\subsection{Problématique}
+
+La gestion quotidienne d'un réseau d'ateliers mécaniques implique une coordination
+complexe entre plusieurs parties~: les clients qui déposent leurs véhicules, les
+mécaniciens qui exécutent les travaux, le chef d'atelier qui orchestre les ressources,
+et la direction qui supervise les finances. Cette coordination repose actuellement sur
+des moyens peu adaptés~:
+
+\begin{itemize}[noitemsep]
+  \item Prise de rendez-vous par téléphone ou WhatsApp — pas de traçabilité.
+  \item Rapports d'intervention écrits sur papier — risque de perte.
+  \item Facturation produite sur tableur Excel — pas d'historique centralisé.
+  \item Communication inter-équipes par messagerie informelle.
+  \item Aucune visibilité en temps réel sur l'avancement des réparations.
+  \item Aucun diagnostic préliminaire avant réception du véhicule.
+\end{itemize}
+
+\noindent Ces insuffisances entraînent des retards, des erreurs de facturation,
+une mauvaise expérience client et une difficulté à piloter l'activité globalement.
+
+\subsection{Étude de l'existant}
+
+L'existant se compose d'une combinaison d'outils non intégrés~:
+
+\begin{table}[H]
+\centering
+\caption{Outils existants et leurs limites}
+\begin{tabularx}{\textwidth}{|l|X|X|}
+\hline
+\rowcolor{indigolite!30}
+\textbf{Outil} & \textbf{Usage actuel} & \textbf{Limite principale} \\
+\hline
+WhatsApp / SMS & Prise de RDV, communications & Pas de traçabilité, informel \\
+\hline
+Excel & Inventaire pièces, facturation & Pas de collaboration temps réel \\
+\hline
+Papier & Rapports mécaniciens, bons & Perte, illisibilité, pas d'archivage \\
+\hline
+Tableau blanc & Suivi de l'atelier & Non numérique, local uniquement \\
+\hline
+\end{tabularx}
+\end{table}
+
+\subsection{Solution proposée}
+
+\textbf{MecaRage} est une plateforme numérique unifiée qui digitalise l'ensemble du
+cycle de vie d'une intervention mécanique. Elle offre~:
+
+\begin{itemize}[noitemsep]
+  \item Une \textbf{application web} (Angular 21) accessible par tous les rôles.
+  \item Un \textbf{backend robuste} (ASP.NET Core 9) avec une architecture Clean
+    Architecture et CQRS garantissant la maintenabilité.
+  \item Un \textbf{service IA} (FastAPI + Google Gemini) produisant un diagnostic
+    préliminaire par analyse sémantique des symptômes (RAG / BM25).
+  \item Un \textbf{module mobile Android} (Java + Firebase) pour les clients et
+    mécaniciens, avec notifications push en temps réel.
+  \item Une \textbf{gestion multi-tenant} permettant à plusieurs entreprises
+    d'exploiter la plateforme de façon isolée.
+  \item Un \textbf{suivi de cycle de vie} automatique de chaque intervention, de
+    l'examen jusqu'au paiement.
+  \item Une \textbf{génération de factures PDF} via QuestPDF.
+\end{itemize}
+
+\section{Conclusion}
+
+Ce chapitre a présenté le contexte métier qui a motivé la création de MecaRage.
+Les lacunes identifiées dans les pratiques actuelles justifient pleinement la
+conception d'une solution intégrée. Le chapitre suivant détaille les spécifications
+fonctionnelles et techniques de la plateforme.
+
+% ===========================================================================
+% CHAPITRE 2 — SPÉCIFICATION FONCTIONNELLE ET TECHNIQUE
+% ===========================================================================
+\chapter{Spécification Fonctionnelle et Technique}
+
+\section{Introduction}
+
+Ce chapitre établit les exigences fonctionnelles et non-fonctionnelles de la
+plateforme. Il présente le diagramme de cas d'utilisation global, le diagramme de
+classes du domaine, le backlog produit complet et les choix techniques.
+
+\section{Spécification Fonctionnelle}
+
+\subsection{Exigences Fonctionnelles}
+
+Les exigences fonctionnelles sont regroupées par acteur~:
+
+\begin{longtable}{|p{0.5cm}|p{2.5cm}|p{8cm}|}
+\caption{Exigences fonctionnelles par rôle}\label{tab:exigences}\\
+\hline
+\rowcolor{indigolite!60}
+\textbf{N°} & \textbf{Acteur} & \textbf{Requirement} \\
+\hline
+\endfirsthead
+\hline
+\rowcolor{indigolite!60}
+\textbf{N°} & \textbf{Acteur} & \textbf{Requirement} \\
+\hline
+\endhead
+\hline
+\endlastfoot
+EF01 & Tous & S'authentifier avec email et mot de passe (JWT) \\
+\hline
+EF02 & Tous & Rafraîchir son token d'accès automatiquement \\
+\hline
+EF03 & Tous & Modifier son mot de passe \\
+\hline
+EF04 & SuperAdmin & Créer et gérer les tenants (entreprises) \\
+\hline
+EF05 & AdminEntreprise & Créer et gérer les garages du tenant \\
+\hline
+EF06 & AdminEntreprise & Créer et gérer le personnel (chefs, mécaniciens) \\
+\hline
+EF07 & AdminEntreprise & Consulter les statistiques (KPI) de l'atelier \\
+\hline
+EF08 & AdminEntreprise & Enregistrer le paiement d'une intervention \\
+\hline
+EF09 & Client & S'inscrire sur la plateforme \\
+\hline
+EF10 & Client & Gérer ses véhicules (ajout, consultation) \\
+\hline
+EF11 & Client & Soumettre un rapport de symptômes \\
+\hline
+EF12 & Système & Générer un diagnostic IA (Gemini RAG) automatiquement \\
+\hline
+EF13 & Client & Réserver un rendez-vous dans la plage proposée par le chef \\
+\hline
+EF14 & Client & Approuver ou refuser un devis (facture) \\
+\hline
+EF15 & Client & Suivre le cycle de vie de son intervention en temps réel \\
+\hline
+EF16 & Client & Télécharger sa facture en PDF \\
+\hline
+EF17 & ChefAtelier & Réviser les rapports de symptômes et proposer une plage RDV \\
+\hline
+EF18 & ChefAtelier & Approuver ou refuser des rendez-vous \\
+\hline
+EF19 & ChefAtelier & Assigner des mécaniciens à une tâche de réparation \\
+\hline
+EF20 & ChefAtelier & Réviser le rapport d'examen du mécanicien \\
+\hline
+EF21 & ChefAtelier & Créer et finaliser une facture (devis) \\
+\hline
+EF22 & ChefAtelier & Valider la réparation et notifier le client \\
+\hline
+EF23 & Mécanicien & Consulter ses tâches assignées \\
+\hline
+EF24 & Mécanicien & Soumettre un rapport d'examen (pièces, observations) \\
+\hline
+EF25 & Mécanicien & Soumettre un rapport de fin de réparation \\
+\hline
+EF26 & Système & Envoyer des notifications in-app (mysql) et push (FCM) \\
+\hline
+EF27 & AdminEntreprise & Gérer l'inventaire des pièces détachées \\
+\hline
+EF28 & Tous & Accéder via application Android (client + mécanicien) \\
+\hline
+\end{longtable}
+
+\subsection{Diagramme de cas d'utilisation global}
+
+\begin{figure}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tikzpicture}[auto]
+  % System boundary
+  \node[ucboundary,minimum width=14cm,minimum height=18cm,
+    label={[font=\large\bfseries\color{indigo}]above:Système MecaRage}]
+    (sys) at (6,0) {};
+
+  % ----- ACTORS -----
+  \node[ucactor] (cli) at (-3.5, 2)  {Client};
+  \node[ucactor] (mec) at (-3.5,-4)  {Mécanicien};
+  \node[ucactor] (che) at (15.5, 4)  {Chef\\d'Atelier};
+  \node[ucactor] (adm) at (15.5,-1)  {Admin\\Entreprise};
+  \node[ucactor] (sad) at (15.5,-6)  {Super\\Admin};
+  \node[ucactor,fill=gray!15] (ia)  at (6, 11)  {Service IA\\(Gemini)};
+
+  % ----- USE CASES — Authentication -----
+  \node[ucell] (uc01) at (3.5, 9.0) {Authentification};
+  \node[ucell] (uc02) at (8.5, 9.0) {Gestion du\\Profil};
+
+  % ----- USE CASES — Client -----
+  \node[ucell] (uc03) at (2.0, 6.5)  {Soumettre Rapport\\de Symptômes};
+  \node[ucell] (uc04) at (6.0, 6.5)  {Réserver\\Rendez-vous};
+  \node[ucell] (uc05) at (10.0,6.5)  {Approuver /\\Refuser Devis};
+  \node[ucell] (uc06) at (4.0, 4.5)  {Suivre\\Intervention};
+  \node[ucell] (uc07) at (8.0, 4.5)  {Télécharger\\Facture PDF};
+
+  % ----- USE CASES — Mechanic -----
+  \node[ucell] (uc08) at (2.5, 2.0)  {Consulter Tâches\\Assignées};
+  \node[ucell] (uc09) at (7.0, 2.0)  {Soumettre Rapport\\d'Examen};
+  \node[ucell] (uc10) at (2.5,-0.5)  {Soumettre Rapport\\de Réparation};
+
+  % ----- USE CASES — Chef -----
+  \node[ucell] (uc11) at (10.0,2.0)  {Réviser Rapport\\Symptômes};
+  \node[ucell] (uc12) at (10.0,-0.5) {Gérer\\Rendez-vous};
+  \node[ucell] (uc13) at (7.0,-2.5)  {Assigner\\Mécaniciens};
+  \node[ucell] (uc14) at (10.0,-4.0) {Créer et Finaliser\\Facture};
+  \node[ucell] (uc15) at (7.0,-5.5)  {Valider Réparation\\et Notifier};
+
+  % ----- USE CASES — Admin -----
+  \node[ucell] (uc16) at (2.5,-4.0)  {Gérer Garages\\et Personnel};
+  \node[ucell] (uc17) at (2.5,-6.5)  {Gérer Pièces\\Détachées};
+  \node[ucell] (uc18) at (6.0,-7.5)  {Enregistrer\\Paiement};
+
+  % ----- USE CASES — SuperAdmin -----
+  \node[ucell] (uc19) at (10.0,-7.5) {Gérer Tenants};
+
+  % ----- AI System -----
+  \node[ucell] (uc20) at (6.0, 8.0)  {Diagnostic IA\\Automatique};
+
+  % ----- ASSOCIATIONS — Client -----
+  \draw[ucline] (cli.east) -- (uc01.west);
+  \draw[ucline] (cli.east) -- (uc03.west);
+  \draw[ucline] (cli.east) -- (uc04.west);
+  \draw[ucline] (cli.east) -- (uc05.west);
+  \draw[ucline] (cli.east) -- (uc06.west);
+  \draw[ucline] (cli.east) -- (uc07.west);
+
+  % ----- ASSOCIATIONS — Mechanic -----
+  \draw[ucline] (mec.east) -- (uc01.west);
+  \draw[ucline] (mec.east) -- (uc08.west);
+  \draw[ucline] (mec.east) -- (uc09.west);
+  \draw[ucline] (mec.east) -- (uc10.west);
+
+  % ----- ASSOCIATIONS — Chef -----
+  \draw[ucline] (che.west) -- (uc01.east);
+  \draw[ucline] (che.west) -- (uc11.east);
+  \draw[ucline] (che.west) -- (uc12.east);
+  \draw[ucline] (che.west) -- (uc13.east);
+  \draw[ucline] (che.west) -- (uc14.east);
+  \draw[ucline] (che.west) -- (uc15.east);
+
+  % ----- ASSOCIATIONS — Admin -----
+  \draw[ucline] (adm.west) -- (uc01.east);
+  \draw[ucline] (adm.west) -- (uc16.east);
+  \draw[ucline] (adm.west) -- (uc17.east);
+  \draw[ucline] (adm.west) -- (uc18.east);
+  \draw[ucline] (adm.west) -- (uc14.east);
+
+  % ----- ASSOCIATIONS — SuperAdmin -----
+  \draw[ucline] (sad.west) -- (uc01.east);
+  \draw[ucline] (sad.west) -- (uc19.east);
+
+  % ----- ASSOCIATIONS — IA -----
+  \draw[ucline,dashed] (ia.south) -- (uc20.north);
+  \draw[ucline,dashed,-{Stealth}] (uc03.north) -- node[right,font=\scriptsize]
+    {\texttt{<<include>>}} (uc20.south west);
+
+\end{tikzpicture}
+}%
+\caption{Diagramme de cas d'utilisation global — MecaRage}
+\label{fig:uc-global}
+\end{figure}
+
+\subsection{Diagramme de classes global}
+
+\begin{sidewaysfigure}[p]
+\centering
+\resizebox{0.97\textheight}{!}{%
+\begin{tikzpicture}[node distance=0.6cm and 1.5cm]
+
+% Tenant
+\node[umlclass] (tenant) {
+  \textbf{Tenant}
+  \nodepart{two}
+  + id : Guid\\+ name : String\\+ slug : String\\+ email : String\\+ isActive : bool
+  \nodepart{three}
+  \textit{(aucune méthode publique)}
+};
+
+% Garage
+\node[umlclass,right=3.5cm of tenant] (garage) {
+  \textbf{Garage}
+  \nodepart{two}
+  + id : Guid\\+ tenantId : Guid\\+ name : String\\+ address : String\\+ city : String\\+ phone : String
+  \nodepart{three}
+  \textit{(aucune méthode publique)}
+};
+
+% User
+\node[umlclass,below=2.5cm of tenant] (user) {
+  \textbf{User}
+  \nodepart{two}
+  + id : Guid\\+ firstName : String\\+ email : String\\+ role : UserRole\\+ tenantId : Guid\\+ garageId : Guid?
+  \nodepart{three}
+  \textit{(aucune méthode publique)}
+};
+
+% Vehicle
+\node[umlclass,right=3.5cm of user] (vehicle) {
+  \textbf{Vehicle}
+  \nodepart{two}
+  + id : Guid\\+ clientId : Guid\\+ brand : String\\+ model : String\\+ year : int\\+ licensePlate : String
+  \nodepart{three}
+  \textit{(aucune méthode publique)}
+};
+
+% SymptomReport
+\node[umlclass,right=3.5cm of vehicle] (symptom) {
+  \textbf{SymptomReport}
+  \nodepart{two}
+  + id : Guid\\+ clientId : Guid\\+ vehicleId : Guid\\+ symptomsDesc : String\\+ aiPredictedIssue : String\\+ status : SymptomReportStatus
+  \nodepart{three}
+  \textit{(aucune méthode publique)}
+};
+
+% Appointment
+\node[umlclass,below=2.5cm of vehicle] (appt) {
+  \textbf{Appointment}
+  \nodepart{two}
+  + id : Guid\\+ clientId : Guid\\+ vehicleId : Guid\\+ garageId : Guid\\+ preferredDate : DateTime\\+ status : AppointmentStatus
+  \nodepart{three}
+  \textit{(aucune méthode publique)}
+};
+
+% SparePart
+\node[umlclass,left=3.5cm of appt] (spare) {
+  \textbf{SparePart}
+  \nodepart{two}
+  + id : Guid\\+ garageId : Guid\\+ code : String\\+ name : String\\+ unitPrice : decimal\\+ stockQty : int
+  \nodepart{three}
+  \textit{(aucune méthode publique)}
+};
+
+% Invoice
+\node[umlclass,right=3.5cm of appt] (invoice) {
+  \textbf{Invoice}
+  \nodepart{two}
+  + id : Guid\\+ appointmentId : Guid\\+ invoiceNumber : String\\+ serviceFee : decimal\\+ totalAmount : decimal\\+ status : InvoiceStatus
+  \nodepart{three}
+  \textit{(aucune méthode publique)}
+};
+
+% RepairTask
+\node[umlclass,below=2.5cm of appt] (repair) {
+  \textbf{RepairTask}
+  \nodepart{two}
+  + id : Guid\\+ appointmentId : Guid\\+ taskTitle : String\\+ status : RepairTaskStatus\\+ assignedAt : DateTime\\+ completionNotes : String?
+  \nodepart{three}
+  \textit{(aucune méthode publique)}
+};
+
+% Intervention
+\node[umlclass,right=3.5cm of repair] (interv) {
+  \textbf{Intervention}
+  \nodepart{two}
+  + id : Guid\\+ appointmentId : Guid?\\+ invoiceId : Guid?\\+ status : InterventionLifecycleStatus\\+ paymentAmount : decimal?\\+ paymentMethod : String?
+  \nodepart{three}
+  \textit{(aucune méthode publique)}
+};
+
+% Notification
+\node[umlclass,left=3.5cm of repair] (notif) {
+  \textbf{Notification}
+  \nodepart{two}
+  + id : Guid\\+ recipientId : Guid\\+ title : String\\+ message : String\\+ isRead : bool\\+ createdAt : DateTime
+  \nodepart{three}
+  \textit{(aucune méthode publique)}
+};
+
+% ----- RELATIONSHIPS -----
+\draw[classrel] (garage.west) -- node[above,font=\scriptsize]{N}
+  node[below,font=\scriptsize]{1} (tenant.east);
+\draw[classrel] (user.north) -- node[right,font=\scriptsize]{N}
+  node[left,font=\scriptsize]{1} (tenant.south);
+\draw[classrel] (vehicle.west) -- node[above,font=\scriptsize]{N}
+  node[below,font=\scriptsize]{1} (user.east);
+\draw[classrel] (symptom.south) -- node[right,font=\scriptsize]{N}
+  node[left,font=\scriptsize]{1} (vehicle.north);
+\draw[classrel] (appt.north) -- node[right,font=\scriptsize]{N}
+  node[left,font=\scriptsize]{0..1} (vehicle.south);
+\draw[classrel] (appt.east) -- node[above,font=\scriptsize]{0..1}
+  node[below,font=\scriptsize]{1} (invoice.west);
+\draw[classrel] (appt.south) -- node[right,font=\scriptsize]{0..1}
+  node[left,font=\scriptsize]{1} (repair.north);
+\draw[classcomp] (repair.south) -- (interv.north west);
+\draw[classcomp] (invoice.south) -- (interv.north east);
+\draw[classrel] (spare.east) -- node[above,font=\scriptsize]{N}
+  node[below,font=\scriptsize]{1} (garage.south west);
+\draw[classrel] (notif.north east) -- node[above,font=\scriptsize]{N}
+  node[below,font=\scriptsize]{1} (user.south west);
+
+\end{tikzpicture}
+}%
+\caption{Diagramme de classes global — principales entités du domaine}
+\label{fig:class-global}
+\end{sidewaysfigure}
+
+\subsection{Backlog Produit}
+
+\begin{longtable}{|p{0.7cm}|p{4cm}|p{5.5cm}|p{1.3cm}|p{0.7cm}|p{1.2cm}|}
+\caption{Backlog Produit — MecaRage}\label{tab:backlog}\\
+\hline
+\rowcolor{indigolite!60}
+\textbf{ID} & \textbf{En tant que} & \textbf{Je veux} & \textbf{Priorité} & \textbf{SP} & \textbf{Sprint} \\
+\hline
+\endfirsthead
+\hline
+\rowcolor{indigolite!60}
+\textbf{ID} & \textbf{En tant que} & \textbf{Je veux} & \textbf{Priorité} & \textbf{SP} & \textbf{Sprint} \\
+\hline
+\endhead
+\hline
+\endlastfoot
+US01 & Utilisateur & M'inscrire avec email et mot de passe & \textcolor{prioH}{\bfseries Haute} & 3 & 1 \\
+\hline
+US02 & Utilisateur & Me connecter et recevoir un JWT & \textcolor{prioH}{\bfseries Haute} & 3 & 1 \\
+\hline
+US03 & Utilisateur & Rafraîchir mon token automatiquement & \textcolor{prioH}{\bfseries Haute} & 2 & 1 \\
+\hline
+US04 & Utilisateur & Modifier mon mot de passe & \textcolor{prioM}{\bfseries Moyenne} & 2 & 1 \\
+\hline
+US05 & Super Admin & Créer et gérer les tenants & \textcolor{prioH}{\bfseries Haute} & 3 & 2 \\
+\hline
+US06 & Admin Entreprise & Créer et gérer des garages & \textcolor{prioH}{\bfseries Haute} & 5 & 2 \\
+\hline
+US07 & Admin Entreprise & Gérer le personnel (chefs, mécaniciens) & \textcolor{prioH}{\bfseries Haute} & 5 & 2 \\
+\hline
+US08 & Client & Enregistrer et gérer mes véhicules & \textcolor{prioH}{\bfseries Haute} & 3 & 2 \\
+\hline
+US09 & Admin Entreprise & Gérer l'inventaire des pièces détachées & \textcolor{prioM}{\bfseries Moyenne} & 5 & 2 \\
+\hline
+US10 & Client & Soumettre un rapport de symptômes & \textcolor{prioH}{\bfseries Haute} & 5 & 3 \\
+\hline
+US11 & Système & Générer un diagnostic IA (RAG/Gemini) & \textcolor{prioH}{\bfseries Haute} & 8 & 3 \\
+\hline
+US12 & Chef d'Atelier & Réviser les rapports et proposer une plage RDV & \textcolor{prioH}{\bfseries Haute} & 5 & 3 \\
+\hline
+US13 & Client & Réserver un rendez-vous & \textcolor{prioH}{\bfseries Haute} & 3 & 3 \\
+\hline
+US14 & Chef d'Atelier & Approuver ou refuser un rendez-vous & \textcolor{prioH}{\bfseries Haute} & 3 & 3 \\
+\hline
+US15 & Chef d'Atelier & Assigner des mécaniciens à une tâche & \textcolor{prioH}{\bfseries Haute} & 5 & 4 \\
+\hline
+US16 & Mécanicien & Consulter mes tâches assignées & \textcolor{prioH}{\bfseries Haute} & 3 & 4 \\
+\hline
+US17 & Mécanicien & Soumettre un rapport d'examen & \textcolor{prioH}{\bfseries Haute} & 5 & 4 \\
+\hline
+US18 & Chef d'Atelier & Réviser et valider le rapport d'examen & \textcolor{prioH}{\bfseries Haute} & 3 & 4 \\
+\hline
+US19 & Chef d'Atelier & Créer et finaliser une facture (devis) & \textcolor{prioH}{\bfseries Haute} & 5 & 4 \\
+\hline
+US20 & Client & Approuver ou refuser un devis & \textcolor{prioH}{\bfseries Haute} & 3 & 4 \\
+\hline
+US21 & Mécanicien & Soumettre la fin de réparation & \textcolor{prioH}{\bfseries Haute} & 3 & 4 \\
+\hline
+US22 & Chef d'Atelier & Valider et notifier le client (véhicule prêt) & \textcolor{prioH}{\bfseries Haute} & 3 & 4 \\
+\hline
+US23 & Admin Entreprise & Enregistrer le paiement au retrait & \textcolor{prioH}{\bfseries Haute} & 3 & 4 \\
+\hline
+US24 & Système & Tracer le cycle de vie (Intervention Tracker) & \textcolor{prioH}{\bfseries Haute} & 8 & 4 \\
+\hline
+US25 & Tout utilisateur & Recevoir des notifications in-app et push & \textcolor{prioM}{\bfseries Moyenne} & 5 & 4 \\
+\hline
+US26 & Client/Mécanicien & Télécharger la facture en PDF & \textcolor{prioM}{\bfseries Moyenne} & 3 & 4 \\
+\hline
+US27 & Client/Mécanicien & Utiliser l'application Android native & \textcolor{prioM}{\bfseries Moyenne} & 13 & 4 \\
+\hline
+\end{longtable}
+
+\section{Spécification Technique}
+
+\subsection{Exigences Non-Fonctionnelles}
+
+\begin{table}[H]
+\centering
+\caption{Exigences non-fonctionnelles}
+\begin{tabularx}{\textwidth}{|l|X|}
+\hline
+\rowcolor{indigolite!30}
+\textbf{Critère} & \textbf{Exigence} \\
+\hline
+Performance & Temps de réponse API $<$ 300 ms pour 95\% des requêtes \\
+\hline
+Sécurité & JWT HS256, hachage bcrypt, isolation multi-tenant, CORS contrôlé \\
+\hline
+Scalabilité & Architecture stateless; frontend découplé; services indépendamment déployables \\
+\hline
+Disponibilité & Déploiement via Docker Compose avec healthchecks et \texttt{restart: unless-stopped} \\
+\hline
+Maintenabilité & Clean Architecture, CQRS, tests unitaires xUnit, couverture $\geq 70\%$ \\
+\hline
+Compatibilité & Android 8+ (API 26); navigateurs modernes (Chrome, Firefox, Edge) \\
+\hline
+\end{tabularx}
+\end{table}
+
+\subsection{Outils et Environnement de Développement}
+
+\begin{table}[H]
+\centering
+\caption{Stack technologique}
+\begin{tabularx}{\textwidth}{|l|l|X|}
+\hline
+\rowcolor{indigolite!30}
+\textbf{Couche} & \textbf{Technologie} & \textbf{Version / Rôle} \\
+\hline
+Frontend & Angular + Tailwind CSS & v21.1 / SPA réactive, dark mode \\
+\hline
+Backend & ASP.NET Core + MediatR & v9.0 / API REST, CQRS \\
+\hline
+Base de données & MySQL / Pomelo EF Core & 8.0 / ORM relationnel \\
+\hline
+Cache & Redis & 7.0 / sessions, invalidation \\
+\hline
+IA & Python FastAPI + Gemini & 3.13 / RAG BM25 + LLM \\
+\hline
+Mobile & Android Java + Firebase & SDK 26+ / RTDB + FCM \\
+\hline
+PDF & QuestPDF & 2026.2.4 / génération factures \\
+\hline
+Déploiement & Docker + Docker Compose & 25+ / containerisation \\
+\hline
+CI/CD & Ansible + playbooks & — / déploiement automatisé \\
+\hline
+Monitoring & Prometheus + Grafana & — / métriques et alertes \\
+\hline
+IDE & JetBrains Rider / VS Code & — / développement \\
+\hline
+\end{tabularx}
+\end{table}
+
+\section{Conclusion}
+
+Ce chapitre a formalisé les besoins de la plateforme par 28 user stories organisées
+en 4 sprints, et a présenté les diagrammes de cas d'utilisation et de classes du
+domaine. Les chapitres suivants détaillent la conception et le développement de
+chaque sprint.
+
+% ===========================================================================
+% CHAPITRE 3 — SPRINT 1 : AUTHENTIFICATION ET GESTION DES PROFILS
+% ===========================================================================
+\chapter{Sprint 1 : Authentification et Gestion des Profils}
+
+\section{Introduction}
+
+Ce premier sprint pose les fondations de la plateforme en implémentant le système
+d'authentification et de gestion des profils. Il couvre l'inscription, la connexion,
+la gestion des tokens JWT et le changement de mot de passe. Ce sprint constitue
+le prérequis de toutes les fonctionnalités ultérieures.
+
+\section{Identification du Backlog Sprint 1}
+
+\begin{table}[H]
+\centering
+\caption{Backlog Sprint 1 — Authentification}
+\begin{tabularx}{\textwidth}{|l|X|l|c|}
+\hline
+\rowcolor{indigolite!60}
+\textbf{ID} & \textbf{User Story} & \textbf{Priorité} & \textbf{Story Points} \\
+\hline
+US01 & En tant qu'utilisateur, je veux m'inscrire avec mon email et mon mot de passe &
+  \textcolor{prioH}{\bfseries Haute} & 3 \\
+\hline
+US02 & En tant qu'utilisateur, je veux me connecter et recevoir un token JWT &
+  \textcolor{prioH}{\bfseries Haute} & 3 \\
+\hline
+US03 & En tant qu'utilisateur, je veux que mon token se rafraîchisse automatiquement &
+  \textcolor{prioH}{\bfseries Haute} & 2 \\
+\hline
+US04 & En tant qu'utilisateur, je veux pouvoir modifier mon mot de passe &
+  \textcolor{prioM}{\bfseries Moyenne} & 2 \\
+\hline
+\multicolumn{3}{|r|}{\textbf{Total Sprint 1}} & \textbf{10 SP} \\
+\hline
+\end{tabularx}
+\end{table}
+
+\noindent\textbf{Tâches techniques du Sprint 1~:}
+\begin{enumerate}[noitemsep]
+  \item Conception du modèle de domaine \texttt{User} et \texttt{Tenant}.
+  \item Implémentation des commandes CQRS~: \texttt{RegisterCommand}, \texttt{LoginCommand},
+    \texttt{RefreshTokenCommand}, \texttt{ChangePasswordCommand}.
+  \item Mise en place du middleware JWT et du \texttt{ClaimsPrincipalExtensions}.
+  \item Création des endpoints REST dans \texttt{AuthController}.
+  \item Configuration de l'isolation multi-tenant par filtre global EF Core.
+  \item Développement des écrans Angular~: \texttt{LoginComponent}, \texttt{SignupComponent}.
+  \item Implémentation de l'intercepteur HTTP pour l'injection du Bearer Token.
+\end{enumerate}
+
+\section{Conception}
+
+\subsection{Diagramme de classes — Sprint 1}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[node distance=0.8cm and 4cm]
+
+\node[umlclass] (user) {
+  \textbf{User}
+  \nodepart{two}
+  + id : Guid\\+ firstName : String\\+ lastName : String\\+ email : String\\+ passwordHash : String\\+ role : UserRole\\+ tenantId : Guid?\\+ garageId : Guid?\\+ refreshToken : String?\\+ refreshTokenExpiry : DateTime?\\+ isActive : bool
+  \nodepart{three}
+  (géré via commands)
+};
+
+\node[umlclass,right=4cm of user] (tenant) {
+  \textbf{Tenant}
+  \nodepart{two}
+  + id : Guid\\+ name : String\\+ slug : String\\+ email : String\\+ phone : String\\+ isActive : bool
+  \nodepart{three}
+  (géré via commands)
+};
+
+\node[umlclass,below=2.5cm of user] (jwt) {
+  \textbf{LoginResponse}
+  \nodepart{two}
+  + success : bool\\+ accessToken : String\\+ refreshToken : String\\+ expiresAt : DateTime\\+ userId : Guid\\+ role : String
+  \nodepart{three}
+  (DTO de retour)
+};
+
+\draw[classrel] (user.east) -- node[above,font=\scriptsize]{N}
+  node[below,font=\scriptsize]{1} (tenant.west)
+  node[pos=0.98,right,font=\scriptsize]{appartient à};
+
+\draw[classrel,dashed] (user.south) -- node[right,font=\scriptsize]
+  {\texttt{<<produce>>}} (jwt.north);
+
+\end{tikzpicture}
+\caption{Diagramme de classes — Sprint 1 (Authentification)}
+\label{fig:class-sprint1}
+\end{figure}
+
+\noindent\textbf{Enumération \texttt{UserRole}~:}
+\begin{itemize}[noitemsep]
+  \item \texttt{SuperAdmin} — Administration globale de la plateforme
+  \item \texttt{AdminEntreprise} — Gestion d'un tenant / entreprise
+  \item \texttt{ChefAtelier} — Supervisor d'un garage
+  \item \texttt{Mecanicien} — Technicien de réparation
+  \item \texttt{Client} — Propriétaire de véhicule
+\end{itemize}
+
+\subsection{Diagrammes de séquence}
+
+\subsubsection*{SC1 — Connexion (Login)}
+
+\begin{figure}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{sequencediagram}
+  \newthread{cli}{:Client}
+  \newinst[1.5]{ctrl}{:AuthController}
+  \newinst[1.5]{hand}{:LoginCmd\\Handler}
+  \newinst[1.5]{jwt}{:JwtService}
+  \newinst[1.5]{db}{:Database}
+
+  \begin{call}{cli}{POST /api/auth/login\{email,password\}}{ctrl}{}
+    \begin{call}{ctrl}{Handle(LoginCommand)}{hand}{}
+      \begin{call}{hand}{FindByEmail(email)}{db}{User | null}
+      \end{call}
+      \begin{callself}{hand}{VerifyHash(password, hash)}{}
+      \end{callself}
+      \begin{call}{hand}{GenerateToken(user)}{jwt}{accessToken}
+      \end{call}
+      \begin{call}{hand}{GenerateRefreshToken()}{jwt}{refreshToken}
+      \end{call}
+      \begin{call}{hand}{SaveRefreshToken(userId, token)}{db}{}
+      \end{call}
+    \end{call}
+    \mess{ctrl}{200 OK \{accessToken, refreshToken, role\}}{cli}
+  \end{call}
+
+  \begin{callself}{cli}{StoreToken(localStorage)}{}
+  \end{callself}
+
+\end{sequencediagram}
+}%
+\caption{Diagramme de séquence SC1 — Connexion}
+\label{fig:seq-login}
+\end{figure}
+
+\subsubsection*{SC2 — Inscription (Register)}
+
+\begin{figure}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{sequencediagram}
+  \newthread{cli}{:Client}
+  \newinst[1.5]{ctrl}{:AuthController}
+  \newinst[1.5]{hand}{:RegisterCmd\\Handler}
+  \newinst[1.5]{db}{:Database}
+
+  \begin{call}{cli}{POST /api/auth/register\{firstName,email,password,role\}}{ctrl}{}
+    \begin{call}{ctrl}{Handle(RegisterCommand)}{hand}{}
+      \begin{call}{hand}{EmailExists(email)}{db}{bool}
+      \end{call}
+      \begin{callself}{hand}{HashPassword(password)}{}
+      \end{callself}
+      \begin{call}{hand}{CreateUser(user)}{db}{userId}
+      \end{call}
+    \end{call}
+    \mess{ctrl}{200 OK \{userId, message\}}{cli}
+  \end{call}
+
+\end{sequencediagram}
+}%
+\caption{Diagramme de séquence SC2 — Inscription}
+\label{fig:seq-register}
+\end{figure}
+
+\section{Conclusion}
+
+Le Sprint 1 a établi l'infrastructure d'authentification complète de MecaRage.
+Le système JWT est opérationnel avec gestion du refresh token, isolation multi-tenant
+via filtre global EF Core, et hachage bcrypt des mots de passe. Les interfaces
+Angular de connexion et d'inscription sont fonctionnelles et reliées au backend.
+
+% ===========================================================================
+% CHAPITRE 4 — SPRINT 2 : GESTION DES DONNÉES DE RÉFÉRENCE
+% ===========================================================================
+\chapter{Sprint 2 : Gestion des Données de Référence}
+
+\section{Introduction}
+
+Ce sprint met en place les données fondamentales sur lesquelles repose l'exploitation
+de la plateforme~: la gestion des tenants, des garages, du personnel, des véhicules
+clients et de l'inventaire des pièces détachées. Ces entités constituent le référentiel
+à partir duquel toutes les opérations métier s'appuieront.
+
+\section{Identification du Backlog Sprint 2}
+
+\begin{table}[H]
+\centering
+\caption{Backlog Sprint 2 — Données de Référence}
+\begin{tabularx}{\textwidth}{|l|X|l|c|}
+\hline
+\rowcolor{indigolite!60}
+\textbf{ID} & \textbf{User Story} & \textbf{Priorité} & \textbf{SP} \\
+\hline
+US05 & Super Admin~: gérer les tenants (créer, modifier, supprimer) &
+  \textcolor{prioH}{\bfseries Haute} & 3 \\
+\hline
+US06 & Admin Entreprise~: créer et gérer des garages &
+  \textcolor{prioH}{\bfseries Haute} & 5 \\
+\hline
+US07 & Admin Entreprise~: créer et gérer le personnel &
+  \textcolor{prioH}{\bfseries Haute} & 5 \\
+\hline
+US08 & Client~: enregistrer et gérer ses véhicules &
+  \textcolor{prioH}{\bfseries Haute} & 3 \\
+\hline
+US09 & Admin~: gérer l'inventaire des pièces détachées &
+  \textcolor{prioM}{\bfseries Moyenne} & 5 \\
+\hline
+\multicolumn{3}{|r|}{\textbf{Total Sprint 2}} & \textbf{21 SP} \\
+\hline
+\end{tabularx}
+\end{table}
+
+\noindent\textbf{Tâches techniques du Sprint 2~:}
+\begin{enumerate}[noitemsep]
+  \item Implémentation des entités \texttt{Garage}, \texttt{Vehicle}, \texttt{SparePart}.
+  \item Commandes CQRS~: \texttt{CreateGarageCommand}, \texttt{CreateVehicleCommand},
+    \texttt{CreateSparePartCommand}, \texttt{CreateStaffCommand}.
+  \item Migrations EF Core pour les nouvelles tables.
+  \item Développement des contrôleurs REST~: \texttt{GaragesController},
+    \texttt{VehiclesController}, \texttt{SparePartsController}.
+  \item Interfaces Angular~: tableau de bord admin, gestion du garage et inventaire.
+  \item Application des policies d'autorisation par rôle (\texttt{[Authorize(Roles = ...)]}).
+\end{enumerate}
+
+\section{Conception}
+
+\subsection{Diagramme de classes — Sprint 2}
+
+\begin{figure}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tikzpicture}[node distance=0.8cm and 3cm]
+
+\node[umlclass] (garage) {
+  \textbf{Garage}
+  \nodepart{two}
+  + id : Guid\\+ tenantId : Guid\\+ name : String\\+ address : String\\+ city : String\\+ phone : String\\+ latitude : double?\\+ longitude : double?\\+ adminId : Guid?\\+ isActive : bool
+  \nodepart{three}
+  (géré via commands)
+};
+
+\node[umlclass,right=3cm of garage] (vehicle) {
+  \textbf{Vehicle}
+  \nodepart{two}
+  + id : Guid\\+ clientId : Guid\\+ brand : String\\+ model : String\\+ year : int\\+ licensePlate : String\\+ fuelType : String\\+ mileage : int\\+ vin : String?
+  \nodepart{three}
+  (géré via commands)
+};
+
+\node[umlclass,right=3cm of vehicle] (spare) {
+  \textbf{SparePart}
+  \nodepart{two}
+  + id : Guid\\+ garageId : Guid\\+ code : String\\+ name : String\\+ category : String\\+ unitPrice : decimal\\+ stockQty : int\\+ reorderLevel : int\\+ manufacturer : String?
+  \nodepart{three}
+  (géré via commands)
+};
+
+\node[umlclass,below=2.8cm of garage] (user2) {
+  \textbf{User (Staff)}
+  \nodepart{two}
+  + id : Guid\\+ firstName : String\\+ email : String\\+ role : UserRole\\+ garageId : Guid?
+  \nodepart{three}
+  \textit{(cf. Sprint 1)}
+};
+
+\draw[classrel] (garage.east) -- node[above,font=\scriptsize]{1}
+  node[below,font=\scriptsize]{N} (vehicle.west);
+\draw[classcomp] (garage.east) -- node[above,font=\scriptsize]{1}
+  node[below,font=\scriptsize]{N} (spare.west);
+\draw[classrel] (user2.east) -- node[above,font=\scriptsize]{N}
+  node[below,font=\scriptsize]{assigné} (garage.south);
+
+\end{tikzpicture}
+}%
+\caption{Diagramme de classes — Sprint 2 (Données de Référence)}
+\label{fig:class-sprint2}
+\end{figure}
+
+\subsection{Diagrammes de séquence}
+
+\subsubsection*{SC3 — Création d'un Garage}
+
+\begin{figure}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{sequencediagram}
+  \newthread{adm}{:AdminEntreprise}
+  \newinst[2]{ctrl}{:GaragesController}
+  \newinst[2]{hand}{:CreateGarage\\CmdHandler}
+  \newinst[2]{db}{:Database}
+
+  \begin{call}{adm}{POST /api/garages\{name,address,city,tenantId\}}{ctrl}{}
+    \begin{call}{ctrl}{Handle(CreateGarageCommand)}{hand}{}
+      \begin{call}{hand}{TenantExists(tenantId)}{db}{bool}
+      \end{call}
+      \begin{callself}{hand}{MapToEntity(command)}{}
+      \end{callself}
+      \begin{call}{hand}{Add(garage)}{db}{garageId}
+      \end{call}
+    \end{call}
+    \mess{ctrl}{201 Created \{garageId, name\}}{adm}
+  \end{call}
+
+\end{sequencediagram}
+}%
+\caption{Diagramme de séquence SC3 — Création d'un Garage}
+\label{fig:seq-garage}
+\end{figure}
+
+\subsubsection*{SC4 — Enregistrement d'un Véhicule}
+
+\begin{figure}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{sequencediagram}
+  \newthread{cli}{:Client}
+  \newinst[2]{ctrl}{:VehiclesController}
+  \newinst[2]{hand}{:CreateVehicle\\CmdHandler}
+  \newinst[2]{db}{:Database}
+
+  \begin{call}{cli}{POST /api/vehicles\{brand,model,year,licensePlate,fuelType\}}{ctrl}{}
+    \begin{call}{ctrl}{Handle(CreateVehicleCommand)}{hand}{}
+      \begin{callself}{hand}{ExtractClientId(userClaims)}{}
+      \end{callself}
+      \begin{call}{hand}{LicensePlateExists(plate)}{db}{bool}
+      \end{call}
+      \begin{callself}{hand}{MapToEntity(command)}{}
+      \end{callself}
+      \begin{call}{hand}{Add(vehicle)}{db}{vehicleId}
+      \end{call}
+    \end{call}
+    \mess{ctrl}{201 Created \{vehicleId\}}{cli}
+  \end{call}
+
+\end{sequencediagram}
+}%
+\caption{Diagramme de séquence SC4 — Enregistrement d'un Véhicule}
+\label{fig:seq-vehicle}
+\end{figure}
+
+\section{Conclusion}
+
+Le Sprint 2 a mis en place les données de référence essentielles~: garages,
+personnel, véhicules et inventaire. Les politiques d'autorisation ont été
+appliquées de façon fine par rôle, assurant que seul un \texttt{AdminEntreprise}
+peut créer un garage, et qu'un \texttt{Client} ne gère que ses propres véhicules.
+
+% ===========================================================================
+% CHAPITRE 5 — SPRINT 3 : RAPPORTS DE SYMPTÔMES, DIAGNOSTIC IA ET RENDEZ-VOUS
+% ===========================================================================
+\chapter{Sprint 3 : Rapports de Symptômes, Diagnostic IA et Rendez-vous}
+
+\section{Introduction}
+
+Ce sprint implémente la boucle de diagnostic préliminaire et de prise de rendez-vous.
+Une fois son véhicule enregistré, le client soumet une description textuelle des
+symptômes. Le service IA (FastAPI + Google Gemini) génère automatiquement un diagnostic
+structuré avec un score de confiance. Le chef d'atelier révise ensuite ce rapport
+et propose une plage de disponibilité pour le rendez-vous.
+
+\section{Identification du Backlog Sprint 3}
+
+\begin{table}[H]
+\centering
+\caption{Backlog Sprint 3 — Symptômes, IA et Rendez-vous}
+\begin{tabularx}{\textwidth}{|l|X|l|c|}
+\hline
+\rowcolor{indigolite!60}
+\textbf{ID} & \textbf{User Story} & \textbf{Priorité} & \textbf{SP} \\
+\hline
+US10 & Client~: soumettre un rapport de symptômes textuels &
+  \textcolor{prioH}{\bfseries Haute} & 5 \\
+\hline
+US11 & Système~: générer un diagnostic IA (RAG + Gemini) automatiquement &
+  \textcolor{prioH}{\bfseries Haute} & 8 \\
+\hline
+US12 & Chef d'Atelier~: réviser les rapports et proposer une plage RDV &
+  \textcolor{prioH}{\bfseries Haute} & 5 \\
+\hline
+US13 & Client~: réserver un rendez-vous dans la plage proposée &
+  \textcolor{prioH}{\bfseries Haute} & 3 \\
+\hline
+US14 & Chef d'Atelier~: approuver ou refuser le rendez-vous en assignant un mécanicien &
+  \textcolor{prioH}{\bfseries Haute} & 3 \\
+\hline
+\multicolumn{3}{|r|}{\textbf{Total Sprint 3}} & \textbf{24 SP} \\
+\hline
+\end{tabularx}
+\end{table}
+
+\section{Conception}
+
+\subsection{Diagramme de classes — Sprint 3}
+
+\begin{figure}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tikzpicture}[node distance=0.8cm and 3.5cm]
+
+\node[umlclass] (sym) {
+  \textbf{SymptomReport}
+  \nodepart{two}
+  + id : Guid\\+ clientId : Guid\\+ vehicleId : Guid\\+ garageId : Guid?\\+ symptomsDescription : String\\+ aiPredictedIssue : String?\\+ aiConfidenceScore : float?\\+ aiRecommendations : String?\\+ chefFeedback : String?\\+ status : SymptomReportStatus\\+ availablePeriodStart : DateTime?\\+ availablePeriodEnd : DateTime?
+  \nodepart{three}
+  (géré via commands)
+};
+
+\node[umlclass,right=4cm of sym] (appt) {
+  \textbf{Appointment}
+  \nodepart{two}
+  + id : Guid\\+ clientId : Guid\\+ vehicleId : Guid\\+ garageId : Guid\\+ symptomReportId : Guid?\\+ preferredDate : DateTime\\+ preferredTime : TimeSpan\\+ specialRequests : String?\\+ status : AppointmentStatus\\+ approvedByChefId : Guid?\\+ approvedAt : DateTime?
+  \nodepart{three}
+  (géré via commands)
+};
+
+\node[umlclass,below=2.5cm of sym] (aisvc) {
+  \textbf{IADiagnosisService}
+  \nodepart{two}
+  + endpoint : String\\+ model : String (Gemini)\\+ confidence : float
+  \nodepart{three}
+  + diagnose(symptoms) : Result
+};
+
+\draw[classrel] (appt.west) -- node[above,font=\scriptsize]{1}
+  node[below,font=\scriptsize]{0..1} (sym.east)
+  node[pos=0.5,below=2pt,font=\scriptsize]{liée à};
+
+\draw[classrel,dashed] (sym.south) -- node[right,font=\scriptsize]
+  {\texttt{<<use>>}} (aisvc.north);
+
+\end{tikzpicture}
+}%
+\caption{Diagramme de classes — Sprint 3 (Symptômes, IA, Rendez-vous)}
+\label{fig:class-sprint3}
+\end{figure}
+
+\subsection{Pipeline du Diagnostic IA}
+
+Le service IA utilise une architecture RAG (Retrieval Augmented Generation)~:
+
+\begin{enumerate}[noitemsep]
+  \item \textbf{BM25 Retrieval}~: les symptômes soumis par le client sont comparés
+    à une base de connaissances mécanique (\texttt{knowledge\_base.txt}) via l'algorithme BM25.
+  \item \textbf{Contexte enrichi}~: les K passages les plus pertinents sont injectés
+    dans le prompt envoyé à Google Gemini.
+  \item \textbf{Génération structurée}~: Gemini retourne un JSON structuré contenant
+    le problème probable (\texttt{aiPredictedIssue}), un score de confiance
+    (\texttt{aiConfidenceScore}) et des recommandations d'action.
+\end{enumerate}
+
+\subsection{Diagrammes de séquence}
+
+\subsubsection*{SC5 — Soumission d'un Rapport de Symptômes avec Diagnostic IA}
+
+\begin{figure}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{sequencediagram}
+  \newthread{cli}{:Client}
+  \newinst[1.5]{sctrl}{:SymptomReports\\Controller}
+  \newinst[1.5]{hand}{:CreateSymptom\\ReportCmdHandler}
+  \newinst[1.5]{ia}{:IAService\\(FastAPI)}
+  \newinst[1.5]{db}{:Database}
+  \newinst[1.5]{notif}{:Notification\\Service}
+
+  \begin{call}{cli}{POST /api/symptom-reports\{vehicleId,symptoms\}}{sctrl}{}
+    \begin{call}{sctrl}{Handle(CreateSymptomReportCommand)}{hand}{}
+      \begin{call}{hand}{POST /diagnose\{symptoms\}}{ia}{DiagnosisResult}
+      \end{call}
+      \begin{callself}{hand}{MapDiagnosisToReport()}{}
+      \end{callself}
+      \begin{call}{hand}{Add(symptomReport)}{db}{reportId}
+      \end{call}
+      \begin{call}{hand}{NotifyChefAtelier(reportId)}{notif}{}
+        \begin{call}{notif}{Add(notification)}{db}{}
+        \end{call}
+      \end{call}
+    \end{call}
+    \mess{sctrl}{201 Created \{reportId, aiDiagnosis\}}{cli}
+  \end{call}
+
+\end{sequencediagram}
+}%
+\caption{Diagramme de séquence SC5 — Soumission d'un Rapport de Symptômes}
+\label{fig:seq-symptom}
+\end{figure}
+
+\subsubsection*{SC6 — Approbation d'un Rendez-vous par le Chef d'Atelier}
+
+\begin{figure}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{sequencediagram}
+  \newthread{chef}{:ChefAtelier}
+  \newinst[2]{ctrl}{:Appointments\\Controller}
+  \newinst[2]{hand}{:ApproveAppt\\CmdHandler}
+  \newinst[2]{db}{:Database}
+  \newinst[2]{notif}{:Notification\\Service}
+  \newinst[2]{ihand}{:CreateIntervention\\LifecycleCmdHandler}
+
+  \begin{call}{chef}{PATCH /api/appointments/\{id\}/approve}{ctrl}{}
+    \begin{call}{ctrl}{Handle(ApproveAppointmentCommand)}{hand}{}
+      \begin{call}{hand}{GetAppointment(id)}{db}{Appointment}
+      \end{call}
+      \begin{callself}{hand}{SetStatus(Approved)}{}
+      \end{callself}
+      \begin{call}{hand}{SaveChanges()}{db}{}
+      \end{call}
+      \begin{call}{hand}{CreateInterventionLifecycle()}{ihand}{}
+        \begin{call}{ihand}{Add(Intervention)}{db}{}
+        \end{call}
+      \end{call}
+      \begin{call}{hand}{NotifyClient(appointmentId)}{notif}{}
+        \begin{call}{notif}{Add(notification)}{db}{}
+        \end{call}
+      \end{call}
+    \end{call}
+    \mess{ctrl}{200 OK}{chef}
+  \end{call}
+
+\end{sequencediagram}
+}%
+\caption{Diagramme de séquence SC6 — Approbation d'un Rendez-vous}
+\label{fig:seq-approve-appt}
+\end{figure}
+
+\section{Conclusion}
+
+Le Sprint 3 a réalisé la première boucle de valeur visible par le client~: soumettre
+des symptômes, recevoir un diagnostic IA instantané, obtenir une plage de rendez-vous,
+et être notifié de sa confirmation. L'approbation d'un rendez-vous déclenche
+automatiquement la création du traceur de cycle de vie de l'intervention.
+
+% ===========================================================================
+% CHAPITRE 6 — SPRINT 4 : OPÉRATIONS D'ATELIER ET CYCLE DE VIE
+% ===========================================================================
+\chapter{Sprint 4 : Opérations d'Atelier et Cycle de Vie des Interventions}
+
+\section{Introduction}
+
+Ce sprint représente le c\oe ur des opérations de l'atelier. Il couvre l'affectation
+des mécaniciens, la remontée des rapports d'examen, la facturation et son approbation
+par le client, l'exécution et la validation de la réparation, la génération PDF de la
+facture, et enfin l'enregistrement du paiement. Toutes ces étapes sont automatiquement
+tracées par le \textbf{Intervention Lifecycle Tracker}, une entité transverse qui
+maintient l'état global d'une intervention à travers 10 états distincts.
+
+\section{Identification du Backlog Sprint 4}
+
+\begin{table}[H]
+\centering
+\caption{Backlog Sprint 4 — Opérations d'Atelier}
+\begin{tabularx}{\textwidth}{|l|X|l|c|}
+\hline
+\rowcolor{indigolite!60}
+\textbf{ID} & \textbf{User Story} & \textbf{Priorité} & \textbf{SP} \\
+\hline
+US15 & Chef~: assigner mécaniciens à une tâche de réparation &
+  \textcolor{prioH}{\bfseries Haute} & 5 \\
+\hline
+US16 & Mécanicien~: consulter ses tâches assignées &
+  \textcolor{prioH}{\bfseries Haute} & 3 \\
+\hline
+US17 & Mécanicien~: soumettre rapport d'examen (pièces, observations) &
+  \textcolor{prioH}{\bfseries Haute} & 5 \\
+\hline
+US18 & Chef~: réviser et valider le rapport d'examen &
+  \textcolor{prioH}{\bfseries Haute} & 3 \\
+\hline
+US19 & Chef~: créer et finaliser un devis (facture) &
+  \textcolor{prioH}{\bfseries Haute} & 5 \\
+\hline
+US20 & Client~: approuver ou refuser le devis &
+  \textcolor{prioH}{\bfseries Haute} & 3 \\
+\hline
+US21 & Mécanicien~: soumettre la fin de réparation &
+  \textcolor{prioH}{\bfseries Haute} & 3 \\
+\hline
+US22 & Chef~: valider réparation et notifier le client (véhicule prêt) &
+  \textcolor{prioH}{\bfseries Haute} & 3 \\
+\hline
+US23 & Admin~: enregistrer le paiement (cash/carte/virement) &
+  \textcolor{prioH}{\bfseries Haute} & 3 \\
+\hline
+US24 & Système~: tracer le cycle de vie automatiquement &
+  \textcolor{prioH}{\bfseries Haute} & 8 \\
+\hline
+US25 & Utilisateur~: recevoir notifications in-app et push (FCM) &
+  \textcolor{prioM}{\bfseries Moyenne} & 5 \\
+\hline
+US26 & Client/Mécanicien~: télécharger la facture en PDF &
+  \textcolor{prioM}{\bfseries Moyenne} & 3 \\
+\hline
+\multicolumn{3}{|r|}{\textbf{Total Sprint 4}} & \textbf{49 SP} \\
+\hline
+\end{tabularx}
+\end{table}
+
+\subsection*{Machine d'états — Intervention Lifecycle}
+
+La figure~\ref{fig:lifecycle-states} présente les 10 transitions du suivi d'intervention~:
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+  state/.style={rectangle,draw=indigo,fill=indigolite!30,rounded corners=4pt,
+    font=\scriptsize\bfseries,text width=2.8cm,align=center,minimum height=0.7cm},
+  trans/.style={-{Stealth},draw=indigo!70,font=\scriptsize},
+  node distance=1.2cm]
+
+  \node[state] (c)   {Created};
+  \node[state,below=of c] (ue)  {UnderExamination};
+  \node[state,below=of ue] (er)  {ExaminationReviewed};
+  \node[state,below=of er] (ip)  {InvoicePending};
+  \node[state,below left=1cm and 1.5cm of ip] (ap)  {Approved\\(RepairInProgress)};
+  \node[state,below right=1cm and 1.5cm of ip] (rej) {Rejected};
+  \node[state,below=of ap] (rc)  {RepairCompleted};
+  \node[state,below=of rc] (rfp) {ReadyForPickup};
+  \node[state,below=of rfp] (cl)  {Closed};
+
+  \draw[trans] (c)   -- node[right,font=\scriptsize]{ExamSubmit} (ue);
+  \draw[trans] (ue)  -- node[right,font=\scriptsize]{ChefReview} (er);
+  \draw[trans] (er)  -- node[right,font=\scriptsize]{InvoiceFinalized} (ip);
+  \draw[trans] (ip)  -- node[left,font=\scriptsize]{ClientApproves} (ap);
+  \draw[trans] (ip)  -- node[right,font=\scriptsize]{ClientRejects} (rej);
+  \draw[trans] (ap)  -- node[right,font=\scriptsize]{RepairSubmit} (rc);
+  \draw[trans] (rc)  -- node[right,font=\scriptsize]{ChefValidates} (rfp);
+  \draw[trans] (rfp) -- node[right,font=\scriptsize]{AdminPayment} (cl);
+
+\end{tikzpicture}
+\caption{Machine d'états — Intervention Lifecycle (10 états)}
+\label{fig:lifecycle-states}
+\end{figure}
+
+\section{Conception}
+
+\subsection{Diagramme de classes — Sprint 4}
+
+\begin{figure}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tikzpicture}[node distance=0.8cm and 3cm]
+
+\node[umlclass] (rt) {
+  \textbf{RepairTask}
+  \nodepart{two}
+  + id : Guid\\+ appointmentId : Guid\\+ taskTitle : String\\+ description : String\\+ status : RepairTaskStatus\\+ assignedAt : DateTime\\+ completionNotes : String?\\+ estimatedMinutes : int?
+  \nodepart{three}
+  (géré via commands)
+};
+
+\node[umlclass,right=2.5cm of rt] (rta) {
+  \textbf{RepairTaskAssignment}
+  \nodepart{two}
+  + id : Guid\\+ repairTaskId : Guid\\+ mechanicId : Guid\\+ examinationObs : String?\\+ partsNeeded : String?\\+ examinationStatus : String
+  \nodepart{three}
+  (géré via commands)
+};
+
+\node[umlclass,right=2.5cm of rta] (inv) {
+  \textbf{Invoice}
+  \nodepart{two}
+  + id : Guid\\+ appointmentId : Guid\\+ invoiceNumber : String\\+ serviceFee : decimal\\+ partsTotal : decimal\\+ totalAmount : decimal\\+ status : InvoiceStatus\\+ clientApproved : bool
+  \nodepart{three}
+  (géré via commands)
+};
+
+\node[umlclass,below=2.5cm of rta] (interv) {
+  \textbf{Intervention}\\(Lifecycle Tracker)
+  \nodepart{two}
+  + id : Guid\\+ appointmentId : Guid?\\+ invoiceId : Guid?\\+ repairTaskId : Guid?\\+ status : InterventionLifecycleStatus\\+ proceedWithIntervention : bool?\\+ examinationNotes : String?\\+ repairNotes : String?\\+ paymentAmount : decimal?\\+ paymentMethod : String?
+  \nodepart{three}
+  (side tracker automatique)
+};
+
+\node[umlclass,left=2.5cm of interv] (ili) {
+  \textbf{InvoiceLineItem}
+  \nodepart{two}
+  + id : Guid\\+ invoiceId : Guid\\+ sparePartId : Guid?\\+ description : String\\+ quantity : int\\+ unitPrice : decimal\\+ lineTotal : decimal
+  \nodepart{three}
+  (géré via commands)
+};
+
+\draw[classcomp] (rt.east) -- node[above,font=\scriptsize]{1}
+  node[below,font=\scriptsize]{N} (rta.west);
+\draw[classcomp] (inv.south) -- node[right,font=\scriptsize]{1 N}
+  (ili.north east);
+\draw[classrel] (rt.south) -- node[right,font=\scriptsize]{}(interv.north west);
+\draw[classrel] (inv.south) -- node[left,font=\scriptsize]{}(interv.north east);
+
+\end{tikzpicture}
+}%
+\caption{Diagramme de classes — Sprint 4 (Atelier et Cycle de Vie)}
+\label{fig:class-sprint4}
+\end{figure}
+
+\subsection{Diagrammes de séquence}
+
+\subsubsection*{SC7 — Finalisation de la Facture et Approbation Client}
+
+\begin{figure}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{sequencediagram}
+  \newthread{chef}{:ChefAtelier}
+  \newinst[1.5]{ictrl}{:Invoices\\Controller}
+  \newinst[1.5]{fhand}{:FinalizeInvoice\\CmdHandler}
+  \newinst[1.5]{db}{:Database}
+  \newinst[1.5]{notif}{:Notification\\Service}
+  \newthread{cli}{:Client}
+
+  \begin{call}{chef}{PATCH /api/invoices/\{id\}/finalize}{ictrl}{}
+    \begin{call}{ictrl}{Handle(FinalizeInvoiceCommand)}{fhand}{}
+      \begin{call}{fhand}{GetInvoice(id)}{db}{Invoice}
+      \end{call}
+      \begin{callself}{fhand}{SetStatus(AwaitingApproval)}{}
+      \end{callself}
+      \begin{call}{fhand}{UpdateInterventionStatus(InvoicePending)}{db}{}
+      \end{call}
+      \begin{call}{fhand}{NotifyClient(invoiceId)}{notif}{}
+        \begin{call}{notif}{Add(notification)}{db}{}
+        \end{call}
+      \end{call}
+    \end{call}
+    \mess{ictrl}{200 OK}{chef}
+  \end{call}
+
+  \mess{notif}{Notification: Devis disponible}{cli}
+
+  \begin{call}{cli}{POST /api/invoices/\{id\}/approve}{ictrl}{}
+    \begin{call}{ictrl}{Handle(ApproveInvoiceCommand)}{fhand}{}
+      \begin{callself}{fhand}{SetStatus(Approved), ProceedWithIntervention=true}{}
+      \end{callself}
+      \begin{call}{fhand}{UpdateInterventionStatus(RepairInProgress)}{db}{}
+      \end{call}
+    \end{call}
+    \mess{ictrl}{200 OK}{cli}
+  \end{call}
+
+\end{sequencediagram}
+}%
+\caption{Diagramme de séquence SC7 — Finalisation et Approbation du Devis}
+\label{fig:seq-invoice}
+\end{figure}
+
+\subsubsection*{SC8 — Enregistrement du Paiement et Clôture de l'Intervention}
+
+\begin{figure}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{sequencediagram}
+  \newthread{adm}{:AdminEntreprise}
+  \newinst[2]{ictrl}{:Interventions\\Controller}
+  \newinst[2]{phand}{:RegisterPayment\\CmdHandler}
+  \newinst[2]{db}{:Database}
+  \newinst[2]{notif}{:Notification\\Service}
+
+  \begin{call}{adm}{PATCH /api/interventions/lifecycle/\{id\}/payment}{ictrl}{}
+    \begin{call}{ictrl}{Handle(RegisterPaymentCommand)}{phand}{}
+      \begin{call}{phand}{GetIntervention(id)}{db}{Intervention}
+      \end{call}
+      \begin{callself}{phand}{VerifyStatus(ReadyForPickup)}{}
+      \end{callself}
+      \begin{callself}{phand}{SetPaymentFields + Status=Closed}{}
+      \end{callself}
+      \begin{call}{phand}{UpdateInvoiceStatus(Paid)}{db}{}
+      \end{call}
+      \begin{call}{phand}{SaveChanges()}{db}{}
+      \end{call}
+    \end{call}
+    \mess{ictrl}{200 OK \{status: Closed\}}{adm}
+  \end{call}
+
+\end{sequencediagram}
+}%
+\caption{Diagramme de séquence SC8 — Enregistrement du Paiement}
+\label{fig:seq-payment}
+\end{figure}
+
+\section{Conclusion}
+
+Le Sprint 4 a réalisé l'ensemble des opérations métier d'un atelier mécanique~:
+de l'affectation des mécaniciens jusqu'à la clôture de l'intervention avec paiement.
+Le Intervention Lifecycle Tracker automatiquement mis à jour à chaque étape offre
+une traçabilité complète sur les 10 états du cycle de vie. La génération de facture
+PDF (QuestPDF) et les notifications FCM (Firebase) complètent l'expérience utilisateur
+sur toutes les plateformes (web Angular et mobile Android).
+
+% ===========================================================================
+% CONCLUSION GÉNÉRALE
+% ===========================================================================
+\chapter*{Conclusion Générale}
+\addcontentsline{toc}{chapter}{Conclusion Générale}
+
+\setlength{\parskip}{6pt}
+
+Le projet \textbf{MecaRage} représente une solution logicielle complète et cohérente
+pour la modernisation de la gestion des ateliers mécaniques. À travers quatre sprints
+successifs, nous avons construit une plateforme qui couvre l'intégralité du cycle de
+vie d'une intervention automobile~: de la réception initiale des symptômes jusqu'au
+paiement final.
+
+\bigskip
+
+Les principaux apports techniques du projet sont~:
+\begin{itemize}[noitemsep]
+  \item Une \textbf{architecture Clean Architecture avec CQRS} garantissant la
+    séparation des préoccupations, la testabilité et la maintenabilité à long terme.
+  \item Un \textbf{service de diagnostic IA} basé sur une approche RAG (BM25 + Google
+    Gemini) permettant un pré-diagnostic automatisé à partir d'une simple description
+    textuelle des symptômes.
+  \item Un \textbf{Intervention Lifecycle Tracker} — suivi transverse automatique
+    traversant 10 états, déclenché par les événements existants sans modifier le flux
+    opérationnel.
+  \item Une \textbf{application mobile Android} (Java) connectée via Firebase pour
+    les notifications temps réel (RTDB + FCM), avec la plateforme REST comme
+    source de vérité unique.
+  \item Un \textbf{système de génération PDF} (QuestPDF) pour les factures
+    professionnelles téléchargeables directement depuis l'interface client.
+  \item Une \textbf{infrastructure de déploiement} conteneurisée via Docker Compose,
+    supervisée par Prometheus et Grafana.
+\end{itemize}
+
+\bigskip
+
+Les perspectives d'évolution de MecaRage incluent~: l'enrichissement de la base de
+connaissances du service de diagnostic IA, l'implémentation d'alertes de réapprovisionnement
+automatique des pièces détachées, l'intégration d'un module de gestion financière avec
+export comptable, et l'ajout d'un calendrier interactif pour la planification des
+rendez-vous.
+
+\bigskip
+
+Ce projet nous a permis d'appliquer concrètement des patterns d'architecture logicielle
+modernes, d'intégrer des technologies hétérogènes (.NET, Angular, Python, Java, Firebase)
+dans une solution cohérente, et de répondre à des besoins métier réels dans un
+contexte multi-tenant contraignant.
+
+% ===========================================================================
+% BIBLIOGRAPHIE
+% ===========================================================================
+\chapter*{Références}
+\addcontentsline{toc}{chapter}{Références}
+
+\begin{enumerate}[label={[\arabic*]}]
+  \item Microsoft. \textit{ASP.NET Core 9 Documentation}. Microsoft Docs, 2025.
+    \url{https://docs.microsoft.com/aspnet/core}
+  \item Google. \textit{Firebase Realtime Database Documentation}. Google Developers, 2025.
+    \url{https://firebase.google.com/docs/database}
+  \item Google. \textit{Gemini API Documentation}. Google AI Studio, 2025.
+    \url{https://ai.google.dev}
+  \item Angular Team. \textit{Angular v21 Documentation}. Angular.io, 2025.
+    \url{https://angular.io/docs}
+  \item Fowler, M. \textit{Patterns of Enterprise Application Architecture}. Addison-Wesley, 2002.
+  \item Young, G. \textit{CQRS Documents}. 2010.
+    \url{https://cqrs.files.wordpress.com/2010/11/cqrs_documents.pdf}
+  \item QuestPDF. \textit{QuestPDF Documentation}. 2025.
+    \url{https://www.questpdf.com}
+  \item Robertson, S. \& Robertson, J. \textit{Mastering the Requirements Process}. Addison-Wesley, 2012.
+\end{enumerate}
+
+\end{document}
+

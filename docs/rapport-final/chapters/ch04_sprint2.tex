@@ -1,0 +1,88 @@
+﻿% ============================================================
+%  CHAPITRE 4 â€” SPRINT 2 : GESTION DES DONNÃ‰ES DE RÃ‰FÃ‰RENCE
+% ============================================================
+\chapter{Sprint 2 : Gestion des DonnÃ©es de RÃ©fÃ©rence}
+
+\chapintro{Ce sprint met en place les donnÃ©es fondamentales~: tenants, garages,
+personnel, vÃ©hicules et inventaire des piÃ¨ces dÃ©tachÃ©es.}
+
+\section{Introduction}
+
+Les donnÃ©es de rÃ©fÃ©rence constituent le socle mÃ©tier sans lequel aucune opÃ©ration
+n'est possible~: un garage doit exister pour accueillir des rendez-vous, un vÃ©hicule
+doit Ãªtre enregistrÃ© pour soumettre des symptÃ´mes, et les piÃ¨ces dÃ©tachÃ©es doivent
+Ãªtre rÃ©fÃ©rencÃ©es pour Ãªtre incluses dans les factures.
+
+\section{Identification du Backlog Sprint 2}
+
+\begin{table}[H]
+\centering
+\begin{tabularx}{\textwidth}{|l|X|l|c|}
+\hline
+\rowcolor{gray!20}
+\textbf{ID} & \textbf{User Story} & \textbf{PrioritÃ©} & \textbf{SP} \\
+\hline
+US05 & SuperAdmin~: crÃ©er et gÃ©rer les tenants & \prio{H} & 3 \\[3pt]\hline
+US06 & AdminEntreprise~: crÃ©er et gÃ©rer des garages & \prio{H} & 5 \\[3pt]\hline
+US07 & AdminEntreprise~: gÃ©rer le personnel (chefs, mÃ©caniciens) & \prio{H} & 5 \\[3pt]\hline
+US08 & Client~: enregistrer ses vÃ©hicules & \prio{H} & 3 \\[3pt]\hline
+US09 & AdminEntreprise~: gÃ©rer l'inventaire des piÃ¨ces dÃ©tachÃ©es & \prio{M} & 5 \\[3pt]\hline
+\multicolumn{3}{|r|}{\textbf{Total Sprint 2}} & \textbf{21 SP} \\
+\hline
+\end{tabularx}
+\caption{Backlog Sprint 2 --- DonnÃ©es de RÃ©fÃ©rence}
+\label{tab:backlog-s2}
+\end{table}
+
+\noindent\textbf{TÃ¢ches techniques~:}
+\begin{enumerate}[noitemsep]
+  \item EntitÃ©s de domaine~: \texttt{Garage}, \texttt{Vehicle}, \texttt{SparePart}.
+  \item Commandes CQRS~: \texttt{CreateGarageCommand}, \texttt{CreateVehicleCommand},
+    \texttt{CreateSparePartCommand}, \texttt{CreateStaffCommand}.
+  \item Migrations EF Core pour les nouvelles tables.
+  \item ContrÃ´leurs REST~: \texttt{GaragesController}, \texttt{VehiclesController},
+    \texttt{SparePartsController}.
+  \item Politiques d'autorisation par rÃ´le (\texttt{[Authorize(Roles = ...)]}).
+  \item Tableau de bord administrateur Angular.
+\end{enumerate}
+
+\section{Conception}
+
+\subsection{Diagramme de cas d'utilisation --- Sprint 2}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\textwidth]{diagrams-svg/uc_s2.png}
+\caption{Diagramme de cas d'utilisation --- Sprint 2}
+\label{fig:uc-s2}
+\end{figure}
+
+\subsection{Diagramme de classes --- Sprint 2}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth,height=0.62\textheight,keepaspectratio]{diagrams-svg/class_s2.png}
+\caption{Diagramme de classes --- Sprint 2 (DonnÃ©es de RÃ©fÃ©rence)}
+\label{fig:class-s2}
+\end{figure}
+
+\subsection{Diagramme de sÃ©quence}
+
+\subsubsection*{SC3 --- CrÃ©ation d'un Garage (US06) : fonctionnalitÃ© principale}
+
+\noindent L'admin entreprise crÃ©e un nouveau garage aprÃ¨s vÃ©rification de l'existence
+du tenant.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.92\textheight,keepaspectratio]{diagrams-svg/seq_s2_garage.png}
+\caption{Diagramme de sÃ©quence SC3 --- CrÃ©ation d'un Garage}
+\label{fig:seq-s2-garage}
+\end{figure}
+
+\section{Conclusion}
+
+Le Sprint 2 a mis en place les donnÃ©es de rÃ©fÃ©rence essentielles. Les politiques
+d'autorisation par rÃ´le ont Ã©tÃ© appliquÃ©es de faÃ§on granulaire~: seul un
+\texttt{AdminEntreprise} peut crÃ©er un garage, et un \texttt{Client} ne gÃ¨re que
+ses propres vÃ©hicules.

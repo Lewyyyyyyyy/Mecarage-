@@ -1,0 +1,63 @@
+@startuml uc_s4
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontName Arial
+skinparam defaultFontSize 12
+skinparam ActorBorderColor #1D4ED8
+skinparam ActorBackgroundColor #DBEAFE
+skinparam ActorFontStyle bold
+skinparam ActorFontSize 12
+skinparam UsecaseBorderColor #1D4ED8
+skinparam UsecaseBackgroundColor #EFF6FF
+skinparam UsecaseFontSize 12
+skinparam ArrowColor #4B5563
+skinparam ArrowThickness 1.5
+skinparam ArrowFontSize 13
+skinparam ArrowFontStyle bold
+skinparam ArrowFontColor #1E40AF
+skinparam RectangleBorderColor #1D4ED8
+skinparam RectangleBorderThickness 2
+skinparam RectangleBackgroundColor #FFFFFF
+skinparam RectangleFontSize 13
+skinparam RectangleFontStyle bold
+skinparam TitleFontSize 14
+skinparam TitleFontStyle bold
+skinparam padding 8
+
+title Sprint 4 — Opérations d'Atelier et Cycle de Vie
+
+left to right direction
+
+actor "Chef d'Atelier" as che
+actor "Mécanicien" as mec
+actor "Client" as cli
+actor "Admin Entreprise" as adm
+
+rectangle "Sprint 4 : Opérations d'Atelier" {
+  usecase "Assigner Mécaniciens (US15)" as UC15
+  usecase "Réviser Rapport Examen (US18)" as UC18
+  usecase "Créer Facture / Devis (US19)" as UC19
+  usecase "Valider + Notifier Client (US22)" as UC22
+  usecase "Consulter Tâches (US16)" as UC16
+  usecase "Rapport d'Examen (US17)" as UC17
+  usecase "Fin de Réparation (US21)" as UC21
+  usecase "Approuver / Refuser Devis (US20)" as UC20
+  usecase "Télécharger Facture PDF (US26)" as UC26
+  usecase "Enregistrer Paiement (US23)" as UC23
+}
+
+che --> UC15
+che --> UC18
+che --> UC19
+che --> UC22
+
+mec --> UC16
+mec --> UC17
+mec --> UC21
+
+cli --> UC20
+cli --> UC26
+
+adm --> UC23
+
+@enduml
+

@@ -1,4 +1,4 @@
-<div class="min-h-screen bg-gray-950 text-gray-100 font-sans">
+<div class="min-h-screen bg-[var(--color-bg)] text-[var(--color-text)] font-sans transition-colors duration-300">
   <div class="container mx-auto px-6 py-8">
 
     <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-10">
@@ -116,7 +116,7 @@
               type="text"
               placeholder="Rechercher une intervention..."
               (input)="onSearchInterventionChange($event)"
-              class="w-full pl-10 pr-4 py-3 bg-gray-950 border border-gray-800 rounded-xl text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition"
+              class="w-full pl-10 pr-4 py-3 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition"
             />
             <span class="absolute left-3 top-3.5 text-gray-600">🔍</span>
           </div>
@@ -130,7 +130,7 @@
             } @else if (filteredInterventions().length > 0) {
               <div *ngFor="let intervention of filteredInterventions()"
                    (click)="showIntervention(intervention)"
-                   class="group border border-gray-800 bg-gray-950/50 rounded-xl p-5 hover:bg-gray-800/40 hover:border-indigo-500/50 cursor-pointer transition-all duration-200">
+                   class="group border border-gray-800 bg-gray-100/80 dark:bg-gray-900/50 rounded-xl p-5 hover:bg-gray-200/60 dark:hover:bg-gray-800/40 hover:border-indigo-500/50 cursor-pointer transition-all duration-200">
                 <div class="flex justify-between items-start mb-3">
                   <h3 class="font-bold text-white group-hover:text-indigo-400 transition">{{ intervention.clientName }}</h3>
                   <span [ngClass]="getStatusColor(intervention.status)" class="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-tighter border border-current opacity-80">
@@ -160,14 +160,14 @@
               type="text"
               placeholder="Rechercher un client..."
               (input)="onSearchClientChange($event)"
-              class="w-full pl-10 pr-4 py-3 bg-gray-950 border border-gray-800 rounded-xl text-white focus:ring-2 focus:ring-indigo-500 outline-none transition"
+              class="w-full pl-10 pr-4 py-3 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none transition"
             />
             <span class="absolute left-3 top-3.5 text-gray-600">👤</span>
           </div>
 
           <div class="space-y-4 max-h-[500px] overflow-y-auto pr-2 custom-scrollbar">
             @if (filteredClients().length > 0) {
-              <div *ngFor="let client of filteredClients()" class="border border-gray-800 bg-gray-950/50 rounded-xl p-5 hover:border-emerald-500/30 transition-all">
+              <div *ngFor="let client of filteredClients()" class="border border-gray-800 bg-gray-100/80 dark:bg-gray-900/50 rounded-xl p-5 hover:border-emerald-500/30 transition-all">
                 <div class="flex justify-between items-center mb-3">
                   <h3 class="font-bold text-white">{{ client.firstName }} {{ client.lastName }}</h3>
                 </div>
@@ -256,7 +256,7 @@
       </div>
 
       @if (selectedIntervention()!.description) {
-        <div class="bg-gray-950 p-6 rounded-xl border border-gray-800 mb-8">
+        <div class="bg-gray-100 dark:bg-gray-900 p-6 rounded-xl border border-gray-200 dark:border-gray-800 mb-8">
           <label class="block text-[10px] font-black text-gray-500 uppercase tracking-widest mb-3">Diagnostic initial / Description</label>
           <p class="text-gray-300 leading-relaxed">{{ selectedIntervention()!.description }}</p>
         </div>

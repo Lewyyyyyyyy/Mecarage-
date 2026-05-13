@@ -34,3 +34,7 @@ D:\MecaRage\backend\artifacts\testbuild2\MecaManage.Infrastructure.deps.json
 D:\MecaRage\backend\artifacts\testbuild2\MecaManage.Infrastructure.runtimeconfig.json
 D:\MecaRage\backend\artifacts\testbuild2\MecaManage.Infrastructure.dll
 D:\MecaRage\backend\artifacts\testbuild2\MecaManage.Infrastructure.pdb
+D:\MecaRage\backend\artifacts\verify-build\api\MecaManage.Infrastructure.deps.json
+D:\MecaRage\backend\artifacts\verify-build\api\MecaManage.Infrastructure.runtimeconfig.json
+D:\MecaRage\backend\artifacts\verify-build\api\MecaManage.Infrastructure.dll
+D:\MecaRage\backend\artifacts\verify-build\api\MecaManage.Infrastructure.pdb

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { AdminKpis } from '../models/admin.models';
+import { AdminKpis, PublicTrustKpis } from '../models/admin.models';
 import {
   CreateGarageAdminRequest,
   CreateGarageAdminResponse,
@@ -21,6 +21,10 @@ export class AdminService {
 
   getKpis(): Observable<AdminKpis> {
     return this.http.get<AdminKpis>(`${this.adminUrl}/kpis`);
+  }
+
+  getPublicTrustKpis(): Observable<PublicTrustKpis> {
+    return this.http.get<PublicTrustKpis>(`${this.adminUrl}/public-trust-kpis`);
   }
 
   createGarageAdmin(request: CreateGarageAdminRequest): Observable<CreateGarageAdminResponse> {

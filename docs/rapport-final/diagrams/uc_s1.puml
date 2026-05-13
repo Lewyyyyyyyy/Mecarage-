@@ -1,0 +1,40 @@
+@startuml uc_s1
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontName Arial
+skinparam defaultFontSize 11
+skinparam ActorBorderColor #1D4ED8
+skinparam ActorBackgroundColor #DBEAFE
+skinparam ActorFontStyle bold
+skinparam UsecaseBorderColor #1D4ED8
+skinparam UsecaseBackgroundColor #EFF6FF
+skinparam ArrowColor #4B5563
+skinparam RectangleBorderColor #1D4ED8
+skinparam RectangleBorderThickness 2
+skinparam RectangleBackgroundColor #FFFFFF
+skinparam TitleFontSize 13
+skinparam TitleFontStyle bold
+
+title Sprint 1 — Authentification et Gestion des Profils
+
+left to right direction
+
+actor "Utilisateur\n(Tous rôles)" as usr
+
+rectangle "Sprint 1 : Authentification" {
+  usecase "S'inscrire (US01)" as UC01
+  usecase "Se connecter (US02)" as UC02
+  usecase "Rafraîchir Token (US03)" as UC03
+  usecase "Modifier Mot de Passe (US04)" as UC04
+  usecase "Gérer Profil" as UC05
+}
+
+usr --> UC01
+usr --> UC02
+usr --> UC03
+usr --> UC04
+usr --> UC05
+
+UC02 ..> UC03 : <<include>>
+
+@enduml
+

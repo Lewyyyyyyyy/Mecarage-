@@ -1,10 +1,7 @@
-/* My Symptom Reports Styles */
-
 :host {
   display: block;
 }
 
-/* Loading Animation */
 @keyframes spin {
   from {
     transform: rotate(0deg);
@@ -18,15 +15,17 @@
   animation: spin 1s linear infinite;
 }
 
-/* Card Hover Effect */
-.hover\:shadow-lg {
-  transition: box-shadow 0.3s ease;
+article {
+  transition: transform 180ms ease, box-shadow 180ms ease;
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-  .grid {
-    grid-template-columns: 1fr;
+article:hover {
+  transform: translateY(-1px);
+}
+
+@media (max-width: 640px) {
+  h2 {
+    font-size: 1.5rem;
   }
 }
 

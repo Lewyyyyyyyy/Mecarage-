@@ -1,0 +1,78 @@
+@startuml class_s2
+!pragma layout smetana
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontName Arial
+skinparam defaultFontSize 10
+skinparam ClassBorderColor #1D4ED8
+skinparam ClassBorderThickness 1.5
+skinparam ClassHeaderBackgroundColor #2563EB
+skinparam ClassHeaderFontColor #FFFFFF
+skinparam ClassHeaderFontStyle bold
+skinparam ClassBackgroundColor #EFF6FF
+skinparam ClassFontColor #111827
+skinparam ArrowColor #374151
+skinparam ArrowThickness 1.5
+skinparam TitleFontSize 13
+skinparam TitleFontStyle bold
+
+title Sprint 2 — Classes : Données de Référence
+
+class Garage {
+  + id : Guid
+  + tenantId : Guid
+  + name : String
+  + address : String
+  + city : String
+  + phone : String
+  + latitude : double?
+  + longitude : double?
+  + adminId : Guid?
+  + isActive : bool
+  ..
+  + CreateGarageCommand()
+}
+
+class Vehicle {
+  + id : Guid
+  + clientId : Guid
+  + brand : String
+  + model : String
+  + year : int
+  + licensePlate : String
+  + fuelType : String
+  + mileage : int
+  + vin : String?
+  ..
+  + CreateVehicleCommand()
+}
+
+class SparePart {
+  + id : Guid
+  + garageId : Guid
+  + code : String
+  + name : String
+  + category : String
+  + unitPrice : decimal
+  + stockQty : int
+  + reorderLevel : int
+  + isActive : bool
+  ..
+  + CreateSparePartCommand()
+}
+
+class User <<Personnel>> {
+  + id : Guid
+  + firstName : String
+  + lastName : String
+  + email : String
+  + role : UserRole
+  + garageId : Guid?
+  + isActive : bool
+}
+
+Garage "1" o--> "0..*" User : emploie
+Garage "1" o--> "0..*" Vehicle : accueille
+Garage "1" o--> "0..*" SparePart : stocke
+
+@enduml
+

@@ -11,3 +11,12 @@ export interface AdminKpis {
   activeClients: number;
 }
 
+export interface PublicTrustKpis {
+  totalTenants: number;
+  totalGarages: number;
+  totalInterventions: number;
+  completedInterventions: number;
+  activeClients: number;
+  successRate: number;
+}
+

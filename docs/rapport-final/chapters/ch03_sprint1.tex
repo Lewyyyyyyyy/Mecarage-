@@ -1,0 +1,95 @@
+﻿% ============================================================
+%  CHAPITRE 3 â€” SPRINT 1 : AUTHENTIFICATION ET GESTION DES PROFILS
+% ============================================================
+\chapter{Sprint 1 : Authentification et Gestion des Profils}
+
+\chapintro{Ce premier sprint pose les fondations de la plateforme en implÃ©mentant
+le systÃ¨me d'authentification sÃ©curisÃ© par JWT et la gestion des profils. Il
+constitue le prÃ©requis de toutes les fonctionnalitÃ©s ultÃ©rieures.}
+
+\section{Introduction}
+
+L'authentification est le socle de toute plateforme multi-utilisateurs. Elle garantit
+que chaque acteur accÃ¨de uniquement aux ressources qui lui sont attribuÃ©es selon son
+rÃ´le. Ce sprint implÃ©mente un systÃ¨me JWT stateless, adaptÃ© au dÃ©ploiement multi-tenant
+et Ã  l'architecture dÃ©couplÃ©e front-end/back-end.
+
+\section{Identification du Backlog Sprint 1}
+
+\begin{table}[H]
+\centering
+\begin{tabularx}{\textwidth}{|l|X|l|c|}
+\hline
+\rowcolor{gray!20}
+\textbf{ID} & \textbf{User Story} & \textbf{PrioritÃ©} & \textbf{SP} \\
+\hline
+US01 & En tant qu'utilisateur, je veux m'inscrire avec email et mot de passe & \prio{H} & 3 \\[3pt]\hline
+US02 & En tant qu'utilisateur, je veux me connecter et recevoir un JWT & \prio{H} & 3 \\[3pt]\hline
+US03 & En tant qu'utilisateur, je veux que mon token se rafraÃ®chisse automatiquement & \prio{H} & 2 \\[3pt]\hline
+US04 & En tant qu'utilisateur, je veux modifier mon mot de passe & \prio{M} & 2 \\[3pt]\hline
+\multicolumn{3}{|r|}{\textbf{Total Sprint 1}} & \textbf{10 SP} \\
+\hline
+\end{tabularx}
+\caption{Backlog Sprint 1 --- Authentification}
+\label{tab:backlog-s1}
+\end{table}
+
+\noindent\textbf{TÃ¢ches techniques~:}
+\begin{enumerate}[noitemsep]
+  \item ModÃ¨les de domaine \texttt{User} et \texttt{Tenant}.
+  \item Commandes CQRS~: \texttt{RegisterCommand}, \texttt{LoginCommand},
+    \texttt{RefreshTokenCommand}, \texttt{ChangePasswordCommand}.
+  \item Middleware JWT et filtre global multi-tenant EF Core.
+  \item Endpoints REST dans \texttt{AuthController}.
+  \item Ã‰crans Angular~: \texttt{LoginComponent}, \texttt{SignupComponent}.
+  \item Intercepteur HTTP pour injection automatique du Bearer Token.
+\end{enumerate}
+
+\section{Conception}
+
+\subsection{Diagramme de cas d'utilisation --- Sprint 1}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.82\textwidth]{diagrams-svg/uc_s1.png}
+\caption{Diagramme de cas d'utilisation --- Sprint 1}
+\label{fig:uc-s1}
+\end{figure}
+
+\subsection{Diagramme de classes --- Sprint 1}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth,height=0.62\textheight,keepaspectratio]{diagrams-svg/class_s1.png}
+\caption{Diagramme de classes --- Sprint 1 (Authentification)}
+\label{fig:class-s1}
+\end{figure}
+
+\subsection{Diagramme de sÃ©quence}
+
+\subsubsection*{SC1 --- Connexion (US02) : fonctionnalitÃ© principale}
+
+\noindent L'utilisateur saisit ses identifiants. Le systÃ¨me valide, gÃ©nÃ¨re un JWT
+et un refresh token, les stocke en base, et les retourne au client.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.92\textheight,keepaspectratio]{diagrams-svg/seq_s1_login.png}
+\caption{Diagramme de sÃ©quence SC1 --- Connexion (Login)}
+\label{fig:seq-s1-login}
+\end{figure}
+
+\section{Conclusion}
+
+Le Sprint 1 a Ã©tabli l'infrastructure d'authentification complÃ¨te de MecaRage.
+Le systÃ¨me JWT est opÃ©rationnel avec gestion du refresh token, isolation multi-tenant
+par filtre global EF Core (\texttt{HasQueryFilter}), et hachage BCrypt des mots de
+passe. Les interfaces Angular de connexion et d'inscription sont dÃ©ployÃ©es avec
+support du mode sombre (dark mode Tailwind CSS).
+
+Le Sprint 1 a Ã©tabli l'infrastructure d'authentification complÃ¨te de MecaRage.
+Le systÃ¨me JWT est opÃ©rationnel avec gestion du refresh token, isolation multi-tenant
+par filtre global EF Core (\texttt{HasQueryFilter}), et hachage BCrypt des mots de
+passe. Les interfaces Angular de connexion et d'inscription sont dÃ©ployÃ©es avec
+support du mode sombre (dark mode Tailwind CSS).
+

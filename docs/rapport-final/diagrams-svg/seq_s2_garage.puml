@@ -1,0 +1,53 @@
+@startuml seq_s2_garage
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontName Arial
+skinparam defaultFontSize 12
+skinparam SequenceParticipantBorderColor #1D4ED8
+skinparam SequenceParticipantBackgroundColor #2563EB
+skinparam SequenceParticipantFontColor #FFFFFF
+skinparam SequenceParticipantFontStyle bold
+skinparam SequenceParticipantFontSize 12
+skinparam SequenceActorBorderColor #1D4ED8
+skinparam SequenceActorBackgroundColor #DBEAFE
+skinparam SequenceArrowColor #374151
+skinparam SequenceArrowThickness 1.5
+skinparam SequenceArrowFontSize 12
+skinparam SequenceArrowFontStyle bold
+skinparam SequenceArrowFontColor #1E3A8A
+skinparam SequenceLifeLineBorderColor #93C5FD
+skinparam SequenceLifeLineBorderThickness 1.5
+skinparam NoteBackgroundColor #FFFBEB
+skinparam NoteBorderColor #F59E0B
+skinparam NoteFontSize 11
+skinparam TitleFontSize 14
+skinparam TitleFontStyle bold
+skinparam padding 6
+
+title SC3 — Création d'un Garage (US06) — Sprint 2
+
+actor ":AdminEntreprise" as adm
+participant ":GaragesController" as ctrl
+participant ":CreateGarageCmdHandler" as hand
+database ":Database" as db
+
+adm -> ctrl : POST /api/garages {name, address, city, phone, tenantId}
+activate ctrl
+ctrl -> hand : Handle(CreateGarageCommand)
+activate hand
+hand -> hand : ExtractTenantId(claims)
+hand -> db : TenantExists(tenantId)
+activate db
+db --> hand : bool
+deactivate db
+hand -> hand : new Garage{...}
+hand -> db : Add(garage); SaveChanges()
+activate db
+db --> hand : garageId
+deactivate db
+hand --> ctrl : GarageResponse
+deactivate hand
+ctrl --> adm : 201 Created {id, name, city}
+deactivate ctrl
+
+@enduml
+

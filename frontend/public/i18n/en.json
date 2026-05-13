@@ -1,0 +1,29 @@
+{
+  "NAV": {
+    "HOME": "Home",
+    "ABOUT": "About",
+    "CONTACT": "Contact",
+    "SYMPTOMS": "Symptoms",
+    "APPOINTMENTS": "Appointments",
+    "INTERVENTIONS": "Interventions",
+    "VEHICLES": "Vehicles",
+    "HISTORY": "History",
+    "INBOX": "Inbox",
+    "NOTIFICATIONS": "Notifications",
+    "MY_TASKS": "My Tasks",
+    "GARAGE_DASHBOARD": "Garage Dashboard",
+    "INVENTORY": "Inventory",
+    "CUSTOMERS": "Customers",
+    "SERVICES": "Services",
+    "REPORTS": "Reports",
+    "SUPER_ADMIN": "Super Admin",
+    "TENANTS": "Tenants",
+    "SIGN_IN": "Sign In",
+    "GET_STARTED": "Get Started",
+    "LOGOUT": "Logout",
+    "MY_PROFILE": "My Profile",
+    "LIGHT": "Light",
+    "DARK": "Dark"
+  }
+}
+

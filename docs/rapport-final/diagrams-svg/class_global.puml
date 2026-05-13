@@ -1,0 +1,178 @@
+@startuml class_global
+!pragma layout smetana
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontName Arial
+skinparam defaultFontSize 11
+skinparam ClassBorderColor #1D4ED8
+skinparam ClassBorderThickness 1.5
+skinparam ClassHeaderBackgroundColor #2563EB
+skinparam ClassHeaderFontColor #FFFFFF
+skinparam ClassHeaderFontStyle bold
+skinparam ClassHeaderFontSize 12
+skinparam ClassBackgroundColor #EFF6FF
+skinparam ClassFontColor #111827
+skinparam ClassFontSize 11
+skinparam ClassAttributeFontSize 10
+skinparam ArrowColor #374151
+skinparam ArrowThickness 1.5
+skinparam ArrowFontSize 13
+skinparam ArrowFontStyle bold
+skinparam ArrowFontColor #B91C1C
+skinparam NoteBackgroundColor #FFFBEB
+skinparam NoteBorderColor #D97706
+skinparam TitleFontSize 14
+skinparam TitleFontStyle bold
+skinparam padding 10
+skinparam classAttributeIconSize 0
+
+title Diagramme de Classes Global — MecaRage
+
+class Tenant {
+  + id : Guid
+  + name : String
+  + slug : String
+  + email : String
+  + phone : String
+  + isActive : bool
+}
+
+class Garage {
+  + id : Guid
+  + tenantId : Guid
+  + name : String
+  + address : String
+  + city : String
+  + phone : String
+  + latitude : double?
+  + longitude : double?
+  + adminId : Guid?
+  + isActive : bool
+}
+
+class User {
+  + id : Guid
+  + firstName : String
+  + lastName : String
+  + email : String
+  + passwordHash : String
+  + role : UserRole
+  + tenantId : Guid?
+  + garageId : Guid?
+  + refreshToken : String?
+  + isActive : bool
+}
+
+enum UserRole {
+  SuperAdmin
+  AdminEntreprise
+  ChefAtelier
+  Mecanicien
+  Client
+}
+
+class Vehicle {
+  + id : Guid
+  + clientId : Guid
+  + brand : String
+  + model : String
+  + year : int
+  + licensePlate : String
+  + fuelType : String
+  + mileage : int
+}
+
+class SparePart {
+  + id : Guid
+  + garageId : Guid
+  + code : String
+  + name : String
+  + category : String
+  + unitPrice : decimal
+  + stockQty : int
+  + reorderLevel : int
+}
+
+class SymptomReport {
+  + id : Guid
+  + clientId : Guid
+  + vehicleId : Guid
+  + symptomsDescription : String
+  + aiPredictedIssue : String?
+  + aiConfidenceScore : float?
+  + status : SymptomReportStatus
+  + submittedAt : DateTime
+}
+
+class Appointment {
+  + id : Guid
+  + clientId : Guid
+  + vehicleId : Guid
+  + garageId : Guid
+  + symptomReportId : Guid?
+  + preferredDate : DateTime
+  + status : AppointmentStatus
+}
+
+class RepairTask {
+  + id : Guid
+  + appointmentId : Guid
+  + taskTitle : String
+  + status : RepairTaskStatus
+  + assignedAt : DateTime
+  + completionNotes : String?
+}
+
+class Invoice {
+  + id : Guid
+  + appointmentId : Guid
+  + invoiceNumber : String
+  + totalAmount : decimal
+  + status : InvoiceStatus
+  + clientApproved : bool
+}
+
+class InvoiceLineItem {
+  + id : Guid
+  + invoiceId : Guid
+  + sparePartId : Guid?
+  + description : String
+  + quantity : int
+  + unitPrice : decimal
+  + lineTotal : decimal
+}
+
+class Intervention {
+  + id : Guid
+  + appointmentId : Guid?
+  + invoiceId : Guid?
+  + repairTaskId : Guid?
+  + status : LifecycleStatus
+  + paymentAmount : decimal?
+  + paymentMethod : String?
+}
+
+class Notification {
+  + id : Guid
+  + recipientId : Guid
+  + title : String
+  + message : String
+  + isRead : bool
+  + createdAt : DateTime
+}
+
+' Relations avec cardinalités
+Tenant "1" --> "0..*" Garage : possède
+Garage "1" --> "0..*" User : emploie
+User "1" --> "0..*" Vehicle : possède
+User ..> UserRole : <<use>>
+Garage "1" --> "0..*" SparePart : stocke
+Vehicle "1" --> "0..*" SymptomReport : décrit
+SymptomReport "0..1" --> "0..*" Appointment : génère
+Appointment "1" --> "0..1" RepairTask : crée
+Appointment "1" --> "0..1" Invoice : produit
+Appointment "1" --> "0..1" Intervention : tracé par
+Invoice "1" *--> "1..*" InvoiceLineItem : contient
+User "1" --> "0..*" Notification : reçoit
+
+@enduml
+

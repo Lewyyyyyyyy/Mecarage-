@@ -1,0 +1,103 @@
+\documentclass[12pt,a4paper]{report}
+
+% =====================================================
+% MISE EN PAGE
+% =====================================================
+\usepackage[
+  top=2.5cm,
+  bottom=2.5cm,
+  left=2.5cm,
+  right=2.5cm
+]{geometry}
+
+% =====================================================
+% LANGUE & ENCODAGE
+% =====================================================
+\usepackage[french]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+
+% =====================================================
+% TYPOGRAPHIE
+% =====================================================
+\usepackage{lmodern}
+\usepackage{setspace}
+\onehalfspacing
+\usepackage{xcolor}
+
+
+% Désactivation forte de la césure (IMPORTANT)
+\hyphenpenalty=10000
+\exhyphenpenalty=10000
+
+% =====================================================
+% TABLEAUX (ANTI-MOTS CASSÉS)
+% =====================================================
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{float}
+\usepackage{placeins}
+\usepackage{ragged2e}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage[table]{xcolor}
+\setlength{\tabcolsep}{4pt} % réduit l'espace horizontal interne
+
+
+\renewcommand{\arraystretch}{1.3}
+
+% Colonne texte SANS justification ni césure
+\newcolumntype{L}{>{\RaggedRight\arraybackslash}X}
+
+% =====================================================
+% FIGURES
+% =====================================================
+\usepackage{graphicx}
+\usepackage{caption}
+
+% =====================================================
+% LIENS & RÉFÉRENCES
+% =====================================================
+\usepackage{hyperref}
+\usepackage[french]{varioref}
+
+% =====================================================
+% MATHS
+% =====================================================
+\usepackage{amsmath}
+
+% =====================================================
+% EN-TÊTES & PIEDS DE PAGE
+% =====================================================
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+
+\fancyhead[L]{}
+\fancyhead[C]{}
+\fancyhead[R]{\nouppercase\rightmark}
+
+\fancyfoot[L]{}
+\fancyfoot[C]{}
+\fancyfoot[R]{\textbf{\thepage}}
+
+% =====================================================
+% DOCUMENT
+% =====================================================
+\begin{document}
+
+\include{garde_fin}
+\include{garde_sign_fin}
+
+\newpage
+\pagenumbering{roman}
+
+% \listoftables
+% \listoffigures
+
+\newpage
+\pagenumbering{arabic}
+
+\include{chapitre2}
+
+\end{document}

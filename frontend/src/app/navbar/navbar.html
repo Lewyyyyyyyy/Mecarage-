@@ -1,166 +1,183 @@
 <nav class="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 transition-colors duration-300">
-  <div class="max-w-[100%] mx-auto px-4 sm:px-6 lg:px-12">
-    <div class="flex justify-between items-center h-20">
+  <div class="max-w-[100%] mx-auto px-3 sm:px-4 lg:px-6">
+    <div class="flex justify-between items-center h-16">
 
       <!-- Logo -->
-      <a routerLink="/" class="flex items-center space-x-2 group">
-        <div class="w-10 h-10 bg-indigo-600 dark:bg-indigo-500 rounded-lg flex items-center justify-center transition-transform group-hover:scale-105">
-          <span class="text-white font-black text-xl italic">MR</span>
+      <a routerLink="/" class="flex items-center space-x-2 group min-w-0">
+        <div class="w-8 h-8 bg-indigo-600 dark:bg-indigo-500 rounded-lg flex items-center justify-center transition-transform group-hover:scale-105 shrink-0">
+          <span class="text-white font-black text-lg italic">MR</span>
         </div>
-        <span class="text-2xl font-black tracking-tighter text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+        <span class="text-2xl font-black tracking-tight text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors truncate">
           MecaRage
         </span>
       </a>
 
       <!-- Desktop Menu -->
-      <div class="hidden xl:flex space-x-8 items-center">
-        <a routerLink="/" routerLinkActive="text-indigo-600 dark:text-indigo-400" [routerLinkActiveOptions]="{exact: true}"
+      <div class="hidden xl:flex items-center gap-4">
+        <a routerLink="/" routerLinkActive="text-indigo-600 dark:text-indigo-400" [routerLinkActiveOptions]="{ exact: true }"
            class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">
-          Home
+          {{ 'NAV.HOME' | translate }}
         </a>
 
-        <!-- Super Admin Dashboard -->
-        @if (isSuperAdmin()) {
-          <a routerLink="/super-admin" routerLinkActive="text-indigo-600 dark:text-indigo-400"
+        @if (!isAuthenticated()) {
+          <a routerLink="/about" routerLinkActive="text-indigo-600 dark:text-indigo-400"
              class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">
-            Admin Dashboard
+            {{ 'NAV.ABOUT' | translate }}
+          </a>
+          <a routerLink="/contact" routerLinkActive="text-indigo-600 dark:text-indigo-400"
+             class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">
+            {{ 'NAV.CONTACT' | translate }}
           </a>
         }
 
-        <!-- Garage Admin Dashboard (AdminEntreprise only) -->
-        @if (isAdminEntreprise()) {
-          <a routerLink="/admin" routerLinkActive="text-indigo-600 dark:text-indigo-400"
-             class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">
-            Garage Admin
-          </a>
-        }
-
-        <!-- Chef Atelier: just an Inbox link -->
-        @if (isChef()) {
-          <a routerLink="/inbox" routerLinkActive="text-indigo-600 dark:text-indigo-400"
-             class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">
-            📥 Inbox
-          </a>
-        }
-
-        <!-- Client Menu Items (hide for Super Admin) -->
         @if (isClient()) {
-          <a routerLink="/inbox" routerLinkActive="text-indigo-600 dark:text-indigo-400"
-             class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">
-            🔔 Notifications
-          </a>
-          <a routerLink="/symptoms" routerLinkActive="text-indigo-600 dark:text-indigo-400"
-             class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">
-            Symptoms
-          </a>
-          <a routerLink="/appointments" routerLinkActive="text-indigo-600 dark:text-indigo-400"
-             class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">
-            Appointments
-          </a>
-          <a routerLink="/history" routerLinkActive="text-indigo-600 dark:text-indigo-400"
-             class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">
-            📋 Historique
-          </a>
-          <a routerLink="/interventions" routerLinkActive="text-indigo-600 dark:text-indigo-400"
-             class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">
-            🔩 Interventions
-          </a>
-          <a routerLink="/vehicles" routerLinkActive="text-indigo-600 dark:text-indigo-400"
-             class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">
-            Vehicles
-          </a>
+          <a routerLink="/symptoms" routerLinkActive="text-indigo-600 dark:text-indigo-400" class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">{{ 'NAV.SYMPTOMS' | translate }}</a>
+          <a routerLink="/appointments" routerLinkActive="text-indigo-600 dark:text-indigo-400" class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">{{ 'NAV.APPOINTMENTS' | translate }}</a>
+          <a routerLink="/interventions" routerLinkActive="text-indigo-600 dark:text-indigo-400" class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">{{ 'NAV.INTERVENTIONS' | translate }}</a>
+          <a routerLink="/vehicles" routerLinkActive="text-indigo-600 dark:text-indigo-400" class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">{{ 'NAV.VEHICLES' | translate }}</a>
+          <a routerLink="/history" routerLinkActive="text-indigo-600 dark:text-indigo-400" class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">{{ 'NAV.HISTORY' | translate }}</a>
         }
 
-        <!-- Mechanic Menu Items -->
         @if (isMechanic()) {
-          <a routerLink="/inbox" routerLinkActive="text-indigo-600 dark:text-indigo-400"
-             class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">
-            🔧 Mes Tâches
+          <a routerLink="/mechanic/tasks" routerLinkActive="text-indigo-600 dark:text-indigo-400" class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">{{ 'NAV.MY_TASKS' | translate }}</a>
+          <a routerLink="/inbox" routerLinkActive="text-indigo-600 dark:text-indigo-400" class="relative text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">
+            {{ 'NAV.INBOX' | translate }}
+            @if (inboxBadge() > 0) {
+              <span class="absolute -top-2 -right-3 h-4 min-w-4 px-1 flex items-center justify-center text-[10px] font-black text-white bg-red-500 rounded-full">
+                {{ inboxBadge() > 99 ? '99+' : inboxBadge() }}
+              </span>
+            }
           </a>
         }
 
-        <!-- Chef Menu Items — managed inside the dashboard tabs, no extra nav links needed -->
+        @if (isChef()) {
+          <a routerLink="/admin" routerLinkActive="text-indigo-600 dark:text-indigo-400" class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">{{ 'NAV.GARAGE_DASHBOARD' | translate }}</a>
+          <a routerLink="/inbox" routerLinkActive="text-indigo-600 dark:text-indigo-400" class="relative text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">
+            {{ 'NAV.INBOX' | translate }}
+            @if (inboxBadge() > 0) {
+              <span class="absolute -top-2 -right-3 h-4 min-w-4 px-1 flex items-center justify-center text-[10px] font-black text-white bg-red-500 rounded-full">
+                {{ inboxBadge() > 99 ? '99+' : inboxBadge() }}
+              </span>
+            }
+          </a>
+        }
 
-        <a routerLink="/inventory" routerLinkActive="text-indigo-600 dark:text-indigo-400"
-           class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">
-          Inventory
-        </a>
-        <a routerLink="/customers" routerLinkActive="text-indigo-600 dark:text-indigo-400"
-           class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">
-          Customers
-        </a>
-        <a routerLink="/services" routerLinkActive="text-indigo-600 dark:text-indigo-400"
-           class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">
-          Services
-        </a>
-        <a routerLink="/reports" routerLinkActive="text-indigo-600 dark:text-indigo-400"
-           class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">
-          Reports
-        </a>
-        <a routerLink="/about" routerLinkActive="text-indigo-600 dark:text-indigo-400"
-           class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">
-          About
-        </a>
-        <a routerLink="/contact" routerLinkActive="text-indigo-600 dark:text-indigo-400"
-           class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">
-          Contact
-        </a>
+        @if (isAdminEntreprise()) {
+          <a routerLink="/admin" routerLinkActive="text-indigo-600 dark:text-indigo-400" class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">{{ 'NAV.GARAGE_DASHBOARD' | translate }}</a>
+          <a routerLink="/inventory" routerLinkActive="text-indigo-600 dark:text-indigo-400" class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">{{ 'NAV.INVENTORY' | translate }}</a>
+          <a routerLink="/customers" routerLinkActive="text-indigo-600 dark:text-indigo-400" class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">{{ 'NAV.CUSTOMERS' | translate }}</a>
+          <a routerLink="/services" routerLinkActive="text-indigo-600 dark:text-indigo-400" class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">{{ 'NAV.SERVICES' | translate }}</a>
+        }
 
-        <div class="h-6 w-px bg-gray-200 dark:bg-gray-700"></div>
+        @if (isSuperAdmin()) {
+          <a routerLink="/super-admin" routerLinkActive="text-indigo-600 dark:text-indigo-400" class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">{{ 'NAV.SUPER_ADMIN' | translate }}</a>
+          <a routerLink="/tenants" routerLinkActive="text-indigo-600 dark:text-indigo-400" class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">{{ 'NAV.TENANTS' | translate }}</a>
+        }
 
-        <!-- Notification Bell (Client only) -->
+        <div class="h-5 w-px bg-gray-200 dark:bg-gray-700"></div>
+
         @if (isClient() && isAuthenticated()) {
           <app-notification-bell />
         }
 
-        <!-- Dark Mode Toggle -->
-        <button (click)="toggleTheme()" type="button" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors text-gray-600 dark:text-gray-400">
+        <!-- Language Switcher -->
+        <div class="relative" (clickOutside)="closeLangMenu()">
+          <button (click)="toggleLangMenu()" type="button"
+            class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-full border font-semibold text-xs transition-all duration-200 border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] hover:border-indigo-500 hover:text-indigo-500">
+            <span>{{ getCurrentLanguage().flag }}</span>
+            <span>{{ getCurrentLanguage().code | uppercase }}</span>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 opacity-60" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+            </svg>
+          </button>
+
+          @if (isLangOpen()) {
+            <div class="absolute right-0 mt-2 w-36 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl shadow-xl z-50 overflow-hidden">
+              @for (lang of languages; track lang.code) {
+                <button (click)="selectLanguage(lang.code)"
+                  class="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm font-semibold text-left transition-colors"
+                  [class.bg-indigo-50]="currentLang() === lang.code"
+                  [class.dark:bg-indigo-900]="currentLang() === lang.code"
+                  [class.text-indigo-600]="currentLang() === lang.code"
+                  [class.dark:text-indigo-400]="currentLang() === lang.code"
+                  [class.text-gray-700]="currentLang() !== lang.code"
+                  [class.dark:text-gray-300]="currentLang() !== lang.code"
+                  [class.hover:bg-gray-50]="currentLang() !== lang.code"
+                  [class.dark:hover:bg-gray-800]="currentLang() !== lang.code">
+                  <span>{{ lang.flag }}</span>
+                  <span>{{ lang.label }}</span>
+                  @if (currentLang() === lang.code) {
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 ml-auto" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                    </svg>
+                  }
+                </button>
+              }
+            </div>
+          }
+        </div>
+
+        <!-- Theme Toggle -->
+        <button (click)="toggleTheme()" type="button"
+          class="flex items-center gap-1 px-2.5 py-1.5 rounded-full border font-semibold text-xs transition-all duration-300 border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] hover:border-[var(--color-primary)] hover:text-[var(--color-primary)]"
+          [attr.aria-label]="isDark() ? 'Switch to light mode' : 'Switch to dark mode'">
           @if (isDark()) {
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd" />
-            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-yellow-400" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd" /></svg>
+            <span>{{ 'NAV.LIGHT' | translate }}</span>
           } @else {
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
-            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-indigo-400" viewBox="0 0 20 20" fill="currentColor"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" /></svg>
+            <span>{{ 'NAV.DARK' | translate }}</span>
           }
         </button>
 
         @if (!isAuthenticated()) {
-          <a routerLink="/login" class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">
-            Sign In
-          </a>
-          <a routerLink="/signup" class="inline-flex items-center px-6 py-2.5 border border-transparent text-sm font-bold rounded-full shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all transform hover:scale-105 active:scale-95">
-            Get Started
+          <a routerLink="/login" class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">{{ 'NAV.SIGN_IN' | translate }}</a>
+          <a routerLink="/signup" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-bold rounded-full shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 transition-all">
+            {{ 'NAV.GET_STARTED' | translate }}
           </a>
         } @else {
-          <!-- User Profile Avatar/Link -->
-          <a routerLink="/profile" class="w-10 h-10 bg-indigo-100 dark:bg-indigo-900/30 rounded-full flex items-center justify-center text-indigo-600 dark:text-indigo-400 font-bold border-2 border-transparent hover:border-indigo-500 transition-all">
+          <a routerLink="/profile" class="w-9 h-9 bg-indigo-100 dark:bg-indigo-900/30 rounded-full flex items-center justify-center text-indigo-600 dark:text-indigo-400 font-bold border border-transparent hover:border-indigo-500 transition-all">
             {{ user()?.initials }}
           </a>
-          <button (click)="logout()" class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">
-            Logout
-          </button>
+          <button (click)="logout()" class="text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">{{ 'NAV.LOGOUT' | translate }}</button>
         }
       </div>
 
       <!-- Mobile Button -->
-      <div class="xl:hidden flex items-center space-x-4">
-        <button (click)="toggleTheme()" type="button" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors text-gray-600 dark:text-gray-400">
+      <div class="xl:hidden flex items-center space-x-2">
+        <!-- Mobile Language Button -->
+        <div class="relative">
+          <button (click)="toggleLangMenu()" type="button"
+            class="flex items-center gap-1 px-2 py-1 rounded-full border font-semibold text-xs transition-all duration-200 border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)]">
+            <span>{{ getCurrentLanguage().flag }}</span>
+            <span>{{ getCurrentLanguage().code | uppercase }}</span>
+          </button>
+          @if (isLangOpen()) {
+            <div class="absolute right-0 mt-2 w-36 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl shadow-xl z-50 overflow-hidden">
+              @for (lang of languages; track lang.code) {
+                <button (click)="selectLanguage(lang.code)"
+                  class="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm font-semibold text-left transition-colors"
+                  [class.text-indigo-600]="currentLang() === lang.code"
+                  [class.text-gray-700]="currentLang() !== lang.code"
+                  [class.dark:text-gray-300]="currentLang() !== lang.code">
+                  <span>{{ lang.flag }}</span>
+                  <span>{{ lang.label }}</span>
+                </button>
+              }
+            </div>
+          }
+        </div>
+
+        <button (click)="toggleTheme()" type="button"
+          class="flex items-center gap-1 px-2 py-1 rounded-full border font-semibold text-xs transition-all duration-300 border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)]"
+          [attr.aria-label]="isDark() ? 'Switch to light mode' : 'Switch to dark mode'">
           @if (isDark()) {
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd" />
-            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-yellow-400" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd" /></svg>
           } @else {
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
-            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-indigo-400" viewBox="0 0 20 20" fill="currentColor"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" /></svg>
           }
         </button>
-        <button
-          class="text-gray-600 dark:text-gray-300 focus:outline-none p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-          (click)="toggleMenu()"
-          aria-label="Toggle Menu">
+        <button class="text-gray-600 dark:text-gray-300 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" (click)="toggleMenu()" aria-label="Toggle Menu">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
           </svg>
@@ -171,19 +188,15 @@
 
   <!-- Mobile Menu -->
   @if (isMenuOpenFn()) {
-    <!-- Backdrop -->
     <div class="xl:hidden fixed inset-0 bg-black/50 z-40 backdrop-blur-sm transition-opacity" (click)="toggleMenu()"></div>
 
-    <!-- Left Sidebar Menu -->
     <div class="xl:hidden fixed inset-y-0 left-0 w-3/4 max-w-sm bg-white dark:bg-gray-900 z-50 shadow-2xl transform transition-transform duration-300 ease-in-out flex flex-col animate-slide-in-left">
-      <div class="p-6 border-b border-gray-100 dark:border-gray-800 flex justify-between items-center">
+      <div class="p-5 border-b border-gray-100 dark:border-gray-800 flex justify-between items-center">
         <a routerLink="/" (click)="toggleMenu()" class="flex items-center space-x-2 group">
           <div class="w-8 h-8 bg-indigo-600 dark:bg-indigo-500 rounded-lg flex items-center justify-center">
             <span class="text-white font-black text-sm italic">MR</span>
           </div>
-          <span class="text-xl font-black tracking-tighter text-gray-900 dark:text-white">
-            MecaRage
-          </span>
+          <span class="text-xl font-black tracking-tight text-gray-900 dark:text-white">MecaRage</span>
         </a>
         <button (click)="toggleMenu()" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -192,114 +205,66 @@
         </button>
       </div>
 
-      <div class="flex-1 overflow-y-auto px-4 py-6 space-y-2">
-        <a routerLink="/" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400" [routerLinkActiveOptions]="{exact: true}"
-           class="flex items-center px-4 py-3 rounded-xl font-semibold text-gray-700 dark:text-gray-300">
-          Home
-        </a>
+      <div class="flex-1 overflow-y-auto px-4 py-5 space-y-2">
+        <a routerLink="/" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400" [routerLinkActiveOptions]="{exact: true}" class="flex items-center px-4 py-2.5 rounded-xl font-semibold text-gray-700 dark:text-gray-300">{{ 'NAV.HOME' | translate }}</a>
 
-        <!-- Super Admin Dashboard -->
-        @if (isSuperAdmin()) {
-          <a routerLink="/super-admin" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400"
-             class="flex items-center px-4 py-3 rounded-xl font-semibold text-gray-700 dark:text-gray-300">
-            Admin Dashboard
-          </a>
+        @if (!isAuthenticated()) {
+          <a routerLink="/about" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400" class="flex items-center px-4 py-2.5 rounded-xl font-semibold text-gray-700 dark:text-gray-300">{{ 'NAV.ABOUT' | translate }}</a>
+          <a routerLink="/contact" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400" class="flex items-center px-4 py-2.5 rounded-xl font-semibold text-gray-700 dark:text-gray-300">{{ 'NAV.CONTACT' | translate }}</a>
         }
 
-        <!-- Garage Admin Dashboard (AdminEntreprise only) -->
-        @if (isAdminEntreprise()) {
-          <a routerLink="/admin" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400"
-             class="flex items-center px-4 py-3 rounded-xl font-semibold text-gray-700 dark:text-gray-300">
-            Garage Admin
-          </a>
-        }
-
-        <!-- Chef Atelier: just an Inbox link -->
-        @if (isChef()) {
-          <a routerLink="/inbox" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400"
-             class="flex items-center px-4 py-3 rounded-xl font-semibold text-gray-700 dark:text-gray-300">
-            📥 Inbox
-          </a>
-        }
-
-        <!-- Client Menu Items (hide for Super Admin) -->
         @if (isClient()) {
-          <a routerLink="/inbox" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400"
-             class="flex items-center px-4 py-3 rounded-xl font-semibold text-gray-700 dark:text-gray-300">
-            🔔 Notifications
-          </a>
-          <a routerLink="/symptoms" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400"
-             class="flex items-center px-4 py-3 rounded-xl font-semibold text-gray-700 dark:text-gray-300">
-            Symptoms
-          </a>
-          <a routerLink="/appointments" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400"
-             class="flex items-center px-4 py-3 rounded-xl font-semibold text-gray-700 dark:text-gray-300">
-            Appointments
-          </a>
-          <a routerLink="/history" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400"
-             class="flex items-center px-4 py-3 rounded-xl font-semibold text-gray-700 dark:text-gray-300">
-            📋 Historique
-          </a>
-          <a routerLink="/interventions" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400"
-             class="flex items-center px-4 py-3 rounded-xl font-semibold text-gray-700 dark:text-gray-300">
-            🔩 Interventions
-          </a>
-          <a routerLink="/vehicles" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400"
-             class="flex items-center px-4 py-3 rounded-xl font-semibold text-gray-700 dark:text-gray-300">
-            Vehicles
-          </a>
+          <a routerLink="/symptoms" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400" class="flex items-center px-4 py-2.5 rounded-xl font-semibold text-gray-700 dark:text-gray-300">{{ 'NAV.SYMPTOMS' | translate }}</a>
+          <a routerLink="/appointments" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400" class="flex items-center px-4 py-2.5 rounded-xl font-semibold text-gray-700 dark:text-gray-300">{{ 'NAV.APPOINTMENTS' | translate }}</a>
+          <a routerLink="/interventions" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400" class="flex items-center px-4 py-2.5 rounded-xl font-semibold text-gray-700 dark:text-gray-300">{{ 'NAV.INTERVENTIONS' | translate }}</a>
+          <a routerLink="/vehicles" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400" class="flex items-center px-4 py-2.5 rounded-xl font-semibold text-gray-700 dark:text-gray-300">{{ 'NAV.VEHICLES' | translate }}</a>
+          <a routerLink="/history" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400" class="flex items-center px-4 py-2.5 rounded-xl font-semibold text-gray-700 dark:text-gray-300">{{ 'NAV.HISTORY' | translate }}</a>
+          <a routerLink="/inbox" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400" class="flex items-center px-4 py-2.5 rounded-xl font-semibold text-gray-700 dark:text-gray-300">{{ 'NAV.NOTIFICATIONS' | translate }}</a>
         }
 
-        <!-- Mechanic Menu Items -->
         @if (isMechanic()) {
-          <a routerLink="/inbox" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400"
-             class="flex items-center px-4 py-3 rounded-xl font-semibold text-gray-700 dark:text-gray-300">
-            🔧 Mes Tâches
+          <a routerLink="/mechanic/tasks" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400" class="flex items-center px-4 py-2.5 rounded-xl font-semibold text-gray-700 dark:text-gray-300">{{ 'NAV.MY_TASKS' | translate }}</a>
+          <a routerLink="/inbox" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400" class="flex items-center justify-between px-4 py-2.5 rounded-xl font-semibold text-gray-700 dark:text-gray-300">
+            <span>{{ 'NAV.INBOX' | translate }}</span>
+            @if (inboxBadge() > 0) {
+              <span class="h-5 min-w-5 px-1.5 flex items-center justify-center text-xs font-black text-white bg-red-500 rounded-full">{{ inboxBadge() > 99 ? '99+' : inboxBadge() }}</span>
+            }
           </a>
         }
 
-        <!-- Chef Menu Items — managed inside the dashboard tabs -->
+        @if (isChef()) {
+          <a routerLink="/admin" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400" class="flex items-center px-4 py-2.5 rounded-xl font-semibold text-gray-700 dark:text-gray-300">{{ 'NAV.GARAGE_DASHBOARD' | translate }}</a>
+          <a routerLink="/inbox" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400" class="flex items-center justify-between px-4 py-2.5 rounded-xl font-semibold text-gray-700 dark:text-gray-300">
+            <span>{{ 'NAV.INBOX' | translate }}</span>
+            @if (inboxBadge() > 0) {
+              <span class="h-5 min-w-5 px-1.5 flex items-center justify-center text-xs font-black text-white bg-red-500 rounded-full">{{ inboxBadge() > 99 ? '99+' : inboxBadge() }}</span>
+            }
+          </a>
+        }
 
-        <a routerLink="/inventory" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400"
-           class="flex items-center px-4 py-3 rounded-xl font-semibold text-gray-700 dark:text-gray-300">
-          Inventory
-        </a>
-        <a routerLink="/customers" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400"
-           class="flex items-center px-4 py-3 rounded-xl font-semibold text-gray-700 dark:text-gray-300">
-          Customers
-        </a>
-        <a routerLink="/services" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400"
-           class="flex items-center px-4 py-3 rounded-xl font-semibold text-gray-700 dark:text-gray-300">
-          Services
-        </a>
-        <a routerLink="/reports" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400"
-           class="flex items-center px-4 py-3 rounded-xl font-semibold text-gray-700 dark:text-gray-300">
-          Reports
-        </a>
+        @if (isAdminEntreprise()) {
+          <a routerLink="/admin" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400" class="flex items-center px-4 py-2.5 rounded-xl font-semibold text-gray-700 dark:text-gray-300">{{ 'NAV.GARAGE_DASHBOARD' | translate }}</a>
+          <a routerLink="/inventory" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400" class="flex items-center px-4 py-2.5 rounded-xl font-semibold text-gray-700 dark:text-gray-300">{{ 'NAV.INVENTORY' | translate }}</a>
+          <a routerLink="/customers" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400" class="flex items-center px-4 py-2.5 rounded-xl font-semibold text-gray-700 dark:text-gray-300">{{ 'NAV.CUSTOMERS' | translate }}</a>
+          <a routerLink="/services" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400" class="flex items-center px-4 py-2.5 rounded-xl font-semibold text-gray-700 dark:text-gray-300">{{ 'NAV.SERVICES' | translate }}</a>
+        }
+
+        @if (isSuperAdmin()) {
+          <a routerLink="/super-admin" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400" class="flex items-center px-4 py-2.5 rounded-xl font-semibold text-gray-700 dark:text-gray-300">{{ 'NAV.SUPER_ADMIN' | translate }}</a>
+          <a routerLink="/tenants" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400" class="flex items-center px-4 py-2.5 rounded-xl font-semibold text-gray-700 dark:text-gray-300">{{ 'NAV.TENANTS' | translate }}</a>
+        }
+
         <div class="my-4 border-t border-gray-100 dark:border-gray-800"></div>
-        <a routerLink="/profile" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400"
-           class="flex items-center px-4 py-3 rounded-xl font-semibold text-gray-700 dark:text-gray-300">
-          My Profile
-        </a>
-        <a routerLink="/settings" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400"
-           class="flex items-center px-4 py-3 rounded-xl font-semibold text-gray-700 dark:text-gray-300">
-          Settings
-        </a>
         @if (isAuthenticated()) {
-          <button (click)="logout(); toggleMenu()" class="flex items-center px-4 py-3 rounded-xl font-semibold text-gray-700 dark:text-gray-300 w-full text-left">
-            Logout
-          </button>
+          <a routerLink="/profile" (click)="toggleMenu()" routerLinkActive="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400" class="flex items-center px-4 py-2.5 rounded-xl font-semibold text-gray-700 dark:text-gray-300">{{ 'NAV.MY_PROFILE' | translate }}</a>
+          <button (click)="logout(); toggleMenu()" class="flex items-center px-4 py-2.5 rounded-xl font-semibold text-gray-700 dark:text-gray-300 w-full text-left">{{ 'NAV.LOGOUT' | translate }}</button>
         }
       </div>
 
       @if (!isAuthenticated()) {
-        <div class="p-6 border-t border-gray-100 dark:border-gray-800 space-y-3">
-          <a routerLink="/login" (click)="toggleMenu()" class="block w-full text-center px-4 py-3 rounded-xl font-bold text-gray-700 dark:text-gray-200 bg-gray-100 dark:bg-gray-800">
-            Sign In
-          </a>
-          <a routerLink="/signup" (click)="toggleMenu()" class="block w-full text-center px-4 py-3 rounded-xl font-bold text-white bg-indigo-600">
-            Get Started
-          </a>
+        <div class="p-5 border-t border-gray-100 dark:border-gray-800 space-y-3">
+          <a routerLink="/login" (click)="toggleMenu()" class="block w-full text-center px-4 py-2.5 rounded-xl font-bold text-gray-700 dark:text-gray-200 bg-gray-100 dark:bg-gray-800">{{ 'NAV.SIGN_IN' | translate }}</a>
+          <a routerLink="/signup" (click)="toggleMenu()" class="block w-full text-center px-4 py-2.5 rounded-xl font-bold text-white bg-indigo-600">{{ 'NAV.GET_STARTED' | translate }}</a>
         </div>
       }
     </div>

@@ -1,0 +1,77 @@
+@startuml class_s3
+!pragma layout smetana
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontName Arial
+skinparam defaultFontSize 10
+skinparam ClassBorderColor #1D4ED8
+skinparam ClassBorderThickness 1.5
+skinparam ClassHeaderBackgroundColor #2563EB
+skinparam ClassHeaderFontColor #FFFFFF
+skinparam ClassHeaderFontStyle bold
+skinparam ClassBackgroundColor #EFF6FF
+skinparam ClassFontColor #111827
+skinparam ArrowColor #374151
+skinparam ArrowThickness 1.5
+skinparam TitleFontSize 13
+skinparam TitleFontStyle bold
+
+title Sprint 3 — Classes : Symptômes, IA et Rendez-vous
+
+class SymptomReport {
+  + id : Guid
+  + clientId : Guid
+  + vehicleId : Guid
+  + garageId : Guid?
+  + symptomsDescription : String
+  + aiPredictedIssue : String?
+  + aiConfidenceScore : float?
+  + aiRecommendations : String?
+  + chefFeedback : String?
+  + reviewedByChefId : Guid?
+  + availablePeriodStart : DateTime?
+  + availablePeriodEnd : DateTime?
+  + status : SymptomReportStatus
+  + submittedAt : DateTime
+  ..
+  + CreateSymptomReportCommand()
+  + AddChefFeedbackCommand()
+}
+
+class Appointment {
+  + id : Guid
+  + clientId : Guid
+  + vehicleId : Guid
+  + garageId : Guid
+  + symptomReportId : Guid?
+  + preferredDate : DateTime
+  + preferredTime : TimeSpan
+  + specialRequests : String?
+  + status : AppointmentStatus
+  + approvedByChefId : Guid?
+  + approvedAt : DateTime?
+  + declineReason : String?
+  ..
+  + CreateAppointmentCommand()
+  + ApproveAppointmentCommand()
+}
+
+enum SymptomReportStatus {
+  Submitted
+  Reviewed
+  Approved
+  Declined
+}
+
+enum AppointmentStatus {
+  Pending
+  Approved
+  Declined
+  Completed
+}
+
+SymptomReport "0..1" --> "0..*" Appointment : génère
+SymptomReport ..> SymptomReportStatus : <<use>>
+Appointment ..> AppointmentStatus : <<use>>
+
+@enduml
+

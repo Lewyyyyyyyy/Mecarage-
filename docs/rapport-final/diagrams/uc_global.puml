@@ -1,0 +1,103 @@
+@startuml uc_global
+!pragma layout smetana
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontName Arial
+skinparam defaultFontSize 11
+skinparam ActorBorderColor #1D4ED8
+skinparam ActorBackgroundColor #DBEAFE
+skinparam ActorFontStyle bold
+skinparam UsecaseBorderColor #1D4ED8
+skinparam UsecaseBackgroundColor #EFF6FF
+skinparam UsecaseBorderThickness 1.5
+skinparam ArrowColor #4B5563
+skinparam RectangleBorderColor #1D4ED8
+skinparam RectangleBorderThickness 2
+skinparam RectangleBackgroundColor #FFFFFF
+skinparam TitleFontSize 14
+skinparam TitleFontStyle bold
+
+title Diagramme de Cas d'Utilisation Global — MecaRage
+
+left to right direction
+
+actor "Client" as cli
+actor "Mécanicien" as mec
+actor "Chef d'Atelier" as che
+actor "Admin Entreprise" as adm
+actor "Super Admin" as sad
+
+rectangle "Système MecaRage" {
+  usecase "S'authentifier (UC01)" as UC01
+  usecase "Gérer Profil" as UC02
+  usecase "Soumettre Symptômes" as UC03
+  usecase "Réserver Rendez-vous" as UC04
+  usecase "Approuver / Refuser Devis" as UC05
+  usecase "Suivre Intervention" as UC06
+  usecase "Télécharger Facture PDF" as UC07
+  usecase "Consulter Tâches" as UC08
+  usecase "Rapport d'Examen" as UC09
+  usecase "Fin de Réparation" as UC10
+  usecase "Réviser Rapport Symptômes" as UC11
+  usecase "Gérer Rendez-vous" as UC12
+  usecase "Assigner Mécaniciens" as UC13
+  usecase "Créer Facture / Devis" as UC14
+  usecase "Valider et Notifier" as UC15
+  usecase "Gérer Garages et Personnel" as UC16
+  usecase "Gérer Pièces Détachées" as UC17
+  usecase "Enregistrer Paiement" as UC18
+  usecase "Gérer Tenants" as UC19
+}
+
+rectangle "Système IA (Ollama + RAG)" as iasys {
+  usecase "Diagnostic IA Automatique" as UC20
+}
+
+' ==== Actor associations ====
+cli --> UC03
+cli --> UC04
+cli --> UC05
+cli --> UC06
+cli --> UC07
+cli --> UC02
+
+mec --> UC08
+mec --> UC09
+mec --> UC10
+
+che --> UC11
+che --> UC12
+che --> UC13
+che --> UC14
+che --> UC15
+
+adm --> UC14
+adm --> UC16
+adm --> UC17
+adm --> UC18
+
+sad --> UC19
+
+' ==== Include auth (requis pour toutes les UC) ====
+UC02 ..> UC01 : include
+UC03 ..> UC01 : include
+UC04 ..> UC01 : include
+UC05 ..> UC01 : include
+UC06 ..> UC01 : include
+UC07 ..> UC01 : include
+UC08 ..> UC01 : include
+UC09 ..> UC01 : include
+UC10 ..> UC01 : include
+UC11 ..> UC01 : include
+UC12 ..> UC01 : include
+UC13 ..> UC01 : include
+UC14 ..> UC01 : include
+UC15 ..> UC01 : include
+UC16 ..> UC01 : include
+UC17 ..> UC01 : include
+UC18 ..> UC01 : include
+UC19 ..> UC01 : include
+
+' ==== Include IA diagnosis ====
+UC03 ..> UC20 : include
+
+@enduml

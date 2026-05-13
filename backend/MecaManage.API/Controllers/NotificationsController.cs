@@ -19,6 +19,15 @@ public class NotificationsController : ControllerBase
         _mediator = mediator;
     }
 
+    /// <summary>GET /api/notifications/me — returns notifications for the current user (any role)</summary>
+    [HttpGet("me")]
+    public async Task<IActionResult> GetMyNotifications()
+    {
+        var userId = User.GetUserId();
+        var result = await _mediator.Send(new GetMyNotificationsQuery(userId));
+        return Ok(result);
+    }
+
     [HttpGet("chef-inbox")]
     [Authorize(Roles = "ChefAtelier")]
     public async Task<IActionResult> GetChefInbox()
@@ -30,11 +39,29 @@ public class NotificationsController : ControllerBase
 
     [HttpGet("my-notifications")]
     [Authorize(Roles = "Client")]
-    public async Task<IActionResult> GetMyNotifications()
+    public async Task<IActionResult> GetClientNotifications()
     {
         var userId = User.GetUserId();
         var result = await _mediator.Send(new GetClientNotificationsQuery(userId));
         return Ok(result);
+    }
+
+    /// <summary>GET /api/notifications/unread-count — returns unread count for the current user (any role)</summary>
+    [HttpGet("unread-count")]
+    public async Task<IActionResult> GetUnreadCount()
+    {
+        var userId = User.GetUserId();
+        var result = await _mediator.Send(new GetUnreadCountQuery(userId));
+        return Ok(new { count = result });
+    }
+
+    /// <summary>PATCH /api/notifications/mark-all-read — marks all current user's notifications as read</summary>
+    [HttpPatch("mark-all-read")]
+    public async Task<IActionResult> MarkAllRead()
+    {
+        var userId = User.GetUserId();
+        var count = await _mediator.Send(new MarkAllNotificationsReadCommand(userId));
+        return Ok(new { marked = count });
     }
 
     [HttpPatch("{notificationId}/mark-read")]
@@ -47,4 +74,6 @@ public class NotificationsController : ControllerBase
         return Ok(new { message = result.Message });
     }
 }
+
+
 

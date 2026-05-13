@@ -1,4 +1,5 @@
 using MecaManage.Application.Common.Interfaces;
+using MecaManage.Domain.Entities;
 using MecaManage.Domain.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -44,21 +45,34 @@ public class AssignMechanicCommandHandler : IRequestHandler<AssignMechanicComman
         if (!mechanicExists)
             return new AssignMechanicResult(false, "Le mécanicien n'appartient pas à ce garage");
 
-        // Check if already assigned
+        // Check if already assigned — idempotent: just notify and return success
         var alreadyAssigned = await _context.RepairTaskAssignments
             .AnyAsync(a => a.RepairTaskId == request.TaskId && a.MechanicId == request.MechanicId, cancellationToken);
 
-        if (alreadyAssigned)
-            return new AssignMechanicResult(false, "Ce mécanicien est déjà assigné à cette tâche");
-
-        var assignment = new Domain.Entities.RepairTaskAssignment
+        if (!alreadyAssigned)
         {
-            RepairTaskId = request.TaskId,
-            MechanicId = request.MechanicId,
-            AssignedAt = DateTime.UtcNow
-        };
+            var assignment = new RepairTaskAssignment
+            {
+                RepairTaskId = request.TaskId,
+                MechanicId   = request.MechanicId,
+                AssignedAt   = DateTime.UtcNow
+            };
+            _context.RepairTaskAssignments.Add(assignment);
+        }
 
-        _context.RepairTaskAssignments.Add(assignment);
+        // Notify the mechanic about the repair work assignment
+        _context.Notifications.Add(new Notification
+        {
+            RecipientId      = request.MechanicId,
+            RepairTaskId     = request.TaskId,
+            Title            = "🔧 Nouvelle tâche de réparation assignée",
+            Message          = $"Le chef d'atelier vous a assigné la tâche « {task.TaskTitle} ». " +
+                               $"Le client a approuvé les travaux. Vous pouvez commencer les réparations.",
+            NotificationType = "RepairAssigned",
+            CreatedAt        = DateTime.UtcNow,
+            IsRead           = false
+        });
+
         await _context.SaveChangesAsync(cancellationToken);
 
         return new AssignMechanicResult(true, "Mécanicien assigné avec succès");

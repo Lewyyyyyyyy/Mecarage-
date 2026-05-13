@@ -1,0 +1,37 @@
+@startuml arch_global
+!pragma layout smetana
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontName Arial
+skinparam defaultFontSize 11
+skinparam ComponentBorderColor #1D4ED8
+skinparam ComponentBackgroundColor #EFF6FF
+skinparam ArrowColor #4B5563
+skinparam ArrowThickness 1.5
+skinparam RectangleBorderColor #374151
+skinparam RectangleBorderThickness 1.5
+skinparam RectangleBackgroundColor #F9FAFB
+skinparam TitleFontSize 13
+skinparam TitleFontStyle bold
+
+title Architecture Globale — MecaRage
+
+[Angular 21\nTailwind CSS] as ang
+[ASP.NET Core 9\nCQRS + MediatR] as api
+[MySQL 8\nEF Core] as mysql
+[Redis 7\nCache] as redis
+[FastAPI + Ollama\nRAG BM25] as ia
+[Android Java\nRetrofit 2] as mob
+[Firebase\nRTDB + FCM] as fb
+[Prometheus\nGrafana] as mon
+
+ang --> api : REST / HTTPS
+api --> mysql : EF Core ORM
+api --> redis : Cache / Sessions
+api --> ia : HTTP POST /diagnose
+api --> fb : Admin SDK / Push
+mob --> api : Retrofit / REST
+mob --> fb : RTDB / FCM
+api --> mon : Métriques
+
+@enduml
+

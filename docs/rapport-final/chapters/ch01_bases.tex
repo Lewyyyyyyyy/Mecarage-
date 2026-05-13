@@ -1,0 +1,107 @@
+﻿% ============================================================
+%  CHAPITRE 1 â€” LES BASES
+% ============================================================
+\chapter{Les Bases}
+
+\chapintro{Ce chapitre prÃ©sente le contexte gÃ©nÃ©ral du projet \textbf{MecaRage}~:
+la structure de l'entreprise commanditaire, la problÃ©matique Ã  l'origine du projet
+et la solution proposÃ©e.}
+
+\section{Introduction}
+
+Dans un contexte de digitalisation croissante des mÃ©tiers de la maintenance
+automobile, les ateliers mÃ©caniques ressentent une pression de plus en plus forte
+pour moderniser leurs processus. MecaRage a Ã©tÃ© conÃ§u pour rÃ©pondre Ã  ce besoin
+en offrant une solution numÃ©rique complÃ¨te, couvrant l'ensemble de la chaÃ®ne
+opÃ©rationnelle d'un rÃ©seau d'ateliers multi-sites.
+
+\section{PrÃ©sentation de l'entreprise}
+
+L'entreprise partenaire coordonne plusieurs \textit{garages} rÃ©partis gÃ©ographiquement,
+chacun disposant d'une Ã©quipe de mÃ©caniciens supervisÃ©e par un chef d'atelier.
+La direction centrale assure la supervision globale des opÃ©rations et de la facturation.
+
+\section{PrÃ©sentation du projet}
+
+\subsection{ProblÃ©matique}
+
+La gestion d'un rÃ©seau d'ateliers mÃ©caniques implique une coordination complexe
+entre plusieurs parties prenantes~: les clients qui dÃ©posent leurs vÃ©hicules,
+les mÃ©caniciens qui exÃ©cutent les travaux, le chef d'atelier qui orchestre les
+ressources, et la direction qui supervise les finances.
+
+\begin{table}[H]
+\centering
+\begin{tabularx}{\textwidth}{|l|X|X|}
+\hline
+\rowcolor{gray!20}
+\textbf{Domaine} & \textbf{ProblÃ¨me} & \textbf{ConsÃ©quence} \\
+\hline
+Communication & RDV par tÃ©lÃ©phone/WhatsApp & Pas de traÃ§abilitÃ© \\
+\hline
+Rapports & Fiches papier mÃ©canicien & Risque de perte, illisibilitÃ© \\
+\hline
+Facturation & Tableur Excel par garage & Pas de vision consolidÃ©e \\
+\hline
+Suivi & Aucun outil de statut en temps rÃ©el & Manque de visibilitÃ© client \\
+\hline
+Diagnostic & RÃ©ception sans prÃ©-analyse & Perte de temps Ã  l'accueil \\
+\hline
+Stock & Inventaire manuel piÃ¨ces & Ruptures non anticipÃ©es \\
+\hline
+\end{tabularx}
+\caption{ProblÃ¨mes identifiÃ©s dans le systÃ¨me actuel}
+\label{tab:problemes}
+\end{table}
+
+\subsection{Ã‰tude de l'existant}
+
+L'existant se compose d'une combinaison d'outils non intÃ©grÃ©s~:
+
+\begin{table}[H]
+\centering
+\begin{tabularx}{\textwidth}{|l|X|X|}
+\hline
+\rowcolor{gray!20}
+\textbf{Outil} & \textbf{Usage actuel} & \textbf{Limite principale} \\
+\hline
+WhatsApp / SMS & Prise de RDV, communications & Informel, non traÃ§able \\
+\hline
+Excel & Inventaire piÃ¨ces, facturation & Pas de collaboration temps rÃ©el \\
+\hline
+Papier & Rapports mÃ©caniciens & Perte, archivage difficile \\
+\hline
+Tableau blanc & Suivi visuel de l'atelier & Non numÃ©rique, local uniquement \\
+\hline
+\end{tabularx}
+\caption{Outils existants et leurs limites}
+\label{tab:existant}
+\end{table}
+
+\subsection{Solution proposÃ©e}
+
+\textbf{MecaRage} est une plateforme numÃ©rique unifiÃ©e couvrant l'intÃ©gralitÃ© du
+cycle de vie d'une intervention mÃ©canique.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.82\textwidth]{diagrams-svg/arch_global.png}
+\caption{Architecture globale de la plateforme MecaRage}
+\label{fig:archi-global}
+\end{figure}
+
+\noindent Les apports clÃ©s~:
+\begin{itemize}[noitemsep]
+  \item \textbf{Application web} accessible par tous les rÃ´les (Angular 21).
+  \item \textbf{Back-end robuste} (ASP.NET Core 9, Clean Architecture, CQRS).
+  \item \textbf{Service IA} (FastAPI + Ollama) pour le diagnostic prÃ©liminaire.
+  \item \textbf{Module mobile Android} (Java) avec SQLite local et synchronisation via FastAPI → MySQL.
+  \item \textbf{Gestion multi-tenant}~: plusieurs entreprises sur la mÃªme plateforme.
+  \item \textbf{Intervention Lifecycle Tracker}~: suivi automatique sur 10 Ã©tats.
+  \item \textbf{GÃ©nÃ©ration PDF} des factures via QuestPDF.
+\end{itemize}
+
+\section{Conclusion}
+
+Ce chapitre a prÃ©sentÃ© le contexte mÃ©tier qui a motivÃ© la crÃ©ation de MecaRage.
+Le chapitre suivant dÃ©taille les spÃ©cifications fonctionnelles et techniques.

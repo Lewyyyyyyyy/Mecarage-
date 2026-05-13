@@ -201,8 +201,21 @@ export class NotificationService {
     return this.http.get<ClientNotificationDto[]>(`${this.apiUrl}/my-notifications`);
   }
 
+  /** Generic — works for any role (Chef, Mechanic, etc.) */
+  getNotificationsMe(): Observable<{ id: string; title: string; message: string; notificationType: string; isRead: boolean; createdAt: string }[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/me`);
+  }
+
+  getUnreadCount(): Observable<{ count: number }> {
+    return this.http.get<{ count: number }>(`${this.apiUrl}/unread-count`);
+  }
+
   markAsRead(notificationId: string): Observable<any> {
     return this.http.patch(`${this.apiUrl}/${notificationId}/mark-read`, {});
+  }
+
+  markAllAsRead(): Observable<{ marked: number }> {
+    return this.http.patch<{ marked: number }>(`${this.apiUrl}/mark-all-read`, {});
   }
 }
 

@@ -22,3 +22,6 @@ D:\MecaRage\backend\artifacts\testbuild\MecaManage.Domain.pdb
 D:\MecaRage\backend\artifacts\testbuild2\MecaManage.Domain.deps.json
 D:\MecaRage\backend\artifacts\testbuild2\MecaManage.Domain.dll
 D:\MecaRage\backend\artifacts\testbuild2\MecaManage.Domain.pdb
+D:\MecaRage\backend\artifacts\verify-build\api\MecaManage.Domain.deps.json
+D:\MecaRage\backend\artifacts\verify-build\api\MecaManage.Domain.dll
+D:\MecaRage\backend\artifacts\verify-build\api\MecaManage.Domain.pdb

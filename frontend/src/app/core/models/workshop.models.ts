@@ -54,6 +54,7 @@ export interface AddChefFeedbackDto {
 export interface AppointmentDto {
   id: string;
   vehicleId: string;
+  symptomReportId?: string | null;
   vehicleInfo: string;
   garageName: string;
   preferredDate: string;

@@ -1,46 +1,130 @@
 @import "tailwindcss";
 
+/* ============================================================
+   Tailwind v4 — Class-based dark mode
+   Tells Tailwind to apply dark: utilities when .dark is on
+   any ancestor, instead of relying on the OS media query.
+   ============================================================ */
+@variant dark (&:where(.dark, .dark *));
+
+/* ============================================================
+   Custom design tokens — exposed as Tailwind utility classes
+   e.g. bg-theme-bg, text-theme-primary, border-theme-border
+   ============================================================ */
+@theme {
+  /* Light values (defaults — overridden at runtime via CSS vars) */
+  --color-theme-bg:      #F8FAFC;
+  --color-theme-surface: #FFFFFF;
+  --color-theme-primary: #2563EB;
+  --color-theme-cta:     #F97316;
+  --color-theme-text:    #1E293B;
+  --color-theme-muted:   #475569;
+  --color-theme-border:  #E2E8F0;
+}
+
+/* ============================================================
+   Runtime CSS variables — applied by ThemeService toggling
+   .dark on <html>.  Components can use var(--color-*) directly
+   or use the Tailwind bg-theme-* / text-theme-* classes above.
+   ============================================================ */
 @layer base {
   :root {
-    --background: 255 255 255;
-    --foreground: 0 0 0;
-  }
-  .dark {
-    --background: 0 0 0;
-    --foreground: 255 255 255;
-    background-color: rgb(17, 24, 39); /* bg-gray-900 */
-    color: rgb(243, 244, 246); /* text-gray-100 */
+    --color-bg:      #F8FAFC;
+    --color-surface: #FFFFFF;
+    --color-primary: #2563EB;
+    --color-cta:     #F97316;
+    --color-text:    #1E293B;
+    --color-muted:   #475569;
+    --color-border:  #E2E8F0;
   }
 
-  html.dark body {
-    background-color: rgb(17, 24, 39);
-    color: rgb(243, 244, 246);
+  :root.dark {
+    --color-bg:      #0F172A;
+    --color-surface: #1E293B;
+    --color-primary: #3B82F6;
+    --color-cta:     #FB923C;
+    --color-text:    #F1F5F9;
+    --color-muted:   #94A3B8;
+    --color-border:  #334155;
+  }
+
+  html {
+    font-size: 18px;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    transition: background-color 300ms ease, color 300ms ease;
   }
 }
 
-/* Scroll reveal helper */
-.reveal { will-change: transform, opacity; }
-.reveal-in { opacity: 1 !important; transform: translateY(0) !important; transition: opacity 700ms ease, transform 700ms ease; }
+/* ============================================================
+   Light Mode Correctness Layer
+   Override hardcoded dark-first Tailwind classes so they look
+   correct on the #F8FAFC / #FFFFFF light background.
+   All rules use !important to win over Tailwind utilities.
+   ============================================================ */
+@layer base {
+  html:not(.dark) {
+    /* ── Backgrounds ─────────────────────────────────────── */
+    & .bg-gray-950  { background-color: var(--color-bg)      !important; }
+    & .bg-gray-900  { background-color: var(--color-surface)  !important; }
+    & .bg-gray-800  { background-color: #F1F5F9              !important; }
 
-/* Floating blobs */
+    /* ── Borders ─────────────────────────────────────────── */
+    & .border-gray-800 { border-color: var(--color-border) !important; }
+    & .border-gray-700 { border-color: #CBD5E1             !important; }
+
+    /* ── Text colours ────────────────────────────────────── */
+    /* text-white on neutral/card surfaces → dark text */
+    & .text-white   { color: var(--color-text) !important; }
+    /* light grays become readable on white bg */
+    & .text-gray-300 { color: #64748B !important; }
+    & .text-gray-400 { color: #475569 !important; }
+    & .text-gray-500 { color: #64748B !important; }
+    & .text-gray-600 { color: #374151 !important; }
+
+    /* ── Restore white text on colored action buttons ─────
+       Must come AFTER the .text-white rule (same !important,
+       later in source = wins).                              */
+    & .bg-blue-400,   & .bg-blue-500,   & .bg-blue-600,   & .bg-blue-700,
+    & .bg-indigo-400, & .bg-indigo-500, & .bg-indigo-600, & .bg-indigo-700,
+    & .bg-rose-400,   & .bg-rose-500,   & .bg-rose-600,
+    & .bg-red-400,    & .bg-red-500,    & .bg-red-600,
+    & .bg-green-500,  & .bg-green-600,
+    & .bg-emerald-500,& .bg-emerald-600,
+    & .bg-teal-500,   & .bg-teal-600,
+    & .bg-orange-500, & .bg-orange-600,
+    & .bg-amber-500,  & .bg-amber-600   { color: white !important; }
+  }
+}
+
+/* ============================================================
+   Animation helpers
+   ============================================================ */
+.reveal { will-change: transform, opacity; }
+.reveal-in {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+  transition: opacity 700ms ease, transform 700ms ease;
+}
+
 @keyframes float {
   0%, 100% { transform: translateY(0) translateX(0); }
-  50% { transform: translateY(-14px) translateX(10px); }
+  50%       { transform: translateY(-14px) translateX(10px); }
 }
 @keyframes pulseSoft {
   0%, 100% { transform: scale(1); opacity: 0.75; }
-  50% { transform: scale(1.03); opacity: 1; }
+  50%       { transform: scale(1.03); opacity: 1; }
 }
-
 @keyframes slideInLeft {
   from { transform: translateX(-100%); }
-  to { transform: translateX(0); }
+  to   { transform: translateX(0); }
 }
 
-.animate-slide-in-left {
-  animation: slideInLeft 0.3s ease-out forwards;
-}
-
-.animate-float { animation: float 7s ease-in-out infinite; }
-.animate-float-delayed { animation: float 8.5s ease-in-out infinite; animation-delay: 0.8s; }
-.animate-pulse-soft { animation: pulseSoft 2.8s ease-in-out infinite; }
+.animate-slide-in-left  { animation: slideInLeft 0.3s ease-out forwards; }
+.animate-float          { animation: float 7s ease-in-out infinite; }
+.animate-float-delayed  { animation: float 8.5s ease-in-out infinite; animation-delay: 0.8s; }
+.animate-pulse-soft     { animation: pulseSoft 2.8s ease-in-out infinite; }

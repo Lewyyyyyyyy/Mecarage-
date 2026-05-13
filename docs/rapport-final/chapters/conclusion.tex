@@ -1,0 +1,147 @@
+% ============================================================
+%  CONCLUSION GÉNÉRALE & BIBLIOGRAPHIE
+% ============================================================
+\chapter*{Conclusion Générale}
+\addcontentsline{toc}{chapter}{Conclusion Générale}
+\thispagestyle{plain}
+
+\chapintro{Ce chapitre synthétise les réalisations du projet MecaRage et
+présente les perspectives d'évolution envisagées.}
+
+Le projet \textbf{MecaRage} représente une solution logicielle complète et
+cohérente pour la modernisation de la gestion des ateliers mécaniques. À travers
+quatre sprints successifs, nous avons construit une plateforme qui couvre
+l'intégralité du cycle de vie d'une intervention automobile~: de la réception
+initiale des symptômes jusqu'au paiement final.
+
+\section*{Bilan des réalisations}
+
+\begin{table}[H]
+\centering
+\begin{tabularx}{\textwidth}{|l|X|c|c|}
+\hline
+\rowcolor{gray!20}
+\textbf{Sprint} & \textbf{Fonctionnalités} & \textbf{SP réalisés} & \textbf{US} \\
+\hline
+Sprint 1 & Authentification JWT, inscription, refresh token, profil & 10 & 4 \\[2pt]\hline
+Sprint 2 & Tenants, garages, personnel, véhicules, inventaire pièces & 21 & 5 \\[2pt]\hline
+Sprint 3 & Symptômes, diagnostic IA RAG, révision chef, rendez-vous & 24 & 5 \\[2pt]\hline
+Sprint 4 & Atelier, facture, approbation, réparation, paiement, PDF, mobile & 62 & 13 \\[2pt]\hline
+\multicolumn{2}{|r|}{\textbf{Total}} & \textbf{117 SP} & \textbf{27 US} \\
+\hline
+\end{tabularx}
+\caption{Récapitulatif des réalisations par sprint}
+\label{tab:bilan}
+\end{table}
+
+\noindent Les principaux apports techniques du projet sont~:
+
+\begin{itemize}[noitemsep,leftmargin=1.5em]
+  \item \textbf{Clean Architecture avec CQRS}~: séparation des préoccupations,
+    testabilité et maintenabilité à long terme via MediatR.
+  \item \textbf{Service de diagnostic IA}~: architecture RAG (BM25 + Ollama LLM local)
+    produisant un pré-diagnostic structuré et contextualisé.
+  \item \textbf{Intervention Lifecycle Tracker}~: suivi transverse automatique sur
+    10 états, déclenché par les événements existants sans modifier le flux métier.
+  \item \textbf{Gestion multi-tenant}~: isolation totale des données de chaque
+    entreprise via un filtre global EF Core (\texttt{HasQueryFilter}).
+  \item \textbf{Application mobile Android (Java + SQLite)}~: stockage local hors-ligne
+    avec synchronisation périodique directe vers MySQL via un service FastAPI dédié.
+  \item \textbf{Génération PDF (QuestPDF)}~: factures professionnelles téléchargeables
+    directement depuis l'interface client web et mobile.
+  \item \textbf{Infrastructure conteneurisée}~: Docker Compose supervisé par
+    Prometheus et Grafana pour le monitoring en production.
+\end{itemize}
+
+\section*{Perspectives d'évolution}
+
+\begin{enumerate}[noitemsep,leftmargin=1.5em]
+  \item \textbf{Enrichissement de la base IA}~: intégration de nouvelles marques et
+    modèles de véhicules dans \texttt{knowledge\_base.txt}, fine-tuning du modèle.
+  \item \textbf{Alertes de réapprovisionnement}~: décrémenter automatiquement le stock
+    pièces lors de la validation d'examen et alerter sous le seuil de réordre.
+  \item \textbf{Calendrier interactif}~: vue mensuelle des rendez-vous via
+    \texttt{@fullcalendar/angular} pour une meilleure planification.
+  \item \textbf{Export comptable}~: export CSV/Excel des interventions clôturées
+    sur une période pour intégration avec les outils comptables.
+  \item \textbf{Notation et avis client}~: évaluation 5 étoiles + commentaire
+    après la clôture d'une intervention.
+  \item \textbf{SignalR}~: mise à jour en temps réel du tableau de bord web sans
+    rechargement de page (actuellement polling).
+  \item \textbf{Audit Log}~: enregistrement de chaque action sensible via un
+    pipeline MediatR IPipelineBehavior pour la conformité et le débogage.
+\end{enumerate}
+
+\section*{Bilan personnel}
+
+Ce projet nous a permis d'appliquer concrètement des patterns d'architecture
+logicielle modernes dans un contexte métier réel et contraignant (multi-tenant,
+multi-rôle, multi-plateforme). L'intégration de technologies hétérogènes ---
+.NET, Angular, Python, Java, SQLite --- dans une solution cohérente a constitué
+le principal défi et la principale source d'apprentissage.
+
+\cleardoublepage
+
+% ——————————————————————————————————————————————————————————
+\chapter*{Bibliographie}
+\addcontentsline{toc}{chapter}{Bibliographie}
+\thispagestyle{plain}
+
+\begin{enumerate}[label={[\arabic*]},leftmargin=1.8em]
+
+  \item Microsoft Corporation.
+    \textit{ASP.NET Core 9 Documentation}.
+    Microsoft Docs, 2025.
+    \url{https://docs.microsoft.com/aspnet/core}
+
+  \item SQLite Consortium.
+    \textit{SQLite — Documentation Officielle}.
+    SQLite, 2025.
+    \url{https://www.sqlite.org/docs.html}
+
+  \item FastAPI Team.
+    \textit{FastAPI — High Performance Python Web Framework}.
+    Tiangolo, 2025.
+    \url{https://fastapi.tiangolo.com}
+
+  \item Ollama Team.
+    \textit{Ollama — Run Large Language Models Locally}.
+    Ollama, 2025.
+    \url{https://ollama.com}
+
+  \item Angular Team.
+    \textit{Angular v21 Documentation}.
+    Angular.io, 2025.
+    \url{https://angular.io/docs}
+
+  \item Fowler, M.
+    \textit{Patterns of Enterprise Application Architecture}.
+    Addison-Wesley Professional, 2002.
+    ISBN 0-321-12521-5.
+
+  \item Young, G.
+    \textit{CQRS Documents}.
+    Greg Young, 2010.
+    \url{https://cqrs.files.wordpress.com/2010/11/cqrs_documents.pdf}
+
+  \item QuestPDF Team.
+    \textit{QuestPDF — Modern .NET PDF Library}.
+    QuestPDF, 2025.
+    \url{https://www.questpdf.com}
+
+  \item Robertson, S. \& Robertson, J.
+    \textit{Mastering the Requirements Process}. 3\textsuperscript{e} édition.
+    Addison-Wesley, 2012.
+    ISBN 0-321-81574-5.
+
+  \item Pomelo Foundation.
+    \textit{Pomelo.EntityFrameworkCore.MySql — GitHub}.
+    2025.
+    \url{https://github.com/PomeloFoundation/Pomelo.EntityFrameworkCore.MySql}
+
+  \item Android Developers.
+    \textit{Android Java — Developer Guide}.
+    Google, 2025.
+    \url{https://developer.android.com/guide}
+
+\end{enumerate}

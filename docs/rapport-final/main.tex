@@ -1,0 +1,214 @@
+% ============================================================
+%  MecaRage — Rapport de Projet de Fin d'Études 2025/2026
+%  pdflatex -interaction=nonstopmode main.tex  (x2)
+% ============================================================
+\documentclass[12pt,a4paper]{report}
+
+% ——— Encodage & Langue ————————————————————————————————————
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+
+% ——— Mise en page ——————————————————————————————————————————
+\usepackage{geometry}
+\geometry{a4paper,left=3cm,right=2.5cm,top=2.5cm,bottom=2.5cm,headheight=15pt}
+
+% ——— Typographie ——————————————————————————————————————————
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{setspace}
+\onehalfspacing
+
+% ——— Couleurs (limitées : diagrammes + priorités) ————————
+\usepackage{xcolor}
+\definecolor{diagh}{RGB}{210,210,210}
+\definecolor{diagfill}{RGB}{238,238,238}
+\definecolor{diagborder}{RGB}{70,70,70}
+\definecolor{prioH}{RGB}{180,30,30}
+\definecolor{prioM}{RGB}{190,90,10}
+\definecolor{prioL}{RGB}{30,130,60}
+% Gardés pour page de garde uniquement
+\definecolor{pgprimary}{RGB}{0,71,171}   % bleu marine — page de garde
+\definecolor{indigo}{RGB}{79,70,229}
+\definecolor{indigodark}{RGB}{55,48,163}
+\definecolor{indigolite}{RGB}{199,210,254}
+\definecolor{indigobg}{RGB}{238,242,255}
+\definecolor{darkbg}{RGB}{17,24,39}
+
+% ——— TikZ & PGF ———————————————————————————————————————————
+\usepackage{tikz}
+\usetikzlibrary{
+  shapes.geometric,shapes.multipart,arrows.meta,
+  positioning,fit,backgrounds,calc,decorations.pathreplacing,shadows}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+
+% ——— Graphiques & Flottants ———————————————————————————————
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{rotating}
+\usepackage[labelfont=bf,labelsep=period,font=small]{caption}
+\usepackage{subcaption}
+
+% ——— Tableaux ——————————————————————————————————————————————
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{multirow}
+\usepackage{tabularx}
+\usepackage{colortbl}
+\usepackage{hhline}
+
+% ——— Listes & Code ————————————————————————————————————————
+\usepackage{ifthen}
+\usepackage{enumitem}
+\usepackage{listings}
+\lstset{
+  basicstyle=\footnotesize\ttfamily,breaklines=true,frame=tb,
+  backgroundcolor=\color{diagfill},
+  keywordstyle=\bfseries,
+  commentstyle=\itshape\color{gray},
+  numbers=left,numberstyle=\tiny\color{gray},numbersep=5pt}
+
+% ——— En-têtes / Pieds de page ————————————————————————————
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\nouppercase{\leftmark}}
+\fancyhead[R]{\small\textbf{MecaRage --- PFE 2025/2026}}
+\fancyfoot[C]{\small\thepage}
+\fancyfoot[L]{\scriptsize\color{gray}Rapport de Projet de Fin d'Études}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.2pt}
+
+% ——— Style des chapitres (noir) ———————————————————————————
+\usepackage{titlesec}
+\titleformat{\chapter}[display]
+  {\normalfont\huge\bfseries}
+  {\normalsize\bfseries Chapitre \thechapter}{10pt}{\huge}
+\titlespacing*{\chapter}{0pt}{-10pt}{20pt}
+\titleformat{\section}{\large\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}{\normalsize\itshape\bfseries}{\thesubsubsection}{1em}{}
+
+% ——— Liens hypertextes ————————————————————————————————————
+\usepackage{hyperref}
+\hypersetup{
+  hidelinks,
+  pdftitle={MecaRage -- Rapport PFE 2025/2026},
+  pdfauthor={Equipe MecaRage},
+  pdfsubject={Plateforme de Gestion d'Atelier Mecanique},
+  pdfkeywords={Angular21,ASP.NET9,MySQL,SQLite,FastAPI,CQRS,IA}}
+
+% ——— TikZ styles UML (noir/gris) —————————————————————————
+\tikzset{
+  umlclass/.style={
+    rectangle split,rectangle split parts=3,
+    rectangle split part fill={diagh,white,white},
+    draw=diagborder,thick,font=\scriptsize,text width=4cm,align=left},
+  umlclassS/.style={
+    rectangle split,rectangle split parts=2,
+    rectangle split part fill={diagh,white},
+    draw=diagborder,thick,font=\scriptsize,text width=3.8cm,align=left},
+  ucboundary/.style={rectangle,draw=diagborder,thick,
+    rounded corners=4pt,fill=white,inner sep=10pt},
+  ucactor/.style={rectangle,draw=diagborder,fill=diagfill,
+    rounded corners=3pt,font=\footnotesize\bfseries,
+    text width=2cm,align=center,minimum height=0.8cm},
+  ucactorSys/.style={rectangle,draw=diagborder,fill=diagh,
+    rounded corners=3pt,font=\footnotesize\bfseries,
+    text width=2cm,align=center,minimum height=0.8cm},
+  ucell/.style={ellipse,draw=diagborder,fill=white,
+    font=\scriptsize,text width=2.4cm,minimum height=0.75cm,align=center},
+  ucline/.style={draw=diagborder,thin},
+  ucdash/.style={draw=diagborder,dashed,thin,-{Stealth[length=5pt]}},
+  classrel/.style={draw=diagborder,thick,-{Stealth[length=6pt]}},
+  classcomp/.style={draw=diagborder,thick,{Diamond[length=6pt]}-{Stealth[length=6pt]}},
+  classinh/.style={draw=diagborder,thick,-{Triangle[open,length=8pt]}},
+  classdep/.style={draw=diagborder,dashed,-{Stealth[length=6pt]}},
+  pipenode/.style={rectangle,fill=diagh,draw=diagborder,rounded corners=3pt,
+    font=\footnotesize\bfseries,text width=2.8cm,align=center,
+    minimum height=1.1cm,inner sep=5pt},
+  statenode/.style={rectangle,fill=diagfill,draw=diagborder,rounded corners=3pt,
+    font=\scriptsize\bfseries,text width=3cm,align=center,minimum height=0.7cm},
+  trans/.style={-{Stealth},draw=diagborder,thick,font=\scriptsize},
+  archbox/.style={rectangle,fill=diagh,draw=diagborder,rounded corners=4pt,
+    font=\footnotesize\bfseries,text width=2.8cm,align=center,
+    minimum height=1.2cm,inner sep=5pt},
+  % Sequence diagrams (pure TikZ)
+  sdpart/.style={rectangle,draw=diagborder,fill=diagh,
+    font=\scriptsize\bfseries,minimum height=0.55cm,minimum width=1.8cm,
+    align=center,inner sep=3pt},
+  sdmsgstyle/.style={-{Stealth[length=5pt]},draw=diagborder,thick},
+  sdrtnstyle/.style={-{Stealth[length=5pt]},draw=diagborder,dashed,thin}}
+
+% ——— Commandes personnalisées ————————————————————————————
+\newcommand{\prio}[1]{%
+  \ifthenelse{\equal{#1}{H}}{\textcolor{prioH}{\bfseries Haute}}{%
+  \ifthenelse{\equal{#1}{M}}{\textcolor{prioM}{\bfseries Moyenne}}{%
+  \textcolor{prioL}{\bfseries Basse}}}}
+
+\newcommand{\chapintro}[1]{%
+  \vspace{0.2cm}
+  \begin{center}
+  \begin{tikzpicture}
+    \node[rectangle,fill=gray!8,draw=gray!45,rounded corners=3pt,
+          text width=\dimexpr\linewidth-1.5cm\relax,
+          inner sep=0.7cm,align=justify,font=\small\itshape] {#1};
+  \end{tikzpicture}
+  \end{center}
+  \vspace{0.3cm}}
+
+% —— Macros diagrammes de séquence (TikZ pur) ——————————————
+% \sdpart{x}{nodevar}{Label} — participant + lifeline (hauteur fixe 9cm)
+\newcommand{\sdpart}[3]{%
+  \node[sdpart] (#2) at (#1, 0) {\strut #3};
+  \draw[draw=diagborder,dashed,thin] (#1,-0.3) -- (#1,-9.5);}
+% \sdmsg{from-x}{to-x}{y}{label} — message synchrone
+\newcommand{\sdmsg}[4]{%
+  \draw[sdmsgstyle] (#1,#3) -- (#2,#3)
+    node[midway,above,font=\tiny,fill=white,inner sep=1pt,align=center]{#4};}
+% \sdrtn{from-x}{to-x}{y}{label} — retour
+\newcommand{\sdrtn}[4]{%
+  \draw[sdrtnstyle] (#1,#3) -- (#2,#3)
+    node[midway,above,font=\tiny,fill=white,inner sep=1pt,align=center]{#4};}
+% \sdself{x}{y}{label} — message auto
+\newcommand{\sdself}[3]{%
+  \draw[sdmsgstyle] (#1,#2) -- ++(0.6,0) -- ++(0,-0.3) -- ++(-0.6,0)
+    node[midway,right=0.6cm,font=\tiny,align=left,fill=white,inner sep=1pt]{#3};}
+% \sdbox{x}{ytop}{ybot} — boîte d'activation
+\newcommand{\sdbox}[3]{%
+  \filldraw[fill=gray!15,draw=diagborder,thin] (#1-0.08,#2) rectangle (#1+0.08,#3);}
+
+% ============================================================
+\begin{document}
+
+\pagenumbering{roman}
+\setcounter{page}{1}
+
+\input{chapters/page_garde}
+\input{chapters/resume}
+
+\tableofcontents
+\addcontentsline{toc}{chapter}{Table des matières}
+\clearpage
+\listoffigures
+\addcontentsline{toc}{chapter}{Table des figures}
+\clearpage
+\listoftables
+\addcontentsline{toc}{chapter}{Liste des tableaux}
+\cleardoublepage
+
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+\input{chapters/ch01_bases}
+\input{chapters/ch02_specification}
+\input{chapters/ch03_sprint1}
+\input{chapters/ch04_sprint2}
+\input{chapters/ch05_sprint3}
+\input{chapters/ch06_sprint4}
+\input{chapters/conclusion}
+
+\end{document}
+

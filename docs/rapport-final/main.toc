@@ -1,0 +1,60 @@
+\babel@toc {french}{}\relax 
+\contentsline {chapter}{Résumé}{i}{chapter*.1}%
+\contentsline {chapter}{Abstract}{ii}{chapter*.2}%
+\contentsline {chapter}{Table des matières}{iv}{chapter*.3}%
+\contentsline {chapter}{Table des figures}{v}{chapter*.4}%
+\contentsline {chapter}{Liste des tableaux}{vi}{chapter*.5}%
+\contentsline {chapter}{\numberline {1}Les Bases}{1}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Introduction}{1}{section.1.1}%
+\contentsline {section}{\numberline {1.2}PrÃ©sentation de l'entreprise}{1}{section.1.2}%
+\contentsline {section}{\numberline {1.3}PrÃ©sentation du projet}{1}{section.1.3}%
+\contentsline {subsection}{\numberline {1.3.1}ProblÃ©matique}{1}{subsection.1.3.1}%
+\contentsline {subsection}{\numberline {1.3.2}Ã‰tude de l'existant}{2}{subsection.1.3.2}%
+\contentsline {subsection}{\numberline {1.3.3}Solution proposÃ©e}{2}{subsection.1.3.3}%
+\contentsline {section}{\numberline {1.4}Conclusion}{3}{section.1.4}%
+\contentsline {chapter}{\numberline {2}SpÃ©cification Fonctionnelle et Technique}{4}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Introduction}{4}{section.2.1}%
+\contentsline {section}{\numberline {2.2}SpÃ©cification Fonctionnelle}{4}{section.2.2}%
+\contentsline {subsection}{\numberline {2.2.1}Exigences Fonctionnelles}{4}{subsection.2.2.1}%
+\contentsline {subsection}{\numberline {2.2.2}Diagramme de cas d'utilisation global}{6}{subsection.2.2.2}%
+\contentsline {subsection}{\numberline {2.2.3}Diagramme de classes global}{7}{subsection.2.2.3}%
+\contentsline {subsection}{\numberline {2.2.4}Backlog Produit}{7}{subsection.2.2.4}%
+\contentsline {section}{\numberline {2.3}SpÃ©cification Technique}{9}{section.2.3}%
+\contentsline {subsection}{\numberline {2.3.1}Exigences Non-Fonctionnelles}{9}{subsection.2.3.1}%
+\contentsline {subsection}{\numberline {2.3.2}Outils et Environnement de DÃ©veloppement}{10}{subsection.2.3.2}%
+\contentsline {section}{\numberline {2.4}Conclusion}{10}{section.2.4}%
+\contentsline {chapter}{\numberline {3}Sprint 1 : Authentification et Gestion des Profils}{11}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Introduction}{11}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Identification du Backlog Sprint 1}{11}{section.3.2}%
+\contentsline {section}{\numberline {3.3}Conception}{12}{section.3.3}%
+\contentsline {subsection}{\numberline {3.3.1}Diagramme de cas d'utilisation --- Sprint 1}{12}{subsection.3.3.1}%
+\contentsline {subsection}{\numberline {3.3.2}Diagramme de classes --- Sprint 1}{13}{subsection.3.3.2}%
+\contentsline {subsection}{\numberline {3.3.3}Diagramme de sÃ©quence}{13}{subsection.3.3.3}%
+\contentsline {section}{\numberline {3.4}Conclusion}{14}{section.3.4}%
+\contentsline {chapter}{\numberline {4}Sprint 2 : Gestion des DonnÃ©es de RÃ©fÃ©rence}{16}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Introduction}{16}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Identification du Backlog Sprint 2}{16}{section.4.2}%
+\contentsline {section}{\numberline {4.3}Conception}{17}{section.4.3}%
+\contentsline {subsection}{\numberline {4.3.1}Diagramme de cas d'utilisation --- Sprint 2}{17}{subsection.4.3.1}%
+\contentsline {subsection}{\numberline {4.3.2}Diagramme de classes --- Sprint 2}{18}{subsection.4.3.2}%
+\contentsline {subsection}{\numberline {4.3.3}Diagramme de sÃ©quence}{18}{subsection.4.3.3}%
+\contentsline {section}{\numberline {4.4}Conclusion}{19}{section.4.4}%
+\contentsline {chapter}{\numberline {5}Sprint 3 : Rapports de SymptÃ´mes, Diagnostic IA et Rendez-vous}{20}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Introduction}{20}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Identification du Backlog Sprint 3}{20}{section.5.2}%
+\contentsline {section}{\numberline {5.3}Conception}{21}{section.5.3}%
+\contentsline {subsection}{\numberline {5.3.1}Diagramme de cas d'utilisation --- Sprint 3}{21}{subsection.5.3.1}%
+\contentsline {subsection}{\numberline {5.3.2}Pipeline du Diagnostic IA}{23}{subsection.5.3.2}%
+\contentsline {subsection}{\numberline {5.3.3}Diagramme de classes --- Sprint 3}{24}{subsection.5.3.3}%
+\contentsline {subsection}{\numberline {5.3.4}Diagramme de sÃ©quence}{24}{subsection.5.3.4}%
+\contentsline {section}{\numberline {5.4}Conclusion}{25}{section.5.4}%
+\contentsline {chapter}{\numberline {6}Sprint 4 : OpÃ©rations d'Atelier et Cycle de Vie des Interventions}{26}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Introduction}{26}{section.6.1}%
+\contentsline {section}{\numberline {6.2}Identification du Backlog Sprint 4}{27}{section.6.2}%
+\contentsline {section}{\numberline {6.3}Conception}{28}{section.6.3}%
+\contentsline {subsection}{\numberline {6.3.1}Diagramme de cas d'utilisation --- Sprint 4}{28}{subsection.6.3.1}%
+\contentsline {subsection}{\numberline {6.3.2}Diagramme de classes --- Sprint 4}{30}{subsection.6.3.2}%
+\contentsline {subsection}{\numberline {6.3.3}Diagramme de sÃ©quence}{30}{subsection.6.3.3}%
+\contentsline {section}{\numberline {6.4}Conclusion}{31}{section.6.4}%
+\contentsline {chapter}{Conclusion Générale}{33}{chapter*.31}%
+\contentsline {chapter}{Bibliographie}{35}{chapter*.33}%

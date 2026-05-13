@@ -11,6 +11,7 @@ public record GetClientAppointmentsQuery(
 public record ClientAppointmentDto(
     Guid Id,
     Guid VehicleId,
+    Guid? SymptomReportId,
     string VehicleInfo,
     string GarageName,
     DateTime PreferredDate,
@@ -38,6 +39,7 @@ public class GetClientAppointmentsQueryHandler : IRequestHandler<GetClientAppoin
             .Select(a => new ClientAppointmentDto(
                 a.Id,
                 a.VehicleId,
+                a.SymptomReportId,
                 $"{a.Vehicle.Brand} {a.Vehicle.Model} ({a.Vehicle.Year})",
                 a.Garage.Name,
                 a.PreferredDate,

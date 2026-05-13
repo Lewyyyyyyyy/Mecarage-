@@ -1,0 +1,33 @@
+@startuml lifecycle
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontName Arial
+skinparam defaultFontSize 11
+skinparam StateBorderColor #1D4ED8
+skinparam StateBorderThickness 1.5
+skinparam StateBackgroundColor #EFF6FF
+skinparam StateFontStyle bold
+skinparam ArrowColor #374151
+skinparam ArrowThickness 1.5
+skinparam TitleFontSize 13
+skinparam TitleFontStyle bold
+
+title Machine d'États — Intervention Lifecycle Tracker
+
+[*] --> Created : Rendez-vous approuvé
+
+Created --> UnderExamination : ExamSubmit\n(Mécanicien)
+UnderExamination --> ExaminationReviewed : ChefReview\n(Chef d'atelier)
+ExaminationReviewed --> InvoicePending : InvoiceFinalized\n(Chef d'atelier)
+
+InvoicePending --> RepairInProgress : ClientApproves
+InvoicePending --> Rejected : ClientRejects
+
+RepairInProgress --> RepairCompleted : RepairSubmit\n(Mécanicien)
+RepairCompleted --> ReadyForPickup : ChefValidates\n(Chef d'atelier)
+ReadyForPickup --> Closed : AdminPayment\n(Admin)
+
+Rejected --> [*]
+Closed --> [*]
+
+@enduml
+

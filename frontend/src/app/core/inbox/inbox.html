@@ -1,4 +1,4 @@
-<div class="min-h-screen bg-gray-950 text-gray-100 font-sans">
+<div class="min-h-screen bg-[var(--color-bg)] text-[var(--color-text)] font-sans transition-colors duration-300">
   <div class="container mx-auto px-6 py-10 max-w-4xl">
 
     <!-- Header -->
@@ -188,7 +188,7 @@
                     </button>
                     <button (click)="openTaskModal(appt)"
                       class="px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white text-sm font-bold rounded-xl transition">
-                      ✅ Confirmer & Assigner
+                      ✅ Confirmer & Créer tâche
                     </button>
                   </div>
                 </div>
@@ -305,7 +305,7 @@
 
                 <!-- Line items -->
                 @if (inv.lineItems && inv.lineItems.length > 0) {
-                  <div class="bg-gray-950 rounded-xl p-4 mb-4 border border-gray-800">
+                  <div class="bg-gray-100 dark:bg-gray-900 rounded-xl p-4 mb-4 border border-gray-200 dark:border-gray-800">
                     <p class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-3">Détail</p>
                     <div class="space-y-2">
                       @for (li of inv.lineItems; track li.description) {
@@ -371,6 +371,7 @@
       }
     }
 
+
     <!-- ════════ MECHANIC TASKS ════════ -->
     @if (!loading() && isMechanic()) {
       @if (tasks().length === 0) {
@@ -409,6 +410,7 @@
       }
     }
 
+
   </div>
 </div>
 
@@ -418,12 +420,12 @@
     <div class="bg-gray-900 border border-gray-800 rounded-2xl p-8 w-full max-w-2xl shadow-2xl animate-in zoom-in-95 duration-200 max-h-[90vh] overflow-y-auto">
 
       <div class="flex justify-between items-center mb-6">
-        <h2 class="text-2xl font-black text-white">✅ Confirmer et Assigner</h2>
+        <h2 class="text-2xl font-black text-white">✅ Confirmer le rendez-vous</h2>
         <button (click)="closeTaskModal()" class="text-gray-500 hover:text-white transition text-xl">✕</button>
       </div>
 
       <!-- Appointment summary -->
-      <div class="bg-gray-950 rounded-xl p-4 mb-6 border border-gray-800 space-y-1">
+      <div class="bg-gray-100 dark:bg-gray-900 rounded-xl p-4 mb-6 border border-gray-200 dark:border-gray-800 space-y-1">
         <p class="font-bold text-white">{{ selectedAppointment()!.clientName }}</p>
         <p class="text-indigo-400 text-sm">🚗 {{ selectedAppointment()!.vehicleInfo }}</p>
         <p class="text-gray-400 text-sm">
@@ -470,10 +472,10 @@
             class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-white focus:ring-2 focus:ring-orange-500 outline-none" />
         </div>
 
-        <!-- Mechanic selection -->
+        <!-- Mechanic selection (optional - for examination assignment) -->
         <div>
-          <label class="block text-sm font-bold text-gray-300 mb-2">
-            Sélectionner le(s) mécanicien(s) <span class="text-rose-400">*</span>
+          <label class="block text-sm font-bold text-gray-300 mb-1">
+            Assigner pour l'examen <span class="text-gray-500 text-xs font-normal">(optionnel — vous pourrez assigner pour la réparation plus tard)</span>
           </label>
           @if (mechanics().length === 0) {
             <div class="p-4 bg-amber-900/20 border border-amber-800 rounded-xl text-amber-400 text-sm">
@@ -501,9 +503,9 @@
                 </button>
               }
             </div>
-            @if (taskForm.get('mechanicIds')?.value?.length === 0 && taskForm.get('mechanicIds')?.touched) {
-              <p class="text-rose-400 text-xs mt-1">Sélectionnez au moins un mécanicien.</p>
-            }
+            <p class="text-xs text-gray-600 mt-2">
+              💡 Sélectionnez un mécanicien pour l'examen, ou laissez vide pour assigner lors de la phase de réparation.
+            </p>
           }
         </div>
 
@@ -517,9 +519,9 @@
             Annuler
           </button>
           <button type="submit"
-            [disabled]="!taskForm.valid || taskForm.get('mechanicIds')?.value?.length === 0 || isCreatingTask()"
+            [disabled]="!taskForm.valid || isCreatingTask()"
             class="flex-1 py-3 bg-orange-600 hover:bg-orange-700 disabled:bg-gray-700 disabled:text-gray-500 text-white font-bold rounded-xl transition">
-            @if (isCreatingTask()) { ⏳ Traitement... } @else { Confirmer & Assigner →  }
+            @if (isCreatingTask()) { ⏳ Traitement... } @else { Confirmer & Créer la tâche → }
           </button>
         </div>
       </form>
@@ -538,7 +540,7 @@
         <button (click)="closeModal()" class="text-gray-500 hover:text-white transition text-xl">✕</button>
       </div>
 
-      <div class="bg-gray-950 rounded-xl p-4 mb-6 space-y-2 border border-gray-800">
+      <div class="bg-gray-100 dark:bg-gray-900 rounded-xl p-4 mb-6 space-y-2 border border-gray-200 dark:border-gray-800">
         <p class="text-sm font-bold text-white">{{ getSelectedItem()!.clientName }} — {{ getSelectedItem()!.vehicleInfo }}</p>
         <p class="text-sm text-gray-400 leading-relaxed">{{ getSelectedItem()!.symptomsDescription }}</p>
         @if (getSelectedItem()!.aiPredictedIssue) {
@@ -569,6 +571,7 @@
             <div>
               <label class="block text-xs font-bold text-gray-400 mb-1">Fin disponibilité</label>
               <input type="datetime-local" formControlName="availablePeriodEnd"
+                [min]="feedbackForm.get('availablePeriodStart')?.value || null"
                 class="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-xl text-white text-sm focus:ring-2 focus:ring-indigo-500 outline-none" />
             </div>
           </div>

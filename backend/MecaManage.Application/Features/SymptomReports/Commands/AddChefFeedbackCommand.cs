@@ -40,6 +40,12 @@ public class AddChefFeedbackCommandHandler : IRequestHandler<AddChefFeedbackComm
         if (chef == null)
             return new AddChefFeedbackResult(false, "Chef d'atelier non trouvé");
 
+        if (request.AvailablePeriodStart.HasValue && request.AvailablePeriodEnd.HasValue
+            && request.AvailablePeriodStart.Value > request.AvailablePeriodEnd.Value)
+        {
+            return new AddChefFeedbackResult(false, "La date de début ne peut pas être supérieure à la date de fin.");
+        }
+
         report.ChefFeedback = request.Feedback;
         report.ReviewedByChefId = request.ChefId;
         report.ReviewedAt = DateTime.UtcNow;

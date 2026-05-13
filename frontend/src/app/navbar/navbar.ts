@@ -1,21 +1,29 @@
-import { Component, signal, inject, computed } from '@angular/core';
+import { Component, signal, inject, computed, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import { ThemeService } from '../theme';
 import { AuthService } from '../auth/auth.service';
 import { NotificationBellComponent } from '../core/notification-bell/notification-bell';
+import { LanguageService, LANGUAGES } from '../core/language/language.service';
+import { InboxBadgeService } from '../core/services/inbox-badge.service';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule, RouterModule, NotificationBellComponent],
+  imports: [CommonModule, RouterModule, NotificationBellComponent, TranslateModule],
   templateUrl: './navbar.html',
 })
-export class NavbarComponent {
+export class NavbarComponent implements OnInit {
   isMenuOpen = signal(false);
+  isLangOpen = signal(false);
   themeService = inject(ThemeService);
   authService = inject(AuthService);
   router = inject(Router);
+  langService = inject(LanguageService);
+  badgeService = inject(InboxBadgeService);
+
+  languages = LANGUAGES;
 
   isAuthenticated = this.authService.isAuthenticated;
   user = computed(() => {
@@ -29,51 +37,41 @@ export class NavbarComponent {
     return null;
   });
 
-  isSuperAdmin = computed(() => {
-    const currentUser = this.authService.user();
-    return currentUser?.role === 'SuperAdmin';
-  });
-
+  isSuperAdmin = computed(() => this.authService.user()?.role === 'SuperAdmin');
   isGarageAdmin = computed(() => {
-    const currentUser = this.authService.user();
-    return currentUser?.role === 'AdminEntreprise' || currentUser?.role === 'ChefAtelier';
+    const r = this.authService.user()?.role;
+    return r === 'AdminEntreprise' || r === 'ChefAtelier';
   });
+  isAdminEntreprise = computed(() => this.authService.user()?.role === 'AdminEntreprise');
+  isClient = computed(() => this.authService.user()?.role === 'Client');
+  isChef = computed(() => this.authService.user()?.role === 'ChefAtelier');
+  isMechanic = computed(() => this.authService.user()?.role === 'Mecanicien');
 
-  isAdminEntreprise = computed(() => {
-    const currentUser = this.authService.user();
-    return currentUser?.role === 'AdminEntreprise';
-  });
+  inboxBadge = this.badgeService.unreadCount;
 
-  isClient = computed(() => {
-    const currentUser = this.authService.user();
-    return currentUser?.role === 'Client';
-  });
+  ngOnInit(): void {
+    this.badgeService.start();
+  }
 
-  isChef = computed(() => {
-    const currentUser = this.authService.user();
-    return currentUser?.role === 'ChefAtelier';
-  });
-
-  isMechanic = computed(() => {
-    const currentUser = this.authService.user();
-    return currentUser?.role === 'Mecanicien';
-  });
-
-  toggleMenu = () => {
-    this.isMenuOpen.update(value => !value);
-  };
-
+  toggleMenu = () => this.isMenuOpen.update(v => !v);
   isMenuOpenFn = () => this.isMenuOpen();
 
-  toggleTheme() {
-    this.themeService.toggleDarkMode();
+  toggleLangMenu = () => this.isLangOpen.update(v => !v);
+  closeLangMenu = () => this.isLangOpen.set(false);
+
+  currentLang = this.langService.currentLang;
+  getCurrentLanguage = () => this.langService.getCurrentLanguage();
+
+  selectLanguage(code: string) {
+    this.langService.setLanguage(code);
+    this.isLangOpen.set(false);
   }
 
-  isDark() {
-    return this.themeService.isDarkMode();
-  }
+  toggleTheme() { this.themeService.toggleDarkMode(); }
+  isDark() { return this.themeService.isDarkMode(); }
 
   logout() {
+    this.badgeService.stop();
     this.authService.clearSession();
     this.router.navigate(['/login']);
   }

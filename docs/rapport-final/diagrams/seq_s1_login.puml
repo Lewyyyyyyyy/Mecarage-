@@ -1,0 +1,59 @@
+@startuml seq_s1_login
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontName Arial
+skinparam defaultFontSize 11
+skinparam SequenceParticipantBorderColor #1D4ED8
+skinparam SequenceParticipantBackgroundColor #2563EB
+skinparam SequenceParticipantFontColor #FFFFFF
+skinparam SequenceParticipantFontStyle bold
+skinparam SequenceActorBorderColor #1D4ED8
+skinparam SequenceActorBackgroundColor #DBEAFE
+skinparam SequenceArrowColor #374151
+skinparam SequenceArrowThickness 1.5
+skinparam SequenceLifeLineBorderColor #93C5FD
+skinparam SequenceBoxBackgroundColor #F0F9FF
+skinparam SequenceBoxBorderColor #BFDBFE
+skinparam SequenceDividerBackgroundColor #EFF6FF
+skinparam NoteBackgroundColor #FFFBEB
+skinparam NoteBorderColor #F59E0B
+skinparam TitleFontSize 13
+skinparam TitleFontStyle bold
+
+title SC1 — Connexion (Login) — Sprint 1
+
+actor ":Client (Angular)" as cli
+participant ":AuthController" as ctrl
+participant ":LoginCmdHandler" as hand
+participant ":JwtService" as jwts
+database ":Database" as db
+
+cli -> ctrl : POST /api/auth/login {email, password}
+activate ctrl
+ctrl -> hand : Handle(LoginCommand)
+activate hand
+hand -> db : FindByEmail(email)
+activate db
+db --> hand : User | null
+deactivate db
+hand -> hand : VerifyBcryptHash(password, hash)
+hand -> jwts : GenerateAccessToken(user)
+activate jwts
+jwts --> hand : accessToken (JWT)
+deactivate jwts
+hand -> jwts : GenerateRefreshToken()
+activate jwts
+jwts --> hand : refreshToken
+deactivate jwts
+hand -> db : SaveRefreshToken(userId, token, expiry)
+activate db
+db --> hand : OK
+deactivate db
+hand --> ctrl : LoginResponse
+deactivate hand
+ctrl --> cli : 200 OK {accessToken, refreshToken, role, expiresAt}
+deactivate ctrl
+
+note over cli : Token stocké dans localStorage
+
+@enduml
+

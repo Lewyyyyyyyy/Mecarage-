@@ -1,0 +1,24 @@
+\babel@toc {french}{}\relax 
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {1.1}{\ignorespaces Architecture globale de la plateforme MecaRage}}{3}{figure.caption.8}%
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {2.1}{\ignorespaces Diagramme de cas d'utilisation global --- MecaRage}}{6}{figure.caption.9}%
+\contentsline {figure}{\numberline {2.2}{\ignorespaces Diagramme de classes global --- EntitÃ©s du domaine MecaRage}}{7}{figure.caption.10}%
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {3.1}{\ignorespaces Diagramme de cas d'utilisation --- Sprint 1}}{12}{figure.caption.14}%
+\contentsline {figure}{\numberline {3.2}{\ignorespaces Diagramme de classes --- Sprint 1 (Authentification)}}{13}{figure.caption.15}%
+\contentsline {figure}{\numberline {3.3}{\ignorespaces Diagramme de sÃ©quence SC1 --- Connexion (Login)}}{14}{figure.caption.16}%
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Diagramme de cas d'utilisation --- Sprint 2}}{17}{figure.caption.18}%
+\contentsline {figure}{\numberline {4.2}{\ignorespaces Diagramme de classes --- Sprint 2 (DonnÃ©es de RÃ©fÃ©rence)}}{18}{figure.caption.19}%
+\contentsline {figure}{\numberline {4.3}{\ignorespaces Diagramme de sÃ©quence SC3 --- CrÃ©ation d'un Garage}}{19}{figure.caption.20}%
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {5.1}{\ignorespaces Diagramme de cas d'utilisation --- Sprint 3}}{21}{figure.caption.22}%
+\contentsline {figure}{\numberline {5.2}{\ignorespaces Pipeline RAG --- Service de diagnostic IA}}{23}{figure.caption.23}%
+\contentsline {figure}{\numberline {5.3}{\ignorespaces Diagramme de classes --- Sprint 3 (SymptÃ´mes, IA et Rendez-vous)}}{24}{figure.caption.24}%
+\contentsline {figure}{\numberline {5.4}{\ignorespaces Diagramme de sÃ©quence SC5 --- Soumission de SymptÃ´mes et Diagnostic IA}}{25}{figure.caption.25}%
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {6.1}{\ignorespaces Diagramme de cas d'utilisation --- Sprint 4}}{28}{figure.caption.27}%
+\contentsline {figure}{\numberline {6.2}{\ignorespaces Machine d'Ã©tats --- Intervention Lifecycle Tracker}}{29}{figure.caption.28}%
+\contentsline {figure}{\numberline {6.3}{\ignorespaces Diagramme de classes --- Sprint 4 (Atelier et Cycle de Vie)}}{30}{figure.caption.29}%
+\contentsline {figure}{\numberline {6.4}{\ignorespaces Diagramme de sÃ©quence SC6 --- Finalisation et Approbation du Devis}}{31}{figure.caption.30}%

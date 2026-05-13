@@ -1,0 +1,894 @@
+\chapter*{Introduction Générale}
+\addcontentsline{toc}{chapter}{Introduction Générale}
+
+\section*{Contexte général}
+
+Dans un monde en constante évolution technologique, la digitalisation des processus métier est devenue une nécessité pour maintenir la compétitivité et améliorer l'efficacité opérationnelle. Le secteur de l'automobile et de la maintenance mécanique n'échappe pas à cette transformation numérique. Les ateliers mécaniques font face aujourd'hui à des défis croissants en matière de gestion administrative, de suivi des réparations, de traçabilité des pièces et de satisfaction client.
+
+La gestion traditionnelle des ateliers mécaniques repose souvent sur des méthodes manuelles ou des outils informatiques disparates et non intégrés : registres papier pour les rendez-vous, fichiers Excel pour le stock, carnets de bord pour les interventions, communications téléphoniques ou SMS manuels pour les notifications clients. Cette fragmentation des outils entraîne des pertes de temps considérables, des erreurs de saisie, des difficultés de traçabilité et une expérience client dégradée.
+
+Face à ces constats, le projet \textbf{MecaManage} propose une solution intégrée, moderne et intelligente pour la gestion complète d'un atelier mécanique. Ce système vise à centraliser l'ensemble des opérations dans une plateforme unique, accessible via le web, facilitant ainsi le travail quotidien des mécaniciens, des gestionnaires et améliorant l'expérience des clients.
+
+\section*{Problématique}
+
+Les ateliers mécaniques traditionnels rencontrent plusieurs problématiques majeures :
+
+\begin{itemize}
+    \item \textbf{Gestion désorganisée des clients et véhicules :} Absence de base de données centralisée, difficultés à retrouver l'historique des véhicules et des interventions précédentes.
+    
+    \item \textbf{Suivi complexe des ordres de réparation :} Manque de visibilité en temps réel sur l'état d'avancement des réparations, communication inefficace entre mécaniciens et gestionnaires.
+    
+    \item \textbf{Gestion du stock approximative :} Inventaire manuel source d'erreurs, ruptures de stock imprévues, difficulté à anticiper les besoins en pièces.
+    
+    \item \textbf{Communication client défaillante :} Notifications manuelles chronophages, oublis fréquents de rappels, absence de transparence sur l'état des réparations.
+    
+    \item \textbf{Absence d'outils d'aide à la décision :} Pas de statistiques exploitables, difficulté à identifier les véhicules nécessitant des entretiens préventifs, diagnostic basé uniquement sur l'expérience du mécanicien.
+    
+    \item \textbf{Processus non automatisés :} Tâches répétitives effectuées manuellement, perte de temps sur des activités à faible valeur ajoutée.
+\end{itemize}
+
+Ces problématiques se traduisent concrètement par une \textbf{baisse de productivité}, une \textbf{augmentation des coûts opérationnels}, des \textbf{erreurs de gestion} et une \textbf{insatisfaction client}. Il devient donc impératif de proposer une solution digitale qui réponde à l'ensemble de ces enjeux.
+
+\section*{Objectifs du projet}
+
+Le projet MecaManage a pour ambition de développer un système de gestion complet et intelligent pour les ateliers mécaniques. Les objectifs principaux sont :
+
+\subsection*{Objectifs fonctionnels}
+
+\begin{enumerate}
+    \item \textbf{Centralisation des données :} Créer une base de données unique regroupant clients, véhicules, ordres de réparation, pièces détachées et historiques d'interventions.
+    
+    \item \textbf{Gestion des ordres de réparation :} Permettre la création, le suivi en temps réel et la clôture des ordres de réparation avec affectation automatique aux mécaniciens disponibles.
+    
+    \item \textbf{Gestion intelligente du stock :} Suivre en temps réel les entrées/sorties de pièces, générer des alertes automatiques en cas de stock faible, faciliter les commandes fournisseurs.
+    
+    \item \textbf{Automatisation des communications :} Mettre en place un système de notifications automatiques (email et SMS) pour informer les clients de l'avancement de leurs réparations, des rendez-vous et des devis.
+    
+    \item \textbf{Aide au diagnostic par Intelligence Artificielle :} Intégrer un module d'IA capable de suggérer des diagnostics préliminaires basés sur les symptômes décrits et l'historique du véhicule.
+    
+    \item \textbf{Workflows automatisés :} Utiliser n8n pour orchestrer des processus métier complexes (rappels d'entretien, gestion des devis, relances clients).
+    
+    \item \textbf{Reporting et statistiques :} Générer des tableaux de bord et des rapports d'activité pour faciliter la prise de décision managériale.
+\end{enumerate}
+
+\subsection*{Objectifs non-fonctionnels}
+
+\begin{enumerate}
+    \item \textbf{Performance :} Garantir des temps de réponse inférieurs à 200ms pour une expérience utilisateur fluide.
+    
+    \item \textbf{Sécurité :} Assurer la protection des données sensibles (RGPD), authentification robuste par JWT, chiffrement des communications.
+    
+    \item \textbf{Scalabilité :} Concevoir une architecture capable de supporter la croissance du nombre d'utilisateurs et de données.
+    
+    \item \textbf{Disponibilité :} Viser un taux de disponibilité de 99.5\% grâce à une infrastructure redondante.
+    
+    \item \textbf{Maintenabilité :} Adopter des pratiques de code propre, documentation exhaustive, tests automatisés.
+    
+    \item \textbf{Accessibilité :} Interface responsive fonctionnant sur desktop, tablette et mobile.
+\end{enumerate}
+
+\section*{Méthodologie adoptée}
+
+Pour mener à bien ce projet ambitieux, nous avons opté pour la \textbf{méthodologie Agile Scrum}, particulièrement adaptée aux projets informatiques complexes nécessitant flexibilité et itérations fréquentes.
+
+\subsection*{Justification du choix de Scrum}
+
+Scrum présente plusieurs avantages décisifs pour notre projet :
+
+\begin{itemize}
+    \item \textbf{Livraisons incrémentales :} Permettent de valider régulièrement les fonctionnalités avec les utilisateurs finaux et d'ajuster le cap si nécessaire.
+    
+    \item \textbf{Transparence :} Visibilité constante sur l'avancement grâce aux daily stand-ups, sprint reviews et burndown charts.
+    
+    \item \textbf{Adaptabilité :} Capacité à intégrer rapidement des changements de priorités ou de nouveaux besoins.
+    
+    \item \textbf{Collaboration renforcée :} Communication continue entre les membres de l'équipe et les parties prenantes.
+    
+    \item \textbf{Gestion des risques :} Identification précoce des obstacles et résolution rapide des problèmes.
+\end{itemize}
+
+\subsection*{Organisation en sprints}
+
+Le projet est découpé en \textbf{8 sprints de 2 semaines} (durée totale : 4 mois), chacun se terminant par une démonstration des fonctionnalités développées. Chaque sprint suit le cycle classique Scrum :
+
+\begin{enumerate}
+    \item \textbf{Sprint Planning :} Sélection des user stories prioritaires et estimation de la charge.
+    
+    \item \textbf{Daily Stand-up :} Point quotidien de 15 minutes sur l'avancement et les obstacles.
+    
+    \item \textbf{Développement et tests :} Implémentation des fonctionnalités avec tests unitaires et d'intégration.
+    
+    \item \textbf{Sprint Review :} Démonstration des livrables aux parties prenantes.
+    
+    \item \textbf{Sprint Retrospective :} Analyse des points d'amélioration pour le sprint suivant.
+\end{enumerate}
+
+\subsection*{Outils de développement}
+
+Pour supporter cette méthodologie, nous utilisons un ensemble d'outils modernes et performants :
+
+\begin{table}[h]
+\centering
+\begin{tabularx}{\textwidth}{|l|X|}
+\hline
+\rowcolor{gray!20}
+\textbf{Catégorie} & \textbf{Outils} \\
+\hline
+Gestion de projet & Jira pour le backlog et les sprints, Confluence pour la documentation \\
+\hline
+Versioning & Git avec GitHub pour le contrôle de version et la collaboration \\
+\hline
+Communication & Slack pour les échanges quotidiens, Microsoft Teams pour les réunions \\
+\hline
+CI/CD & GitHub Actions pour l'intégration et le déploiement continus \\
+\hline
+Monitoring & Prometheus et Grafana pour la supervision en production \\
+\hline
+Tests & Jest (unitaires), Cypress (end-to-end), Postman (API) \\
+\hline
+\end{tabularx}
+\caption{Outils utilisés dans le projet}
+\end{table}
+
+\section*{Structure du rapport}
+
+Ce rapport est organisé en trois chapitres principaux, chacun couvrant une phase essentielle du projet :
+
+\begin{description}
+    \item[\textbf{Chapitre 1 : Étude préliminaire}] Présente le contexte du projet, l'analyse de l'existant, l'étude comparative des solutions concurrentes, et le cahier des charges détaillé avec le backlog produit complet.
+    
+    \item[\textbf{Chapitre 2 : Conception et architecture}] Détaille l'architecture technique retenue (multi-couches), les choix technologiques justifiés, la modélisation des données (MCD/MLD), les diagrammes UML (cas d'utilisation, séquence, classes) et l'organisation Scrum du projet.
+    
+    \item[\textbf{Chapitre 3 : Réalisation et mise en œuvre}] Présente l'implémentation concrète des fonctionnalités clés avec captures d'écran, les tests effectués (unitaires, intégration, end-to-end), le processus de déploiement (conteneurisation Docker, orchestration Kubernetes, CI/CD), et les perspectives d'évolution du système.
+\end{description}
+
+\vspace{1cm}
+
+Ce rapport vise à fournir une vue complète et détaillée du projet MecaManage, depuis sa conception jusqu'à sa réalisation, en mettant en lumière les choix techniques, les défis rencontrés et les solutions apportées.
+
+\newpage
+
+% ============================================
+% CHAPITRE 1 : ÉTUDE PRÉLIMINAIRE
+% ============================================
+
+\chapter{Étude préliminaire}
+
+\section{Introduction}
+
+Ce premier chapitre pose les fondations du projet MecaManage en analysant le contexte dans lequel il s'inscrit. Nous commencerons par présenter le domaine de la gestion d'ateliers mécaniques, puis nous étudierons les solutions existantes sur le marché. Ensuite, nous analyserons en profondeur les besoins fonctionnels et non-fonctionnels du système. Enfin, nous présenterons le backlog produit complet qui guidera le développement du projet selon la méthodologie Scrum.
+
+\section{Contexte et présentation du domaine}
+
+\subsection{Le secteur de la maintenance automobile}
+
+Le marché de la réparation et de la maintenance automobile représente un secteur économique majeur. En France, on dénombre plus de 100 000 établissements de réparation automobile, employant environ 400 000 personnes. Ce secteur est caractérisé par :
+
+\begin{itemize}
+    \item Une \textbf{forte fragmentation :} coexistence de grands réseaux (concessionnaires, centres auto) et d'ateliers indépendants.
+    
+    \item Une \textbf{complexité technique croissante :} véhicules de plus en plus sophistiqués (électronique embarquée, véhicules hybrides/électriques).
+    
+    \item Des \textbf{exigences réglementaires strictes :} normes environnementales, traçabilité des pièces, formation continue obligatoire.
+    
+    \item Une \textbf{concurrence accrue :} nécessité de se différencier par la qualité de service et la réactivité.
+\end{itemize}
+
+\subsection{Les défis des ateliers mécaniques modernes}
+
+Les ateliers mécaniques, particulièrement les structures indépendantes de petite et moyenne taille, font face à plusieurs défis majeurs :
+
+\paragraph{Défi 1 : Gestion administrative chronophage}
+
+La gestion quotidienne d'un atelier implique de nombreuses tâches administratives : prise de rendez-vous, création de devis, facturation, suivi des paiements, gestion des stocks. Ces tâches, souvent effectuées manuellement ou avec des outils non intégrés, consomment un temps précieux qui pourrait être consacré aux activités techniques à forte valeur ajoutée.
+
+\paragraph{Défi 2 : Traçabilité et conformité réglementaire}
+
+La réglementation impose une traçabilité stricte des interventions (pièces remplacées, opérations effectuées, contrôles réalisés). Les systèmes papier ou les fichiers Excel fragmentés rendent difficile le respect de ces obligations et exposent l'atelier à des risques juridiques en cas de litige.
+
+\paragraph{Défi 3 : Expérience client et fidélisation}
+
+Dans un marché concurrentiel, l'expérience client devient un facteur différenciant majeur. Les clients attendent aujourd'hui :
+\begin{itemize}
+    \item Une prise de rendez-vous simple et rapide
+    \item Une transparence totale sur les travaux effectués et les coûts
+    \item Des notifications régulières sur l'avancement de la réparation
+    \item Un accès à l'historique de leur véhicule
+    \item Des rappels automatiques pour les entretiens préventifs
+\end{itemize}
+
+\paragraph{Défi 4 : Optimisation des ressources}
+
+La rentabilité d'un atelier repose sur l'optimisation de ses ressources : mécaniciens, équipements, stock de pièces. Une mauvaise planification entraîne des temps morts, des ruptures de stock et in fine une perte de chiffre d'affaires.
+
+\subsection{Opportunités offertes par la digitalisation}
+
+La transformation numérique offre des opportunités considérables pour relever ces défis :
+
+\begin{itemize}
+    \item \textbf{Automatisation des processus :} réduction drastique du temps consacré aux tâches administratives répétitives.
+    
+    \item \textbf{Centralisation des données :} accès instantané à toutes les informations nécessaires (historique client, disponibilité des pièces, planning mécaniciens).
+    
+    \item \textbf{Intelligence artificielle :} aide au diagnostic, prédiction des pannes, optimisation de la gestion du stock.
+    
+    \item \textbf{Communication améliorée :} notifications automatiques, transparence en temps réel.
+    
+    \item \textbf{Analyse des données :} tableaux de bord pour piloter l'activité, identifier les tendances, prendre des décisions éclairées.
+\end{itemize}
+
+C'est dans ce contexte que s'inscrit le projet \textbf{MecaManage}, avec l'ambition de proposer une solution complète, moderne et accessible pour répondre à l'ensemble de ces enjeux.
+
+\section{Étude de l'existant}
+
+Avant de concevoir notre solution, il est essentiel d'analyser les outils et solutions déjà disponibles sur le marché. Cette étude comparative nous permettra d'identifier les forces et faiblesses des solutions existantes, et de positionner MecaManage de manière pertinente.
+
+\subsection{Solutions logicielles existantes}
+
+\subsubsection{GarageScore}
+
+\textbf{Description :} Logiciel français de gestion d'atelier automobile, particulièrement populaire auprès des garages indépendants.
+
+\textbf{Fonctionnalités principales :}
+\begin{itemize}
+    \item Gestion des clients et véhicules
+    \item Création de devis et factures
+    \item Planning mécaniciens
+    \item Suivi des ordres de réparation
+    \item Module de gestion du stock
+\end{itemize}
+
+\textbf{Points forts :}
+\begin{itemize}
+    \item Interface intuitive et ergonomique
+    \item Conformité réglementaire française
+    \item Support client réactif
+\end{itemize}
+
+\textbf{Points faibles :}
+\begin{itemize}
+    \item Coût élevé (abonnement mensuel par utilisateur)
+    \item Absence de module d'intelligence artificielle
+    \item Notifications clients limitées (pas d'automatisation SMS)
+    \item Pas de workflows automatisés personnalisables
+    \item Architecture non open-source, dépendance totale au fournisseur
+\end{itemize}
+
+\subsubsection{Mecasoft}
+
+\textbf{Description :} Solution complète orientée vers les moyennes et grandes structures (réseaux de concession).
+
+\textbf{Fonctionnalités principales :}
+\begin{itemize}
+    \item ERP complet (gestion commerciale, comptabilité, RH)
+    \item Gestion multi-sites
+    \item Connexion aux bases de données constructeurs (pièces d'origine)
+    \item Statistiques avancées
+\end{itemize}
+
+\textbf{Points forts :}
+\begin{itemize}
+    \item Solution très complète et robuste
+    \item Intégration avec les systèmes des constructeurs
+    \item Gestion multi-établissements
+\end{itemize}
+
+\textbf{Points faibles :}
+\begin{itemize}
+    \item Prix prohibitif pour les petites structures
+    \item Complexité d'utilisation, courbe d'apprentissage longue
+    \item Sur-dimensionné pour un atelier indépendant
+    \item Absence d'outils d'aide au diagnostic par IA
+    \item Interface vieillissante, non responsive
+\end{itemize}
+
+\subsubsection{Workshop Software}
+
+\textbf{Description :} Solution SaaS internationale avec approche modulaire.
+
+\textbf{Fonctionnalités principales :}
+\begin{itemize}
+    \item Gestion d'atelier de base
+    \item Module CRM intégré
+    \item Application mobile pour mécaniciens
+    \item Intégration paiement en ligne
+\end{itemize}
+
+\textbf{Points forts :}
+\begin{itemize}
+    \item Approche moderne et cloud-native
+    \item API ouverte pour intégrations tierces
+    \item Application mobile native
+\end{itemize}
+
+\textbf{Points faibles :}
+\begin{itemize}
+    \item Documentation en anglais uniquement
+    \item Pas d'adaptation à la réglementation française
+    \item Absence d'automatisation avancée (n8n, workflows)
+    \item Pas d'intelligence artificielle pour le diagnostic
+    \item Support limité pour les utilisateurs francophones
+\end{itemize}
+
+\subsection{Tableau comparatif}
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabularx}{\textwidth}{|l|X|X|X|X|}
+\hline
+\rowcolor{gray!20}
+\textbf{Critère} & \textbf{GarageScore} & \textbf{Mecasoft} & \textbf{Workshop Software} & \textbf{MecaManage} \\
+\hline
+Prix & Moyen (40€/mois) & Élevé (150€/mois) & Moyen (35€/mois) & Open-source \\
+\hline
+Interface & Moderne & Vieillissante & Très moderne & Moderne \\
+\hline
+Mobile & Limitée & Non & Oui & PWA \\
+\hline
+IA diagnostic & Non & Non & Non & \textbf{Oui} \\
+\hline
+Automatisation & Basique & Moyenne & Basique & \textbf{Avancée (n8n)} \\
+\hline
+SMS auto & Non & Non & Oui & \textbf{Oui (Twilio)} \\
+\hline
+Email auto & Oui & Oui & Oui & \textbf{Oui} \\
+\hline
+Stock & Oui & Oui & Oui & \textbf{Oui + alertes IA} \\
+\hline
+API ouverte & Non & Limitée & Oui & \textbf{Oui (REST)} \\
+\hline
+Conformité FR & Oui & Oui & Non & \textbf{Oui} \\
+\hline
+\end{tabularx}
+\caption{Comparaison des solutions de gestion d'atelier}
+\end{table}
+
+\subsection{Analyse des besoins non couverts}
+
+L'étude comparative révèle plusieurs lacunes significatives dans les solutions existantes :
+
+\begin{enumerate}
+    \item \textbf{Absence d'intelligence artificielle :} Aucune solution n'intègre d'outil d'aide au diagnostic basé sur l'IA, alors que cette fonctionnalité pourrait considérablement accélérer et fiabiliser les interventions.
+    
+    \item \textbf{Automatisation limitée :} Les workflows automatisés sont soit inexistants, soit très basiques (rappels simples). Aucune solution ne permet de créer des scénarios complexes personnalisés.
+    
+    \item \textbf{Coûts élevés :} Les solutions professionnelles représentent un investissement conséquent, prohibitif pour de nombreux ateliers indépendants.
+    
+    \item \textbf{Manque de flexibilité :} Architecture fermée, difficultés d'intégration avec d'autres outils métier.
+    
+    \item \textbf{Expérience utilisateur inégale :} Interfaces souvent datées, peu adaptées aux usages mobiles.
+\end{enumerate}
+
+Ces constats justifient pleinement le développement de MecaManage, qui se positionne comme une solution \textbf{moderne}, \textbf{intelligente}, \textbf{automatisée} et \textbf{accessible}.
+
+\section{Analyse des besoins}
+
+\subsection{Acteurs du système}
+
+Le système MecaManage servira trois catégories d'acteurs principaux, chacun ayant des besoins et des droits spécifiques :
+
+\subsubsection{Administrateur}
+
+\textbf{Rôle :} Gestion globale du système, supervision, configuration.
+
+\textbf{Besoins :}
+\begin{itemize}
+    \item Créer, modifier, supprimer des comptes utilisateurs
+    \item Configurer les paramètres globaux de l'application
+    \item Accéder à tous les modules sans restriction
+    \item Consulter les statistiques et rapports d'activité
+    \item Gérer les sauvegardes et la sécurité du système
+    \item Paramétrer les workflows n8n
+\end{itemize}
+
+\subsubsection{Mécanicien}
+
+\textbf{Rôle :} Technicien chargé des interventions mécaniques.
+
+\textbf{Besoins :}
+\begin{itemize}
+    \item Consulter la liste des ordres de réparation qui lui sont affectés
+    \item Mettre à jour le statut des interventions en cours
+    \item Saisir les diagnostics et les travaux effectués
+    \item Consulter l'historique des véhicules
+    \item Utiliser le module d'aide au diagnostic par IA
+    \item Vérifier la disponibilité des pièces nécessaires
+    \item Enregistrer les temps passés sur chaque intervention
+\end{itemize}
+
+\subsubsection{Client}
+
+\textbf{Rôle :} Propriétaire d'un ou plusieurs véhicules.
+
+\textbf{Besoins :}
+\begin{itemize}
+    \item Consulter l'historique de ses véhicules
+    \item Suivre en temps réel l'état d'avancement de ses réparations
+    \item Recevoir des notifications (SMS/email) automatiques
+    \item Consulter et valider les devis
+    \item Prendre rendez-vous en ligne
+    \item Accéder aux factures et documents
+\end{itemize}
+
+\subsection{Besoins fonctionnels}
+
+Les besoins fonctionnels définissent les fonctionnalités que le système doit impérativement offrir. Ils sont organisés par module.
+
+\subsubsection{Module Authentification et gestion des utilisateurs}
+
+\begin{itemize}
+    \item \textbf{BF-01 :} Le système doit permettre l'inscription et la connexion sécurisée des utilisateurs (JWT).
+    
+    \item \textbf{BF-02 :} Le système doit implémenter un contrôle d'accès basé sur les rôles (RBAC).
+    
+    \item \textbf{BF-03 :} Le système doit permettre la réinitialisation sécurisée du mot de passe.
+    
+    \item \textbf{BF-04 :} Le système doit tracer les connexions et actions sensibles (logs d'audit).
+\end{itemize}
+
+\subsubsection{Module Gestion des clients}
+
+\begin{itemize}
+    \item \textbf{BF-05 :} Le système doit permettre d'ajouter, modifier, supprimer et consulter les clients.
+    
+    \item \textbf{BF-06 :} Le système doit stocker les informations personnelles (nom, prénom, email, téléphone, adresse).
+    
+    \item \textbf{BF-07 :} Le système doit permettre la recherche et le filtrage des clients (par nom, email, téléphone).
+    
+    \item \textbf{BF-08 :} Le système doit afficher l'historique complet des interventions pour chaque client.
+\end{itemize}
+
+\subsubsection{Module Gestion des véhicules}
+
+\begin{itemize}
+    \item \textbf{BF-09 :} Le système doit permettre d'associer un ou plusieurs véhicules à un client.
+    
+    \item \textbf{BF-10 :} Le système doit stocker les informations du véhicule (immatriculation, marque, modèle, année, VIN, kilométrage).
+    
+    \item \textbf{BF-11 :} Le système doit tracer l'historique complet des interventions par véhicule.
+    
+    \item \textbf{BF-12 :} Le système doit permettre la recherche de véhicules par immatriculation ou VIN.
+\end{itemize}
+
+\subsubsection{Module Ordres de réparation}
+
+\begin{itemize}
+    \item \textbf{BF-13 :} Le système doit permettre la création d'un ordre de réparation associé à un véhicule.
+    
+    \item \textbf{BF-14 :} Le système doit gérer les statuts d'ordre (En attente, En cours, Terminé, Annulé).
+    
+    \item \textbf{BF-15 :} Le système doit permettre l'affectation d'un mécanicien à un ordre de réparation.
+    
+    \item \textbf{BF-16 :} Le système doit calculer automatiquement le coût total (main d'œuvre + pièces).
+    
+    \item \textbf{BF-17 :} Le système doit permettre l'ajout de notes et de diagnostics.
+    
+    \item \textbf{BF-18 :} Le système doit tracer les dates de début et fin d'intervention.
+    
+    \item \textbf{BF-19 :} Le système doit générer un numéro d'ordre unique et séquentiel.
+\end{itemize}
+
+\subsubsection{Module Gestion du stock de pièces}
+
+\begin{itemize}
+    \item \textbf{BF-20 :} Le système doit permettre d'ajouter, modifier, supprimer et consulter les pièces.
+    
+    \item \textbf{BF-21 :} Le système doit suivre les quantités en stock en temps réel.
+    
+    \item \textbf{BF-22 :} Le système doit générer des alertes automatiques en cas de stock faible.
+    
+    \item \textbf{BF-23 :} Le système doit permettre l'association de pièces à un ordre de réparation.
+    
+    \item \textbf{BF-24 :} Le système doit tracer les mouvements de stock (entrées/sorties).
+    
+    \item \textbf{BF-25 :} Le système doit permettre la recherche de pièces par référence, nom ou code-barre.
+\end{itemize}
+
+\subsubsection{Module Notifications automatiques}
+
+\begin{itemize}
+    \item \textbf{BF-26 :} Le système doit envoyer automatiquement un email de confirmation lors de la création d'un ordre de réparation.
+    
+    \item \textbf{BF-27 :} Le système doit envoyer un SMS/email lors du changement de statut d'un ordre de réparation.
+    
+    \item \textbf{BF-28 :} Le système doit envoyer des rappels d'entretien préventif aux clients.
+    
+    \item \textbf{BF-29 :} Le système doit notifier les mécaniciens lors de l'affectation d'un nouveau travail.
+    
+    \item \textbf{BF-30 :} Le système doit envoyer des alertes email à l'administrateur en cas de stock critique.
+\end{itemize}
+
+\subsubsection{Module Intelligence Artificielle}
+
+\begin{itemize}
+    \item \textbf{BF-31 :} Le système doit proposer un module d'aide au diagnostic basé sur les symptômes décrits.
+    
+    \item \textbf{BF-32 :} Le système doit analyser l'historique du véhicule pour suggérer des interventions préventives.
+    
+    \item \textbf{BF-33 :} Le système doit prédire les besoins en pièces en fonction de l'historique de consommation.
+    
+    \item \textbf{BF-34 :} Le système doit être capable d'apprendre et d'améliorer ses suggestions au fil du temps.
+\end{itemize}
+
+\subsubsection{Module Workflows automatisés (n8n)}
+
+\begin{itemize}
+    \item \textbf{BF-35 :} Le système doit permettre la création de workflows personnalisés pour automatiser les processus métier.
+    
+    \item \textbf{BF-36 :} Le système doit supporter les webhooks pour déclencher des actions automatiques.
+    
+    \item \textbf{BF-37 :} Le système doit permettre l'intégration avec des services tiers (email, SMS, calendrier).
+    
+    \item \textbf{BF-38 :} Le système doit offrir une interface visuelle pour la configuration des workflows.
+\end{itemize}
+
+\subsubsection{Module Reporting et statistiques}
+
+\begin{itemize}
+    \item \textbf{BF-39 :} Le système doit générer des tableaux de bord avec indicateurs clés (nombre d'interventions, CA, satisfaction client).
+    
+    \item \textbf{BF-40 :} Le système doit permettre l'export des données (PDF, Excel).
+    
+    \item \textbf{BF-41 :} Le système doit afficher des graphiques de performance (chiffre d'affaires, ordres par mois, pièces les plus utilisées).
+    
+    \item \textbf{BF-42 :} Le système doit calculer des statistiques par mécanicien (temps moyen, nombre d'interventions).
+\end{itemize}
+
+\subsection{Besoins non-fonctionnels}
+
+Les besoins non-fonctionnels définissent les contraintes de qualité et de performance que le système doit respecter.
+
+\subsubsection{Performance}
+
+\begin{itemize}
+    \item \textbf{BNF-01 :} Le temps de réponse de l'API doit être inférieur à 200ms pour 95\% des requêtes.
+    
+    \item \textbf{BNF-02 :} Le système doit supporter au moins 100 utilisateurs concurrents sans dégradation.
+    
+    \item \textbf{BNF-03 :} Le chargement initial de l'interface web ne doit pas excéder 3 secondes.
+    
+    \item \textbf{BNF-04 :} Les requêtes complexes (statistiques, rapports) ne doivent pas dépasser 5 secondes.
+\end{itemize}
+
+\subsubsection{Sécurité}
+
+\begin{itemize}
+    \item \textbf{BNF-05 :} Le système doit chiffrer toutes les communications (HTTPS/TLS).
+    
+    \item \textbf{BNF-06 :} Les mots de passe doivent être hachés avec un algorithme robuste (bcrypt).
+    
+    \item \textbf{BNF-07 :} Le système doit se conformer au RGPD (droit à l'oubli, portabilité des données).
+    
+    \item \textbf{BNF-08 :} Le système doit implémenter une protection contre les attaques courantes (XSS, CSRF, injection SQL).
+    
+    \item \textbf{BNF-09 :} Le système doit tracer toutes les actions sensibles dans des logs sécurisés.
+    
+    \item \textbf{BNF-10 :} Le système doit implémenter un rate limiting pour éviter les abus.
+\end{itemize}
+
+\subsubsection{Disponibilité et fiabilité}
+
+\begin{itemize}
+    \item \textbf{BNF-11 :} Le système doit viser un taux de disponibilité de 99.5\% (environ 3.6 heures d'indisponibilité par mois maximum).
+    
+    \item \textbf{BNF-12 :} Le système doit effectuer des sauvegardes automatiques quotidiennes de la base de données.
+    
+    \item \textbf{BNF-13 :} Le système doit permettre une restauration des données en moins de 1 heure en cas de panne majeure.
+    
+    \item \textbf{BNF-14 :} Le système doit intégrer un mécanisme de gestion des erreurs avec notifications automatiques.
+\end{itemize}
+
+\subsubsection{Scalabilité}
+
+\begin{itemize}
+    \item \textbf{BNF-15 :} L'architecture doit permettre une mise à l'échelle horizontale (ajout de serveurs).
+    
+    \item \textbf{BNF-16 :} La base de données doit supporter la croissance des données sur au moins 5 ans sans dégradation.
+    
+    \item \textbf{BNF-17 :} Le système doit pouvoir gérer au moins 10 000 ordres de réparation par an.
+\end{itemize}
+
+\subsubsection{Maintenabilité et évolutivité}
+
+\begin{itemize}
+    \item \textbf{BNF-18 :} Le code doit respecter les standards de qualité (linting, formatage, conventions de nommage).
+    
+    \item \textbf{BNF-19 :} Le système doit avoir une couverture de tests unitaires supérieure à 80\%.
+    
+    \item \textbf{BNF-20 :} La documentation technique (API, architecture, déploiement) doit être exhaustive et à jour.
+    
+    \item \textbf{BNF-21 :} Le système doit suivre une architecture modulaire facilitant l'ajout de nouvelles fonctionnalités.
+\end{itemize}
+
+\subsubsection{Accessibilité et ergonomie}
+
+\begin{itemize}
+    \item \textbf{BNF-22 :} L'interface doit être responsive et fonctionner sur desktop, tablette et mobile.
+    
+    \item \textbf{BNF-23 :} L'interface doit être intuitive et ne nécessiter qu'une formation minimale.
+    
+    \item \textbf{BNF-24 :} Le système doit supporter les principaux navigateurs (Chrome, Firefox, Safari, Edge).
+    
+    \item \textbf{BNF-25 :} L'application doit fonctionner en mode PWA (Progressive Web App) avec capacités offline limitées.
+\end{itemize}
+
+\section{Backlog produit}
+
+Le backlog produit est l'élément central de la méthodologie Scrum. Il regroupe l'ensemble des fonctionnalités à développer, organisées sous forme de \textbf{user stories} et priorisées selon leur valeur métier. Chaque user story suit le format classique : \textit{"En tant que [acteur], je veux [action] afin de [bénéfice]"}.
+
+Les user stories sont estimées en \textbf{story points} (échelle de Fibonacci : 1, 2, 3, 5, 8, 13, 21) et classées par priorité (\textbf{Haute}, \textbf{Moyenne}, \textbf{Basse}).
+
+\subsection{Backlog complet}
+
+\begin{longtable}{|p{1cm}|p{5.5cm}|p{1.8cm}|p{1.5cm}|p{1.5cm}|}
+\hline
+\rowcolor{gray!30}
+\textbf{ID} & \textbf{User Story} & \textbf{Priorité} & \textbf{Story Points} & \textbf{Sprint} \\
+\hline
+\endfirsthead
+
+\hline
+\rowcolor{gray!30}
+\textbf{ID} & \textbf{User Story} & \textbf{Priorité} & \textbf{Story Points} & \textbf{Sprint} \\
+\hline
+\endhead
+
+\hline
+\multicolumn{5}{|r|}{\textit{Suite à la page suivante...}} \\
+\hline
+\endfoot
+
+\hline
+\endlastfoot
+
+\multicolumn{5}{|c|}{\cellcolor{gray!20}\textbf{ÉPIC 1 : Authentification et gestion des utilisateurs}} \\
+\hline
+
+US-001 & En tant qu'utilisateur, je veux pouvoir m'inscrire avec email et mot de passe afin d'accéder au système & Haute & 5 & Sprint 1 \\
+\hline
+
+US-002 & En tant qu'utilisateur, je veux me connecter de manière sécurisée avec JWT afin de protéger mon compte & Haute & 5 & Sprint 1 \\
+\hline
+
+US-003 & En tant qu'administrateur, je veux gérer les comptes utilisateurs (CRUD) afin de contrôler les accès & Haute & 8 & Sprint 1 \\
+\hline
+
+US-004 & En tant qu'utilisateur, je veux réinitialiser mon mot de passe par email afin de récupérer l'accès & Moyenne & 5 & Sprint 1 \\
+\hline
+
+US-005 & En tant qu'administrateur, je veux définir des rôles (Admin, Mécanicien, Client) afin de gérer les permissions & Haute & 8 & Sprint 1 \\
+\hline
+
+\multicolumn{5}{|c|}{\cellcolor{gray!20}\textbf{ÉPIC 2 : Gestion des clients}} \\
+\hline
+
+US-006 & En tant que mécanicien, je veux créer une fiche client complète afin de centraliser les informations & Haute & 5 & Sprint 2 \\
+\hline
+
+US-007 & En tant que mécanicien, je veux modifier les informations d'un client afin de les maintenir à jour & Haute & 3 & Sprint 2 \\
+\hline
+
+US-008 & En tant que mécanicien, je veux supprimer un client (soft delete) afin de nettoyer la base de données & Moyenne & 3 & Sprint 2 \\
+\hline
+
+US-009 & En tant que mécanicien, je veux rechercher un client par nom, email ou téléphone afin de le retrouver rapidement & Haute & 5 & Sprint 2 \\
+\hline
+
+US-010 & En tant que mécanicien, je veux consulter l'historique complet des interventions d'un client afin d'avoir une vue d'ensemble & Haute & 5 & Sprint 2 \\
+\hline
+
+\multicolumn{5}{|c|}{\cellcolor{gray!20}\textbf{ÉPIC 3 : Gestion des véhicules}} \\
+\hline
+
+US-011 & En tant que mécanicien, je veux enregistrer un véhicule (marque, modèle, immatriculation, VIN) afin de le lier à un client & Haute & 5 & Sprint 2 \\
+\hline
+
+US-012 & En tant que mécanicien, je veux associer un véhicule à un client afin de structurer les données & Haute & 3 & Sprint 2 \\
+\hline
+
+US-013 & En tant que mécanicien, je veux consulter l'historique des interventions d'un véhicule afin de mieux diagnostiquer & Haute & 5 & Sprint 2 \\
+\hline
+
+US-014 & En tant que mécanicien, je veux rechercher un véhicule par immatriculation ou VIN afin de l'identifier rapidement & Haute & 3 & Sprint 2 \\
+\hline
+
+US-015 & En tant que mécanicien, je veux mettre à jour le kilométrage d'un véhicule à chaque intervention afin de suivre son évolution & Moyenne & 2 & Sprint 2 \\
+\hline
+
+\multicolumn{5}{|c|}{\cellcolor{gray!20}\textbf{ÉPIC 4 : Ordres de réparation}} \\
+\hline
+
+US-016 & En tant que mécanicien, je veux créer un ordre de réparation pour un véhicule afin de planifier une intervention & Haute & 8 & Sprint 3 \\
+\hline
+
+US-017 & En tant que mécanicien, je veux affecter un ordre de réparation à un mécanicien afin d'organiser le travail & Haute & 5 & Sprint 3 \\
+\hline
+
+US-018 & En tant que mécanicien, je veux mettre à jour le statut d'un ordre (En attente, En cours, Terminé) afin de suivre l'avancement & Haute & 5 & Sprint 3 \\
+\hline
+
+US-019 & En tant que mécanicien, je veux saisir un diagnostic et des notes afin de documenter l'intervention & Haute & 5 & Sprint 3 \\
+\hline
+
+US-020 & En tant que mécanicien, je veux calculer automatiquement le coût total (main d'œuvre + pièces) afin d'établir une facture & Haute & 8 & Sprint 3 \\
+\hline
+
+US-021 & En tant que client, je veux consulter le statut en temps réel de mon ordre de réparation afin d'être informé & Haute & 5 & Sprint 3 \\
+\hline
+
+US-022 & En tant qu'administrateur, je veux consulter tous les ordres de réparation filtrés par statut/date afin de piloter l'activité & Moyenne & 5 & Sprint 3 \\
+\hline
+
+US-023 & En tant que mécanicien, je veux générer un PDF récapitulatif de l'ordre de réparation afin de le remettre au client & Moyenne & 8 & Sprint 3 \\
+\hline
+
+\multicolumn{5}{|c|}{\cellcolor{gray!20}\textbf{ÉPIC 5 : Gestion du stock de pièces}} \\
+\hline
+
+US-024 & En tant que mécanicien, je veux ajouter une pièce au catalogue (référence, nom, prix, quantité) afin de gérer le stock & Haute & 5 & Sprint 4 \\
+\hline
+
+US-025 & En tant que mécanicien, je veux modifier les informations d'une pièce afin de maintenir les données à jour & Haute & 3 & Sprint 4 \\
+\hline
+
+US-026 & En tant que mécanicien, je veux enregistrer les entrées/sorties de stock afin de tracer les mouvements & Haute & 8 & Sprint 4 \\
+\hline
+
+US-027 & En tant qu'administrateur, je veux définir un seuil de stock minimum afin de recevoir des alertes & Haute & 5 & Sprint 4 \\
+\hline
+
+US-028 & En tant que système, je veux envoyer une notification automatique quand le stock atteint le minimum afin de déclencher une commande & Haute & 5 & Sprint 4 \\
+\hline
+
+US-029 & En tant que mécanicien, je veux associer des pièces à un ordre de réparation afin de calculer le coût total & Haute & 8 & Sprint 4 \\
+\hline
+
+US-030 & En tant que mécanicien, je veux rechercher une pièce par référence, nom ou code-barre afin de la retrouver rapidement & Haute & 5 & Sprint 4 \\
+\hline
+
+US-031 & En tant qu'administrateur, je veux exporter l'inventaire en Excel afin d'effectuer des analyses externes & Basse & 5 & Sprint 4 \\
+\hline
+
+\multicolumn{5}{|c|}{\cellcolor{gray!20}\textbf{ÉPIC 6 : Notifications automatiques}} \\
+\hline
+
+US-032 & En tant que système, je veux envoyer un email de confirmation à la création d'un ordre de réparation afin d'informer le client & Haute & 5 & Sprint 5 \\
+\hline
+
+US-033 & En tant que système, je veux envoyer un SMS/email lors du changement de statut d'un ordre afin de tenir le client informé & Haute & 8 & Sprint 5 \\
+\hline
+
+US-034 & En tant que système, je veux envoyer des rappels d'entretien préventif (vidange, révision) afin de fidéliser les clients & Moyenne & 8 & Sprint 5 \\
+\hline
+
+US-035 & En tant que système, je veux notifier le mécanicien par email lors de l'affectation d'un nouvel ordre afin qu'il soit réactif & Haute & 3 & Sprint 5 \\
+\hline
+
+US-036 & En tant qu'administrateur, je veux configurer les templates d'emails/SMS afin de personnaliser les messages & Moyenne & 5 & Sprint 5 \\
+\hline
+
+\multicolumn{5}{|c|}{\cellcolor{gray!20}\textbf{ÉPIC 7 : Intelligence Artificielle}} \\
+\hline
+
+US-037 & En tant que mécanicien, je veux saisir les symptômes et obtenir une suggestion de diagnostic par IA afin d'accélérer mon travail & Haute & 13 & Sprint 5 \\
+\hline
+
+US-038 & En tant que système, je veux analyser l'historique d'un véhicule pour proposer des interventions préventives afin d'améliorer la maintenance & Moyenne & 13 & Sprint 5 \\
+\hline
+
+US-039 & En tant qu'administrateur, je veux que le système prédise les besoins en pièces afin d'optimiser les commandes fournisseurs & Basse & 13 & Sprint 5 \\
+\hline
+
+US-040 & En tant qu'administrateur, je veux entraîner le modèle IA avec les données historiques afin d'améliorer la précision & Basse & 21 & Sprint 5 \\
+\hline
+
+\multicolumn{5}{|c|}{\cellcolor{gray!20}\textbf{ÉPIC 8 : Workflows n8n}} \\
+\hline
+
+US-041 & En tant qu'administrateur, je veux créer un workflow de rappel automatique de rendez-vous afin de réduire les absences & Haute & 8 & Sprint 6 \\
+\hline
+
+US-042 & En tant qu'administrateur, je veux créer un workflow de suivi des ordres de réparation afin d'automatiser les relances & Haute & 8 & Sprint 6 \\
+\hline
+
+US-043 & En tant qu'administrateur, je veux créer un workflow d'alerte stock afin de déclencher des commandes automatiques & Moyenne & 8 & Sprint 6 \\
+\hline
+
+US-044 & En tant qu'administrateur, je veux intégrer des webhooks pour déclencher des actions externes afin d'étendre les fonctionnalités & Moyenne & 8 & Sprint 6 \\
+\hline
+
+US-045 & En tant qu'administrateur, je veux visualiser et monitorer les workflows actifs afin de détecter les erreurs & Moyenne & 5 & Sprint 6 \\
+\hline
+
+\multicolumn{5}{|c|}{\cellcolor{gray!20}\textbf{ÉPIC 9 : Reporting et statistiques}} \\
+\hline
+
+US-046 & En tant qu'administrateur, je veux consulter un tableau de bord avec les KPIs (CA, nb interventions, satisfaction) afin de piloter l'activité & Haute & 8 & Sprint 6 \\
+\hline
+
+US-047 & En tant qu'administrateur, je veux visualiser des graphiques de performance (CA par mois, ordres par statut) afin d'analyser les tendances & Moyenne & 8 & Sprint 6 \\
+\hline
+
+US-048 & En tant qu'administrateur, je veux consulter les statistiques par mécanicien (temps moyen, nb interventions) afin d'évaluer les performances & Moyenne & 5 & Sprint 6 \\
+\hline
+
+US-049 & En tant qu'administrateur, je veux exporter les rapports en PDF/Excel afin de les partager & Basse & 5 & Sprint 6 \\
+\hline
+
+US-050 & En tant qu'administrateur, je veux consulter les pièces les plus utilisées afin d'optimiser le stock & Basse & 5 & Sprint 6 \\
+\hline
+
+\multicolumn{5}{|c|}{\cellcolor{gray!20}\textbf{ÉPIC 10 : Infrastructure et DevOps}} \\
+\hline
+
+US-051 & En tant que développeur, je veux conteneuriser l'application avec Docker afin de faciliter le déploiement & Haute & 8 & Sprint 1 \\
+\hline
+
+US-052 & En tant que développeur, je veux mettre en place un pipeline CI/CD avec GitHub Actions afin d'automatiser les déploiements & Haute & 13 & Sprint 7 \\
+\hline
+
+US-053 & En tant qu'administrateur, je veux déployer l'application en production (AWS/Azure) afin de la rendre accessible & Haute & 13 & Sprint 8 \\
+\hline
+
+US-054 & En tant qu'administrateur, je veux mettre en place un système de monitoring (Prometheus/Grafana) afin de superviser l'application & Moyenne & 8 & Sprint 7 \\
+\hline
+
+US-055 & En tant qu'administrateur, je veux configurer des sauvegardes automatiques de la base de données afin de sécuriser les données & Haute & 5 & Sprint 7 \\
+\hline
+
+\multicolumn{5}{|c|}{\cellcolor{gray!20}\textbf{ÉPIC 11 : Tests et qualité}} \\
+\hline
+
+US-056 & En tant que développeur, je veux écrire des tests unitaires pour les modèles et services afin de garantir la fiabilité & Haute & 13 & Sprint 7 \\
+\hline
+
+US-057 & En tant que développeur, je veux écrire des tests d'intégration pour les API afin de valider les flux complets & Haute & 13 & Sprint 7 \\
+\hline
+
+US-058 & En tant que développeur, je veux écrire des tests end-to-end avec Cypress afin de valider les parcours utilisateurs & Moyenne & 13 & Sprint 7 \\
+\hline
+
+US-059 & En tant que développeur, je veux effectuer un audit de sécurité (OWASP) afin de corriger les vulnérabilités & Haute & 8 & Sprint 7 \\
+\hline
+
+US-060 & En tant que développeur, je veux optimiser les performances de l'API (requêtes SQL, cache Redis) afin d'améliorer la réactivité & Moyenne & 8 & Sprint 7 \\
+\hline
+
+\multicolumn{5}{|c|}{\cellcolor{gray!20}\textbf{ÉPIC 12 : Documentation et formation}} \\
+\hline
+
+US-061 & En tant que développeur, je veux rédiger la documentation technique complète (API, architecture, déploiement) afin de faciliter la maintenance & Haute & 8 & Sprint 8 \\
+\hline
+
+US-062 & En tant qu'administrateur, je veux rédiger un guide utilisateur illustré afin de former les utilisateurs finaux & Haute & 8 & Sprint 8 \\
+\hline
+
+US-063 & En tant qu'administrateur, je veux créer des tutoriels vidéo pour les fonctionnalités principales afin de réduire le temps de formation & Moyenne & 13 & Sprint 8 \\
+\hline
+
+US-064 & En tant que développeur, je veux documenter l'API avec Swagger/OpenAPI afin de faciliter l'intégration & Haute & 5 & Sprint 1 \\
+\hline
+
+\caption{Backlog produit complet MecaManage}
+\end{longtable}
+
+\subsection{Priorisation et planification}
+
+La priorisation du backlog suit la méthode \textbf{MoSCoW} :
+
+\begin{itemize}
+    \item \textbf{Must have (Priorité Haute) :} Fonctionnalités essentielles, le système ne peut pas fonctionner sans elles.
+    
+    \item \textbf{Should have (Priorité Moyenne) :} Fonctionnalités importantes mais non critiques, peuvent être reportées si nécessaire.
+    
+    \item \textbf{Could have (Priorité Basse) :} Fonctionnalités souhaitables, à implémenter si le temps le permet.
+\end{itemize}
+
+Les sprints ont été planifiés pour maximiser la valeur métier délivrée le plus tôt possible, en respectant les dépendances techniques entre les modules. Les sprints 1 à 4 se concentrent sur les fonctionnalités cœur (authentification, gestion clients/véhicules/ordres, stock), les sprints 5-6 ajoutent l'intelligence (IA, notifications, workflows), et les sprints 7-8 finalisent avec la qualité, les tests et le déploiement.
+
+\section{Conclusion}
+
+Ce premier chapitre a posé les bases du projet MecaManage en analysant le contexte du secteur de la maintenance automobile, en étudiant les solutions existantes et leurs limites, et en définissant précisément les besoins fonctionnels et non-fonctionnels du système. Le backlog produit complet, organisé en 64 user stories réparties sur 8 sprints, constitue la feuille de route du développement.
+
+Le prochain chapitre détaillera la conception technique du système : architecture multi-couches, modélisation des données, choix technologiques et diagrammes UML permettant de structurer l'implémentation du projet.

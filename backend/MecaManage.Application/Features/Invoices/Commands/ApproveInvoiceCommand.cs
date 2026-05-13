@@ -62,33 +62,19 @@ public class ApproveInvoiceCommandHandler : IRequestHandler<ApproveInvoiceComman
 
         if (repairTask != null)
         {
+            // Only notify the chef — the chef will then assign mechanic(s) for the actual repair
             _context.Notifications.Add(new Notification
             {
                 RecipientId      = repairTask.AssignedByChefId,
                 InvoiceId        = invoice.Id,
                 RepairTaskId     = repairTask.Id,
-                Title            = "✅ Devis approuvé — Réparation autorisée",
+                Title            = "✅ Devis approuvé — Assignez un mécanicien",
                 Message          = $"Le client a approuvé le devis (Facture {invoice.InvoiceNumber}, {invoice.TotalAmount:F2} €). " +
-                                   $"Le stock a été mis à jour. Vous pouvez lancer les réparations.",
+                                   $"Le stock a été mis à jour. Assignez un mécanicien depuis l'onglet Réparations pour démarrer les travaux.",
                 NotificationType = "InvoiceApprovedByClient",
                 CreatedAt        = DateTime.UtcNow,
                 IsRead           = false
             });
-
-            foreach (var assignment in repairTask.Assignments)
-            {
-                _context.Notifications.Add(new Notification
-                {
-                    RecipientId      = assignment.MechanicId,
-                    RepairTaskId     = repairTask.Id,
-                    Title            = "🔧 Devis approuvé — Commencez les réparations",
-                    Message          = $"Le client a approuvé le devis pour la tâche « {repairTask.TaskTitle} ». " +
-                                       $"Les pièces sont réservées. Vous pouvez commencer les réparations.",
-                    NotificationType = "RepairAuthorized",
-                    CreatedAt        = DateTime.UtcNow,
-                    IsRead           = false
-                });
-            }
         }
 
         // ── Advance intervention tracker: client approved → repair will start ─

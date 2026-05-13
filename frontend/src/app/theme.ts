@@ -5,29 +5,33 @@ import { Injectable, signal, effect } from '@angular/core';
 })
 export class ThemeService {
   private darkMode = signal<boolean>(
-    localStorage.getItem('theme') === 'dark'
+    localStorage.getItem('theme') === 'dark' ||
+      (!localStorage.getItem('theme') &&
+        window.matchMedia('(prefers-color-scheme: dark)').matches)
   );
 
   isDarkMode = this.darkMode.asReadonly();
 
   constructor() {
-    // Initial application without effect to be safe
     this.applyTheme(this.darkMode());
-
     effect(() => {
       this.applyTheme(this.darkMode());
     });
   }
 
   private applyTheme(isDark: boolean) {
-    console.log('Applying theme. Is dark?', isDark);
+    const root = document.documentElement;
+    const body = document.body;
+
     if (isDark) {
-      document.documentElement.classList.add('dark');
-      document.body.classList.add('dark');
+      root.classList.add('dark');
+      body.classList.add('dark');
+      body.setAttribute('data-theme', 'dark');
       localStorage.setItem('theme', 'dark');
     } else {
-      document.documentElement.classList.remove('dark');
-      document.body.classList.remove('dark');
+      root.classList.remove('dark');
+      body.classList.remove('dark');
+      body.setAttribute('data-theme', 'light');
       localStorage.setItem('theme', 'light');
     }
   }

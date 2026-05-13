@@ -18,6 +18,28 @@ public class AdminController : ControllerBase
     }
 
     /// <summary>
+    /// Public trust KPIs for landing page (no authentication required)
+    /// </summary>
+    [HttpGet("public-trust-kpis")]
+    [AllowAnonymous]
+    public async Task<IActionResult> GetPublicTrustKpis()
+    {
+        var kpis = await _mediator.Send(new GetAdminKpisQuery());
+        var successRate = kpis.TotalInterventions == 0
+            ? 0
+            : Math.Round((double)kpis.CompletedInterventions * 100 / kpis.TotalInterventions, 1);
+
+        return Ok(new PublicTrustKpisResponse(
+            TotalTenants: kpis.TotalTenants,
+            TotalGarages: kpis.TotalGarages,
+            TotalInterventions: kpis.TotalInterventions,
+            CompletedInterventions: kpis.CompletedInterventions,
+            ActiveClients: kpis.ActiveClients,
+            SuccessRate: successRate
+        ));
+    }
+
+    /// <summary>
     /// Get KPIs for SuperAdmin dashboard
     /// </summary>
     [HttpGet("kpis")]
@@ -79,4 +101,12 @@ public class AdminController : ControllerBase
 }
 
 public record UpdateGarageAdminRequest(Guid? NewAdminId);
+public record PublicTrustKpisResponse(
+    int TotalTenants,
+    int TotalGarages,
+    int TotalInterventions,
+    int CompletedInterventions,
+    int ActiveClients,
+    double SuccessRate
+);
 

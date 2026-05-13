@@ -51,6 +51,12 @@ public class CreateAppointmentCommandHandler : IRequestHandler<CreateAppointment
 
             if (!reportExists)
                 return new CreateAppointmentResult(false, "Rapport de symptômes introuvable ou accès refusé", null);
+
+            var reportAlreadyBooked = await _context.Appointments
+                .AnyAsync(a => a.SymptomReportId == request.SymptomReportId.Value, cancellationToken);
+
+            if (reportAlreadyBooked)
+                return new CreateAppointmentResult(false, "Un rendez-vous existe déjà pour ce rapport.", null);
         }
 
         var appointment = new Appointment

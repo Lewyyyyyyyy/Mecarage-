@@ -1,0 +1,72 @@
+@startuml seq_s3_symptom
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontName Arial
+skinparam defaultFontSize 12
+skinparam SequenceParticipantBorderColor #1D4ED8
+skinparam SequenceParticipantBackgroundColor #2563EB
+skinparam SequenceParticipantFontColor #FFFFFF
+skinparam SequenceParticipantFontStyle bold
+skinparam SequenceParticipantFontSize 12
+skinparam SequenceActorBorderColor #1D4ED8
+skinparam SequenceActorBackgroundColor #DBEAFE
+skinparam SequenceArrowColor #374151
+skinparam SequenceArrowThickness 1.5
+skinparam SequenceArrowFontSize 12
+skinparam SequenceArrowFontStyle bold
+skinparam SequenceArrowFontColor #1E3A8A
+skinparam SequenceLifeLineBorderColor #93C5FD
+skinparam SequenceLifeLineBorderThickness 1.5
+skinparam NoteBackgroundColor #FFFBEB
+skinparam NoteBorderColor #F59E0B
+skinparam NoteFontSize 11
+skinparam TitleFontSize 14
+skinparam TitleFontStyle bold
+skinparam padding 6
+
+title SC5 — Soumission de Symptômes et Diagnostic IA (US10+US11) — Sprint 3
+
+actor ":Client" as cli
+participant ":SymptomReportsController" as ctrl
+participant ":CreateSymptomReportHandler" as hand
+participant ":IAService (FastAPI\n+ Ollama)" as ia
+database ":Database" as db
+participant ":NotificationService" as notif
+
+cli -> ctrl : POST /api/symptom-reports {vehicleId, symptomsDescription}
+activate ctrl
+ctrl -> hand : Handle(CreateSymptomReportCommand)
+activate hand
+
+hand -> ia : POST /diagnose {text: symptomsDescription}
+activate ia
+ia --> hand : DiagnosisResult {issue, score, recommendations}
+deactivate ia
+
+hand -> hand : MapDiagnosisFields(result)
+hand -> db : Add(symptomReport); SaveChanges()
+activate db
+db --> hand : reportId
+deactivate db
+
+hand -> db : GetChefOfGarage(garageId)
+activate db
+db --> hand : chefId
+deactivate db
+
+hand -> notif : CreateNotification(chefId, reportId)
+activate notif
+notif -> db : Add(notification); SaveChanges()
+activate db
+db --> notif : OK
+deactivate db
+deactivate notif
+
+hand --> ctrl : SymptomReportResponse
+deactivate hand
+ctrl --> cli : 201 Created {reportId, aiPredictedIssue, aiConfidenceScore}
+deactivate ctrl
+
+note over ia : Architecture RAG :\nBM25 retrieval +\nOllama LLM (local)
+
+@enduml
+

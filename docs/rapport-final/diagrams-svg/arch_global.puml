@@ -1,0 +1,45 @@
+@startuml arch_global
+!pragma layout smetana
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontName Arial
+skinparam defaultFontSize 12
+skinparam ComponentBorderColor #1D4ED8
+skinparam ComponentBackgroundColor #EFF6FF
+skinparam ComponentFontStyle bold
+skinparam ComponentFontSize 12
+skinparam ArrowColor #374151
+skinparam ArrowThickness 1.5
+skinparam ArrowFontSize 12
+skinparam ArrowFontStyle bold
+skinparam ArrowFontColor #1E3A8A
+skinparam RectangleBorderColor #374151
+skinparam RectangleBorderThickness 1.5
+skinparam RectangleBackgroundColor #F9FAFB
+skinparam TitleFontSize 14
+skinparam TitleFontStyle bold
+skinparam padding 10
+
+title Architecture Globale — MecaRage
+
+[Angular 21\nTailwind CSS] as ang
+[ASP.NET Core 9\nCQRS + MediatR] as api
+[MySQL 8\nEF Core] as mysql
+[Redis 7\nCache] as redis
+[FastAPI + Ollama\nRAG BM25] as ia
+[Android Java\nRetrofit 2] as mob
+[SQLite\nLocal DB] as sqlite
+[FastAPI Sync\nMySQL Inject] as sync
+[Prometheus\nGrafana] as mon
+
+ang --> api : REST / HTTPS
+api --> mysql : EF Core ORM
+api --> redis : Cache / Sessions
+api --> ia : HTTP POST /diagnose
+mob --> api : Retrofit / REST
+mob --> sqlite : Stockage local
+sqlite --> sync : sync périodique
+sync --> mysql : injection directe
+api --> mon : Métriques
+
+@enduml
+
