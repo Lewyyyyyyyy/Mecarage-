@@ -20,7 +20,7 @@ import { RepairTaskService } from '../../core/services/workshop.service';
 })
 export class GarageAdminDashboardComponent implements OnInit {
   garageId: string = '';
-  selectedTab = signal<'dashboard' | 'staff' | 'reports' | 'appointments' | 'examinations' | 'repairs' | 'interventions'>('dashboard');
+  selectedTab = signal<'dashboard' | 'kpis' | 'staff' | 'reports' | 'appointments' | 'examinations' | 'repairs' | 'interventions'>('dashboard');
   pendingExaminationsCount = signal(0);
   interventions = signal<GarageInterventionDto[]>([]);
   clients = signal<GarageClientDto[]>([]);
@@ -64,6 +64,40 @@ export class GarageAdminDashboardComponent implements OnInit {
       completedInterventions: interventions.filter(i => i.status === 'Completed').length,
       totalClients: clients.length,
       totalVehicles: clients.reduce((sum, c) => sum + c.vehicleCount, 0),
+    };
+  });
+
+  garageKpis = computed(() => {
+    const interventions = this.interventions();
+    const clients = this.clients();
+    const total = interventions.length;
+    const pending = interventions.filter(i => i.status === 'Pending').length;
+    const inProgress = interventions.filter(i => i.status === 'InProgress').length;
+    const completed = interventions.filter(i => i.status === 'Completed').length;
+    const cancelled = interventions.filter(i => i.status === 'Cancelled').length;
+    const completionRate = total > 0 ? Math.round((completed / total) * 100) : 0;
+
+    // Unique vehicles seen at this garage (by vehicleInfo string)
+    const uniqueVehicleSet = new Set(interventions.map(i => i.vehicleInfo));
+    const uniqueVehicles = uniqueVehicleSet.size;
+
+    // Unique clients seen at this garage (by email)
+    const uniqueClientSet = new Set(interventions.map(i => i.clientEmail));
+    const uniqueClients = uniqueClientSet.size;
+
+    // Avg interventions per client
+    const totalInterventionFiles = clients.reduce((s, c) => s + c.interventionCount, 0);
+    const avgInterventions = clients.length > 0
+      ? (totalInterventionFiles / clients.length).toFixed(1)
+      : '0';
+
+    // Total registered vehicles across all clients
+    const totalRegisteredVehicles = clients.reduce((s, c) => s + c.vehicleCount, 0);
+
+    return {
+      total, pending, inProgress, completed, cancelled,
+      completionRate, uniqueVehicles, uniqueClients,
+      avgInterventions, totalRegisteredVehicles,
     };
   });
 
@@ -143,6 +177,8 @@ export class GarageAdminDashboardComponent implements OnInit {
   clearError() {
     this.error.set(null);
   }
+
+  sortClientsByInterventions = (a: any, b: any) => b.interventionCount - a.interventionCount;
 
   onSearchInterventionChange(event: Event) {
     const target = event.target as HTMLInputElement;

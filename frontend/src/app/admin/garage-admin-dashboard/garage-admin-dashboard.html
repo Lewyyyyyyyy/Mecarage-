@@ -11,13 +11,20 @@
       </div>
     </div>
 
-    <div class="mb-8 flex gap-2 border-b border-gray-800">
+    <div class="mb-8 flex gap-2 border-b border-gray-800 flex-wrap">
       <button
         (click)="selectedTab.set('dashboard')"
         class="px-6 py-3 font-bold transition-all duration-200 border-b-2"
         [ngClass]="selectedTab() === 'dashboard' ? 'border-indigo-500 text-indigo-400 bg-indigo-500/5' : 'border-transparent text-gray-500 hover:text-gray-300'"
       >
         <span class="mr-2">📊</span> Dashboard
+      </button>
+      <button
+        (click)="selectedTab.set('kpis')"
+        class="px-6 py-3 font-bold transition-all duration-200 border-b-2"
+        [ngClass]="selectedTab() === 'kpis' ? 'border-purple-500 text-purple-400 bg-purple-500/5' : 'border-transparent text-gray-500 hover:text-gray-300'"
+      >
+        <span class="mr-2">📈</span> KPIs
       </button>
       <button
         (click)="selectedTab.set('reports')"
@@ -198,6 +205,117 @@
             }
           </div>
         </div>
+      </div>
+    }
+
+    @if (selectedTab() === 'kpis') {
+      <div class="animate-in slide-in-from-bottom-4 duration-500 space-y-6">
+
+        <!-- Intervention performance -->
+        <div>
+          <h2 class="text-lg font-black text-white mb-3">📋 Performance des Interventions</h2>
+          <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+            <div class="bg-gray-900 rounded-xl border border-gray-800 p-5">
+              <p class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">Total</p>
+              <p class="text-3xl font-black text-white">{{ garageKpis().total }}</p>
+            </div>
+            <div class="bg-gray-900 rounded-xl border border-yellow-900/40 p-5">
+              <p class="text-xs font-bold text-yellow-500 uppercase tracking-wider mb-1.5">En attente</p>
+              <p class="text-3xl font-black text-yellow-400">{{ garageKpis().pending }}</p>
+            </div>
+            <div class="bg-gray-900 rounded-xl border border-blue-900/40 p-5">
+              <p class="text-xs font-bold text-blue-400 uppercase tracking-wider mb-1.5">En cours</p>
+              <p class="text-3xl font-black text-blue-400">{{ garageKpis().inProgress }}</p>
+            </div>
+            <div class="bg-gray-900 rounded-xl border border-emerald-900/40 p-5">
+              <p class="text-xs font-bold text-emerald-400 uppercase tracking-wider mb-1.5">Complétées</p>
+              <p class="text-3xl font-black text-emerald-400">{{ garageKpis().completed }}</p>
+            </div>
+            <div class="bg-gray-900 rounded-xl border border-rose-900/40 p-5">
+              <p class="text-xs font-bold text-rose-400 uppercase tracking-wider mb-1.5">Annulées</p>
+              <p class="text-3xl font-black text-rose-400">{{ garageKpis().cancelled }}</p>
+            </div>
+            <div class="bg-gradient-to-br from-emerald-900/40 to-teal-900/40 rounded-xl border border-emerald-700/50 p-5">
+              <p class="text-xs font-bold text-emerald-300 uppercase tracking-wider mb-1.5">Taux Réussite</p>
+              <p class="text-3xl font-black text-emerald-300">{{ garageKpis().completionRate }}%</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Vehicles & Clients -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+          <!-- Vehicles card -->
+          <div class="bg-gray-900 rounded-2xl border border-gray-800 p-6">
+            <h3 class="text-base font-black text-white mb-4 flex items-center gap-2">
+              <span class="text-2xl">🚗</span> Véhicules au Garage
+            </h3>
+            <div class="grid grid-cols-2 gap-4">
+              <div class="bg-gray-800/60 rounded-xl p-4">
+                <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Véhicules vus</p>
+                <p class="text-3xl font-black text-purple-400">{{ garageKpis().uniqueVehicles }}</p>
+                <p class="text-xs text-gray-500 mt-1">via interventions</p>
+              </div>
+              <div class="bg-gray-800/60 rounded-xl p-4">
+                <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Véhicules enregistrés</p>
+                <p class="text-3xl font-black text-indigo-400">{{ garageKpis().totalRegisteredVehicles }}</p>
+                <p class="text-xs text-gray-500 mt-1">de tous les clients</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Clients card -->
+          <div class="bg-gray-900 rounded-2xl border border-gray-800 p-6">
+            <h3 class="text-base font-black text-white mb-4 flex items-center gap-2">
+              <span class="text-2xl">👥</span> Clients du Garage
+            </h3>
+            <div class="grid grid-cols-2 gap-4">
+              <div class="bg-gray-800/60 rounded-xl p-4">
+                <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Clients servis</p>
+                <p class="text-3xl font-black text-rose-400">{{ garageKpis().uniqueClients }}</p>
+                <p class="text-xs text-gray-500 mt-1">via interventions</p>
+              </div>
+              <div class="bg-gray-800/60 rounded-xl p-4">
+                <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Moy. fiches/client</p>
+                <p class="text-3xl font-black text-amber-400">{{ garageKpis().avgInterventions }}</p>
+                <p class="text-xs text-gray-500 mt-1">interventions par client</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Top clients by interventions -->
+        @if (clients().length > 0) {
+          <div class="bg-gray-900 rounded-2xl border border-gray-800 p-6">
+            <h3 class="text-base font-black text-white mb-4 flex items-center gap-2">
+              <span class="text-2xl">🏆</span> Clients les plus actifs
+            </h3>
+            <div class="space-y-3 max-h-72 overflow-y-auto pr-1">
+              @for (client of clients().slice().sort(sortClientsByInterventions).slice(0, 8); track client.id) {
+                <div class="flex items-center justify-between bg-gray-800/50 rounded-xl px-4 py-3">
+                  <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-xs font-black text-white flex-shrink-0">
+                      {{ client.firstName[0] }}{{ client.lastName[0] }}
+                    </div>
+                    <div>
+                      <p class="font-bold text-white text-sm">{{ client.firstName }} {{ client.lastName }}</p>
+                      <p class="text-xs text-gray-500">{{ client.email }}</p>
+                    </div>
+                  </div>
+                  <div class="flex gap-2 flex-shrink-0">
+                    <span class="bg-indigo-900/40 text-indigo-300 border border-indigo-800/50 px-2.5 py-1 rounded-lg text-xs font-bold">
+                      🚗 {{ client.vehicleCount }}
+                    </span>
+                    <span class="bg-emerald-900/40 text-emerald-300 border border-emerald-800/50 px-2.5 py-1 rounded-lg text-xs font-bold">
+                      📋 {{ client.interventionCount }}
+                    </span>
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+        }
+
       </div>
     }
 
