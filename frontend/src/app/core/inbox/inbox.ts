@@ -1,4 +1,4 @@
-import { Component, OnInit, signal, computed, inject } from '@angular/core';
+import { Component, OnInit, Input, signal, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -6,7 +6,7 @@ import { AuthService } from '../../auth/auth.service';
 import { GaragesService } from '../services/garages.service';
 import { SymptomReportService, RepairTaskService, NotificationService, AppointmentService, InvoiceService } from '../services/workshop.service';
 import { StaffService } from '../services/staff.service';
-import { ChefInboxItemDto, ClientNotificationDto, MechanicTaskDto, PendingAppointmentDto, InvoiceDto } from '../models/workshop.models';
+import { ChefInboxItemDto, ClientNotificationDto, MechanicTaskDto, GarageAppointmentDto, InvoiceDto } from '../models/workshop.models';
 import { StaffDto } from '../models/staff.models';
 import { ChefRepairManagementComponent } from '../../admin/chef-repair-management/chef-repair-management';
 import { ChefExaminationReviewComponent } from '../../admin/chef-examination-review/chef-examination-review';
@@ -19,6 +19,8 @@ import { InboxBadgeService } from '../services/inbox-badge.service';
   templateUrl: './inbox.html',
 })
 export class InboxComponent implements OnInit {
+  /** When set, hides sub-tabs and only shows this section (used when embedded in a parent tab). */
+  @Input() section: 'reports' | 'appointments' | 'all' = 'all';
   private auth = inject(AuthService);
   private garagesService = inject(GaragesService);
   private symptomService = inject(SymptomReportService);
@@ -43,6 +45,10 @@ export class InboxComponent implements OnInit {
   // ── Chef tabs ──────────────────────────────────────────────────────────────
   chefTab = signal<'reports' | 'appointments' | 'repairs' | 'examinations'>('reports');
 
+  // ── Tab badge counts ───────────────────────────────────────────────────────
+  pendingExaminationsCount = signal<number>(0);
+  pendingRepairsCount = signal<number>(0);
+
   // ── Chef inbox (symptom reports) ───────────────────────────────────────────
   chefInbox = signal<ChefInboxItemDto[]>([]);
   garageId = signal('');
@@ -52,10 +58,10 @@ export class InboxComponent implements OnInit {
   feedbackForm: FormGroup;
 
   // ── Appointments ───────────────────────────────────────────────────────────
-  appointments = signal<PendingAppointmentDto[]>([]);
+  appointments = signal<GarageAppointmentDto[]>([]);
   mechanics = signal<StaffDto[]>([]);
   showTaskModal = signal(false);
-  selectedAppointment = signal<PendingAppointmentDto | null>(null);
+  selectedAppointment = signal<GarageAppointmentDto | null>(null);
   taskForm: FormGroup;
   isCreatingTask = signal(false);
 
@@ -124,7 +130,7 @@ export class InboxComponent implements OnInit {
     const jwtGarageId = this.auth.user()?.garageId;
     if (jwtGarageId) {
       this.garageId.set(jwtGarageId);
-      this.loadChefData(jwtGarageId);
+      this.loadChefDataForSection(jwtGarageId);
       return;
     }
 
@@ -139,7 +145,7 @@ export class InboxComponent implements OnInit {
         }
         const mine = garages.find(g => g.adminId === userId) ?? garages[0];
         this.garageId.set(mine.id);
-        this.loadChefData(mine.id);
+        this.loadChefDataForSection(mine.id);
       },
       error: () => {
         this.error.set('Impossible de déterminer votre garage.');
@@ -148,10 +154,24 @@ export class InboxComponent implements OnInit {
     });
   }
 
+  loadChefDataForSection(garageId: string): void {
+    if (this.section === 'reports') {
+      this.loadChefInbox(garageId);
+    } else if (this.section === 'appointments') {
+      this.loadAppointments(garageId);
+      this.loadMechanics(garageId);
+    } else {
+      // 'all' — load everything (standalone /inbox route)
+      this.loadChefData(garageId);
+    }
+  }
+
   loadChefData(garageId: string): void {
     this.loadChefInbox(garageId);
     this.loadAppointments(garageId);
     this.loadMechanics(garageId);
+    this.loadPendingExaminationsCount(garageId);
+    this.loadPendingRepairsCount(garageId);
   }
 
   loadChefInbox(garageId: string): void {
@@ -239,9 +259,10 @@ export class InboxComponent implements OnInit {
   // ── Appointments ──────────────────────────────────────────────────────────
 
   loadAppointments(garageId: string): void {
-    this.appointmentService.getPendingAppointments(garageId).subscribe({
+    this.appointmentService.getGarageAppointments(garageId).subscribe({
       next: (items) => {
-        this.appointments.set(items);
+        // newest first (backend already sorts, but enforce here too)
+        this.appointments.set(items.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()));
         this.badgeService.refresh();
       },
       error: () => {},
@@ -255,7 +276,21 @@ export class InboxComponent implements OnInit {
     });
   }
 
-  openTaskModal(appointment: PendingAppointmentDto): void {
+  loadPendingExaminationsCount(garageId: string): void {
+    this.repairTaskService.getPendingExaminations(garageId).subscribe({
+      next: (items) => this.pendingExaminationsCount.set(items?.length ?? 0),
+      error: () => {},
+    });
+  }
+
+  loadPendingRepairsCount(garageId: string): void {
+    this.repairTaskService.getRepairReadyTasks(garageId).subscribe({
+      next: (items) => this.pendingRepairsCount.set(items?.length ?? 0),
+      error: () => {},
+    });
+  }
+
+  openTaskModal(appointment: GarageAppointmentDto): void {
     this.selectedAppointment.set(appointment);
     this.showTaskModal.set(true);
     this.taskForm.reset({ mechanicIds: [] });
@@ -267,6 +302,18 @@ export class InboxComponent implements OnInit {
     this.selectedAppointment.set(null);
     this.taskForm.reset({ mechanicIds: [] });
     this.error.set(null);
+  }
+
+  appointmentStatusBadge(status: string): { label: string; css: string } {
+    const map: Record<string, { label: string; css: string }> = {
+      Pending:    { label: '⏳ En attente',  css: 'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 border-amber-300 dark:border-amber-800' },
+      Approved:   { label: '✅ Confirmé',   css: 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 border-emerald-300 dark:border-emerald-800' },
+      Declined:   { label: '❌ Refusé',     css: 'bg-rose-100 dark:bg-rose-900/30 text-rose-700 dark:text-rose-400 border-rose-300 dark:border-rose-800' },
+      InProgress: { label: '🔧 En cours',   css: 'bg-violet-100 dark:bg-violet-900/30 text-violet-700 dark:text-violet-400 border-violet-300 dark:border-violet-800' },
+      Completed:  { label: '🏁 Terminé',   css: 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 border-blue-300 dark:border-blue-800' },
+      Cancelled:  { label: 'Annulé',        css: 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 border-gray-300 dark:border-gray-700' },
+    };
+    return map[status] ?? { label: status, css: 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 border-gray-300 dark:border-gray-700' };
   }
 
   toggleMechanic(id: string): void {
@@ -282,7 +329,6 @@ export class InboxComponent implements OnInit {
   approveAndAssign(): void {
     if (!this.taskForm.valid || !this.selectedAppointment()) return;
     const appt = this.selectedAppointment()!;
-    this.isCreatingTask.set(true);
     this.error.set(null);
 
     // Step 1: approve the appointment

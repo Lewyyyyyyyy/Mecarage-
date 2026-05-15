@@ -1,8 +1,8 @@
-import { Component, Input, OnInit, signal } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RepairTaskService, SparePartsService } from '../../core/services/workshop.service';
-import { PendingExaminationDto, ReviewPartDto } from '../../core/models/workshop.models';
+import { GarageExaminationDto, PendingExaminationDto, ReviewPartDto } from '../../core/models/workshop.models';
 import { Subject, debounceTime, distinctUntilChanged, of, switchMap } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { SparePartDto } from '../../core/models/workshop.models';
@@ -15,15 +15,16 @@ import { SparePartDto } from '../../core/models/workshop.models';
 })
 export class ChefExaminationReviewComponent implements OnInit {
   @Input() garageId = '';
+  @Output() countChanged = new EventEmitter<number>();
 
-  examinations = signal<PendingExaminationDto[]>([]);
+  examinations = signal<GarageExaminationDto[]>([]);
   loading = signal(false);
   isSubmitting = signal(false);
   error = signal<string | null>(null);
   success = signal<string | null>(null);
 
   showReviewModal = signal(false);
-  selectedExamination: PendingExaminationDto | null = null;
+  selectedExamination: GarageExaminationDto | null = null;
   reviewForm: FormGroup;
 
   // ── Editable parts in review modal ───────────────────────────────────────
@@ -71,13 +72,24 @@ export class ChefExaminationReviewComponent implements OnInit {
 
   loadExaminations(): void {
     this.loading.set(true);
-    this.taskService.getPendingExaminations(this.garageId).subscribe({
-      next: (exams) => { this.examinations.set(exams || []); this.loading.set(false); },
+    this.taskService.getAllExaminations(this.garageId).subscribe({
+      next: (exams) => {
+        // Sort: pending first, then by date descending
+        const sorted = (exams || []).sort((a, b) => {
+          if (a.examinationStatus === 'Pending' && b.examinationStatus !== 'Pending') return -1;
+          if (b.examinationStatus === 'Pending' && a.examinationStatus !== 'Pending') return 1;
+          return new Date(b.examinationSubmittedAt).getTime() - new Date(a.examinationSubmittedAt).getTime();
+        });
+        this.examinations.set(sorted);
+        this.loading.set(false);
+        const pendingCount = sorted.filter(e => e.examinationStatus === 'Pending').length;
+        this.countChanged.emit(pendingCount);
+      },
       error: (err) => { this.error.set('Erreur lors du chargement des rapports d\'examen'); console.error(err); this.loading.set(false); },
     });
   }
 
-  openReviewModal(exam: PendingExaminationDto): void {
+  openReviewModal(exam: GarageExaminationDto): void {
     this.selectedExamination = exam;
     // Pre-fill form with mechanic's data
     this.reviewForm.reset({
@@ -185,6 +197,15 @@ export class ChefExaminationReviewComponent implements OnInit {
 
   calcPartsTotal(parts: { quantity: number; estimatedPrice: number }[]): number {
     return parts.reduce((sum, p) => sum + p.quantity * p.estimatedPrice, 0);
+  }
+
+  examinationStatusBadge(status: string): { label: string; css: string } {
+    const map: Record<string, { label: string; css: string }> = {
+      Pending:       { label: '⏳ En attente',  css: 'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 border-amber-300 dark:border-amber-800' },
+      Approved:      { label: '✅ Approuvé',    css: 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 border-emerald-300 dark:border-emerald-800' },
+      DeclinedByChef:{ label: '❌ Refusé',      css: 'bg-rose-100 dark:bg-rose-900/30 text-rose-700 dark:text-rose-400 border-rose-300 dark:border-rose-800' },
+    };
+    return map[status] ?? { label: status, css: 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 border-gray-300 dark:border-gray-700' };
   }
 
   formatDate(dateString: string): string {

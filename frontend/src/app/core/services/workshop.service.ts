@@ -8,6 +8,7 @@ import {
   AddChefFeedbackDto,
   ChefInboxItemDto,
   PendingAppointmentDto,
+  GarageAppointmentDto,
   AppointmentDto,
   CreateAppointmentDto,
   InvoiceDto,
@@ -17,6 +18,7 @@ import {
   UpdateRepairTaskStatusDto,
   SubmitExaminationDto,
   PendingExaminationDto,
+  GarageExaminationDto,
   RepairReadyTaskDto,
   ClientNotificationDto,
   SparePartDto,
@@ -71,6 +73,10 @@ export class AppointmentService {
 
   getPendingAppointments(garageId: string): Observable<PendingAppointmentDto[]> {
     return this.http.get<PendingAppointmentDto[]>(`${this.apiUrl}/pending/${garageId}`);
+  }
+
+  getGarageAppointments(garageId: string): Observable<GarageAppointmentDto[]> {
+    return this.http.get<GarageAppointmentDto[]>(`${this.apiUrl}/garage/${garageId}`);
   }
 
   approveAppointment(appointmentId: string): Observable<any> {
@@ -168,6 +174,10 @@ export class RepairTaskService {
 
   getPendingExaminations(garageId: string): Observable<PendingExaminationDto[]> {
     return this.http.get<PendingExaminationDto[]>(`${this.apiUrl}/pending-examinations/${garageId}`);
+  }
+
+  getAllExaminations(garageId: string): Observable<GarageExaminationDto[]> {
+    return this.http.get<GarageExaminationDto[]>(`${this.apiUrl}/all-examinations/${garageId}`);
   }
 
   getRepairReadyTasks(garageId: string): Observable<RepairReadyTaskDto[]> {

@@ -104,35 +104,35 @@ export class HistoryComponent implements OnInit {
 
   invoiceBadge(status: string): { label: string; css: string } {
     const map: Record<string, { label: string; css: string }> = {
-      Draft:            { label: 'Brouillon',      css: 'bg-gray-800 text-gray-400 border-gray-700' },
-      AwaitingApproval: { label: '⏳ En attente',  css: 'bg-amber-900/30 text-amber-400 border-amber-800' },
-      Approved:         { label: '✅ Accepté',     css: 'bg-emerald-900/30 text-emerald-400 border-emerald-800' },
-      Rejected:         { label: '❌ Refusé',      css: 'bg-rose-900/30 text-rose-400 border-rose-800' },
-      Paid:             { label: '💳 Payé',        css: 'bg-blue-900/30 text-blue-400 border-blue-800' },
+      Draft:            { label: 'Brouillon',      css: 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 border-gray-300 dark:border-gray-700' },
+      AwaitingApproval: { label: '⏳ En attente',  css: 'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 border-amber-300 dark:border-amber-800' },
+      Approved:         { label: '✅ Accepté',     css: 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 border-emerald-300 dark:border-emerald-800' },
+      Rejected:         { label: '❌ Refusé',      css: 'bg-rose-100 dark:bg-rose-900/30 text-rose-700 dark:text-rose-400 border-rose-300 dark:border-rose-800' },
+      Paid:             { label: '💳 Payé',        css: 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 border-blue-300 dark:border-blue-800' },
     };
-    return map[status] ?? { label: status, css: 'bg-gray-800 text-gray-400 border-gray-700' };
+    return map[status] ?? { label: status, css: 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 border-gray-300 dark:border-gray-700' };
   }
 
   appointmentBadge(status: string): { label: string; css: string } {
     const map: Record<string, { label: string; css: string }> = {
-      Pending:    { label: '⏳ En attente',  css: 'bg-amber-900/30 text-amber-400 border-amber-800' },
-      Approved:   { label: '✅ Confirmé',   css: 'bg-emerald-900/30 text-emerald-400 border-emerald-800' },
-      Declined:   { label: '❌ Refusé',     css: 'bg-rose-900/30 text-rose-400 border-rose-800' },
-      Completed:  { label: '🏁 Terminé',   css: 'bg-blue-900/30 text-blue-400 border-blue-800' },
-      Cancelled:  { label: 'Annulé',        css: 'bg-gray-800 text-gray-400 border-gray-700' },
+      Pending:    { label: '⏳ En attente',  css: 'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 border-amber-300 dark:border-amber-800' },
+      Approved:   { label: '✅ Confirmé',   css: 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 border-emerald-300 dark:border-emerald-800' },
+      Declined:   { label: '❌ Refusé',     css: 'bg-rose-100 dark:bg-rose-900/30 text-rose-700 dark:text-rose-400 border-rose-300 dark:border-rose-800' },
+      Completed:  { label: '🏁 Terminé',   css: 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 border-blue-300 dark:border-blue-800' },
+      Cancelled:  { label: 'Annulé',        css: 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 border-gray-300 dark:border-gray-700' },
     };
-    return map[status] ?? { label: status, css: 'bg-gray-800 text-gray-400 border-gray-700' };
+    return map[status] ?? { label: status, css: 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 border-gray-300 dark:border-gray-700' };
   }
 
   reportBadge(status: string): { label: string; css: string } {
     const map: Record<string, { label: string; css: string }> = {
-      Submitted:    { label: 'Soumis',       css: 'bg-amber-900/30 text-amber-400 border-amber-800' },
-      PendingReview:{ label: 'En attente',   css: 'bg-amber-900/30 text-amber-400 border-amber-800' },
-      Approved:     { label: '✅ Approuvé', css: 'bg-emerald-900/30 text-emerald-400 border-emerald-800' },
-      Reviewed:     { label: '📋 Examiné', css: 'bg-blue-900/30 text-blue-400 border-blue-800' },
-      Declined:     { label: '❌ Refusé',  css: 'bg-rose-900/30 text-rose-400 border-rose-800' },
+      Submitted:    { label: 'Soumis',       css: 'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 border-amber-300 dark:border-amber-800' },
+      PendingReview:{ label: 'En attente',   css: 'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 border-amber-300 dark:border-amber-800' },
+      Approved:     { label: '✅ Approuvé', css: 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 border-emerald-300 dark:border-emerald-800' },
+      Reviewed:     { label: '📋 Examiné', css: 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 border-blue-300 dark:border-blue-800' },
+      Declined:     { label: '❌ Refusé',  css: 'bg-rose-100 dark:bg-rose-900/30 text-rose-700 dark:text-rose-400 border-rose-300 dark:border-rose-800' },
     };
-    return map[status] ?? { label: status, css: 'bg-gray-800 text-gray-400 border-gray-700' };
+    return map[status] ?? { label: status, css: 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 border-gray-300 dark:border-gray-700' };
   }
 
   formatDate(d: string): string {

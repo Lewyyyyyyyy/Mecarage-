@@ -42,6 +42,7 @@ export class SuperAdminDashboardComponent implements OnInit {
   createGarageForm!: FormGroup;
 
   isSubmitting = signal(false);
+  selectedSuperTab = signal<'overview' | 'tenants' | 'garages' | 'users'>('overview');
 
   searchQuery = signal('');
   selectedRole = signal('');
@@ -66,9 +67,13 @@ export class SuperAdminDashboardComponent implements OnInit {
     return {
       totalUsers: users.length,
       admins: users.filter(u => u.role === 'AdminEntreprise').length,
-      mechanics: users.filter(u => u.role === 'ChefAtelier' || u.role === 'Mecanicien').length,
+      chefs: users.filter(u => u.role === 'ChefAtelier').length,
+      mechanics: users.filter(u => u.role === 'Mecanicien').length,
       clients: users.filter(u => u.role === 'Client').length,
       totalGarages: this.garages().length,
+      activeGarages: this.garages().filter(g => g.isActive).length,
+      activeTenants: this.tenants().filter(t => t.isActive).length,
+      garagesWithAdmin: this.garages().filter(g => g.adminId).length,
     };
   });
 

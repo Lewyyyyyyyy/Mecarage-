@@ -1,4 +1,5 @@
 using MecaManage.Application.Common.Interfaces;
+using MecaManage.Domain.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -38,13 +39,16 @@ public class GetAdminKpisQueryHandler : IRequestHandler<GetAdminKpisQuery, Admin
 
         var totalVehicles = await _context.Vehicles.CountAsync(cancellationToken);
 
-        var totalInterventions = await _context.InterventionRequests.CountAsync(cancellationToken);
+        // Use the Intervention lifecycle entity (the unified tracker created from approved appointments)
+        var totalInterventions = await _context.Interventions.CountAsync(cancellationToken);
 
-        var pendingInterventions = await _context.InterventionRequests
-            .CountAsync(i => i.Status.ToString() == "Pending" || i.Status.ToString() == "InProgress", cancellationToken);
+        var pendingInterventions = await _context.Interventions
+            .CountAsync(i => i.Status != InterventionLifecycleStatus.Closed
+                          && i.Status != InterventionLifecycleStatus.Rejected, cancellationToken);
 
-        var completedInterventions = await _context.InterventionRequests
-            .CountAsync(i => i.Status.ToString() == "Completed", cancellationToken);
+        // Closed = payment done, car picked up — truly a successful/completed intervention
+        var completedInterventions = await _context.Interventions
+            .CountAsync(i => i.Status == InterventionLifecycleStatus.Closed, cancellationToken);
 
         var activeAdmins = await _context.Users
             .CountAsync(u => u.IsActive && !u.IsDeleted && (u.Role.ToString() == "AdminEntreprise" || u.Role.ToString() == "ChefAtelier"), cancellationToken);

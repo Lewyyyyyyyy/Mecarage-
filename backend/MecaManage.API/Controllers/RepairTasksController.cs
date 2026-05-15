@@ -280,6 +280,18 @@ public class RepairTasksController : ControllerBase
     }
 
     /// <summary>
+    /// Gets ALL examination reports for a garage (all statuses) — newest first.
+    /// </summary>
+    [HttpGet("all-examinations/{garageId}")]
+    [Authorize(Roles = "ChefAtelier,AdminEntreprise")]
+    public async Task<IActionResult> GetAllExaminations(Guid garageId)
+    {
+        var chefId = User.GetUserId();
+        var result = await _mediator.Send(new GetAllExaminationsQuery(chefId, garageId));
+        return Ok(result);
+    }
+
+    /// <summary>
     /// Gets all repair tasks with client-approved invoices — for chef to manage repairs.
     /// </summary>
     [HttpGet("repair-ready/{garageId}")]

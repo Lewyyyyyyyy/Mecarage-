@@ -111,6 +111,19 @@ public class AppointmentsController : ControllerBase
     }
 
     /// <summary>
+    /// Gets ALL appointments for a garage (all statuses) for traceability — newest first.
+    /// </summary>
+    [HttpGet("garage/{garageId}")]
+    [Authorize(Roles = "ChefAtelier,AdminEntreprise")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetGarageAppointments(Guid garageId)
+    {
+        var chefId = User.GetUserId();
+        var result = await _mediator.Send(new GetGarageAppointmentsQuery(chefId, garageId));
+        return Ok(result);
+    }
+
+    /// <summary>
     /// Approves a pending appointment request.
     /// </summary>
     /// <param name="appointmentId">The appointment ID to approve.</param>

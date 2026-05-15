@@ -1,18 +1,20 @@
 <div class="min-h-screen bg-[var(--color-bg)] text-[var(--color-text)] font-sans transition-colors duration-300">
   <div class="container mx-auto px-6 py-10 max-w-4xl">
 
-    <!-- Header -->
-    <div class="mb-8">
-      <h1 class="text-4xl font-black text-white tracking-tight">
-        @if (isChef()) { 📥 Inbox Chef }
-        @else if (isClient()) { 🔔 Mes Notifications }
-        @else if (isMechanic()) { 🔧 Mes Tâches }
-        @else { Inbox }
-      </h1>
-    </div>
+    <!-- Header — hidden when embedded in a parent tab -->
+    @if (section === 'all') {
+      <div class="mb-8">
+        <h1 class="text-4xl font-black text-white tracking-tight">
+          @if (isChef()) { 📥 Inbox Chef }
+          @else if (isClient()) { 🔔 Mes Notifications }
+          @else if (isMechanic()) { 🔧 Mes Tâches }
+          @else { Inbox }
+        </h1>
+      </div>
+    }
 
-    <!-- Chef sub-tabs -->
-    @if (isChef()) {
+    <!-- Chef sub-tabs — only shown in standalone mode -->
+    @if (isChef() && section === 'all') {
       <div class="mb-8 flex gap-2 border-b border-gray-800">
         <button (click)="chefTab.set('reports')"
           class="px-6 py-3 font-bold transition-all border-b-2"
@@ -34,11 +36,17 @@
           class="px-6 py-3 font-bold transition-all border-b-2"
           [ngClass]="chefTab() === 'repairs' ? 'border-green-500 text-green-400' : 'border-transparent text-gray-500 hover:text-gray-300'">
           🔧 Réparations
+          @if (pendingRepairsCount() > 0) {
+            <span class="ml-2 text-xs bg-green-600 text-white px-2 py-0.5 rounded-full">{{ pendingRepairsCount() }}</span>
+          }
         </button>
         <button (click)="chefTab.set('examinations')"
           class="px-6 py-3 font-bold transition-all border-b-2"
           [ngClass]="chefTab() === 'examinations' ? 'border-orange-500 text-orange-400' : 'border-transparent text-gray-500 hover:text-gray-300'">
           🔍 Rapports d'examen
+          @if (pendingExaminationsCount() > 0) {
+            <span class="ml-2 text-xs bg-orange-600 text-white px-2 py-0.5 rounded-full">{{ pendingExaminationsCount() }}</span>
+          }
         </button>
       </div>
     }
@@ -67,7 +75,7 @@
     }
 
     <!-- ════════ CHEF INBOX ════════ -->
-    @if (!loading() && isChef() && chefTab() === 'reports') {
+    @if (!loading() && isChef() && (section === 'reports' || (section === 'all' && chefTab() === 'reports'))) {
       @if (chefInbox().length === 0) {
         <div class="text-center py-20 border-2 border-dashed border-gray-800 rounded-2xl">
           <p class="text-5xl mb-4">📭</p>
@@ -149,23 +157,25 @@
     }
 
     <!-- ════════ APPOINTMENTS (Chef) ════════ -->
-    @if (isChef() && chefTab() === 'appointments') {
+    @if (isChef() && (section === 'appointments' || (section === 'all' && chefTab() === 'appointments'))) {
       @if (appointments().length === 0) {
         <div class="text-center py-20 border-2 border-dashed border-gray-800 rounded-2xl">
           <p class="text-5xl mb-4">📅</p>
-          <p class="text-gray-500 font-bold text-lg">Aucun rendez-vous en attente</p>
+          <p class="text-gray-500 font-bold text-lg">Aucun rendez-vous</p>
           <p class="text-gray-600 text-sm mt-1">Les demandes de rendez-vous des clients apparaîtront ici.</p>
         </div>
       } @else {
         <div class="space-y-4">
           @for (appt of appointments(); track appt.id) {
-            <div class="bg-gray-900 border border-gray-800 rounded-2xl p-6 hover:border-orange-500/40 transition-all">
+            <div class="bg-gray-900 border rounded-2xl p-6 transition-all"
+                 [ngClass]="appt.status === 'Pending' ? 'border-orange-800 hover:border-orange-500/60' : 'border-gray-800 opacity-80'">
               <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
                 <div class="flex-1 min-w-0">
                   <div class="flex flex-wrap items-center gap-2 mb-1">
                     <span class="text-white font-bold text-lg">{{ appt.clientName }}</span>
-                    <span class="text-xs bg-orange-900/30 text-orange-400 border border-orange-800 px-2 py-0.5 rounded-full font-bold uppercase">
-                      En attente
+                    <span class="text-xs px-2 py-0.5 rounded-full font-bold border"
+                          [ngClass]="appointmentStatusBadge(appt.status).css">
+                      {{ appointmentStatusBadge(appt.status).label }}
                     </span>
                   </div>
                   <p class="text-indigo-400 text-sm font-medium mb-2">🚗 {{ appt.vehicleInfo }}</p>
@@ -178,19 +188,29 @@
                       "{{ appt.symptomSummary }}"
                     </p>
                   }
+                  @if (appt.declineReason) {
+                    <p class="text-rose-400 text-xs mt-1 border-l-2 border-rose-800 pl-3">
+                      Motif de refus : {{ appt.declineReason }}
+                    </p>
+                  }
                 </div>
                 <div class="flex flex-col items-end gap-2 shrink-0">
                   <p class="text-xs text-gray-600 font-mono">Soumis: {{ appt.createdAt | date:'dd/MM/yy HH:mm' }}</p>
-                  <div class="flex gap-2">
-                    <button (click)="declineAppointment(appt.id)"
-                      class="px-4 py-2 bg-gray-800 hover:bg-gray-700 text-gray-300 text-sm font-bold rounded-xl transition">
-                      ❌ Refuser
-                    </button>
-                    <button (click)="openTaskModal(appt)"
-                      class="px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white text-sm font-bold rounded-xl transition">
-                      ✅ Confirmer & Créer tâche
-                    </button>
-                  </div>
+                  @if (appt.approvedAt) {
+                    <p class="text-xs text-gray-700 font-mono">Confirmé: {{ appt.approvedAt | date:'dd/MM/yy HH:mm' }}</p>
+                  }
+                  @if (appt.status === 'Pending') {
+                    <div class="flex gap-2">
+                      <button (click)="declineAppointment(appt.id)"
+                        class="px-4 py-2 bg-gray-800 hover:bg-gray-700 text-gray-300 text-sm font-bold rounded-xl transition">
+                        ❌ Refuser
+                      </button>
+                      <button (click)="openTaskModal(appt)"
+                        class="px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white text-sm font-bold rounded-xl transition">
+                        ✅ Confirmer & Créer tâche
+                      </button>
+                    </div>
+                  }
                 </div>
               </div>
             </div>
@@ -200,13 +220,13 @@
     }
 
     <!-- ════════ REPAIRS (Chef) ════════ -->
-    @if (isChef() && chefTab() === 'repairs') {
-      <app-chef-repair-management [garageId]="garageId()"></app-chef-repair-management>
+    @if (isChef() && chefTab() === 'repairs' && section === 'all') {
+      <app-chef-repair-management [garageId]="garageId()" (countChanged)="pendingRepairsCount.set($event)"></app-chef-repair-management>
     }
 
     <!-- ════════ EXAMINATION REPORTS (Chef) ════════ -->
-    @if (isChef() && chefTab() === 'examinations') {
-      <app-chef-examination-review [garageId]="garageId()"></app-chef-examination-review>
+    @if (isChef() && chefTab() === 'examinations' && section === 'all') {
+      <app-chef-examination-review [garageId]="garageId()" (countChanged)="pendingExaminationsCount.set($event)"></app-chef-examination-review>
     }
 
     <!-- ════════ CLIENT NOTIFICATIONS ════════ -->

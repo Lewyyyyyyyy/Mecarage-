@@ -36,9 +36,18 @@ export class InterventionTrackerComponent implements OnInit {
   steps = STEPS;
 
   // Payment form
-  payAmount  = 0;
+  laborCost  = 0;
   payMethod  = 'Cash';
   showPaymentForm = false;
+
+  get partsTotal(): number {
+    const parts = this.parseParts(this.selected()?.partsUsedJson ?? null);
+    return parts.reduce((sum, p) => sum + (p.estimatedPrice ?? 0) * p.quantity, 0);
+  }
+
+  get payTotal(): number {
+    return this.partsTotal + (this.laborCost ?? 0);
+  }
 
   ngOnInit(): void {
     this.load();
@@ -60,7 +69,7 @@ export class InterventionTrackerComponent implements OnInit {
     this.svc.getById(id).subscribe({
       next: d  => {
         this.selected.set(d);
-        this.payAmount = d.invoiceTotal ?? 0;
+        this.laborCost = 0;
         this.detailLoading.set(false);
       },
       error: () => this.detailLoading.set(false),
@@ -71,10 +80,10 @@ export class InterventionTrackerComponent implements OnInit {
 
   registerPayment(): void {
     const d = this.selected();
-    if (!d || this.payAmount <= 0) return;
+    if (!d || this.payTotal <= 0) return;
     this.paymentLoading.set(true);
     const payload: RegisterPaymentDto = {
-      paymentAmount: this.payAmount,
+      paymentAmount: this.payTotal,
       paymentMethod: this.payMethod,
     };
     this.svc.registerPayment(d.id, payload).subscribe({
@@ -107,18 +116,18 @@ export class InterventionTrackerComponent implements OnInit {
 
   statusCss(status: string): string {
     const map: Record<string, string> = {
-      Created:             'bg-gray-800 text-gray-400 border-gray-700',
-      UnderExamination:    'bg-blue-900/30 text-blue-400 border-blue-800',
-      ExaminationReviewed: 'bg-indigo-900/30 text-indigo-400 border-indigo-700',
-      InvoicePending:      'bg-amber-900/30 text-amber-400 border-amber-800',
-      Approved:            'bg-emerald-900/30 text-emerald-400 border-emerald-800',
-      RepairInProgress:    'bg-violet-900/30 text-violet-400 border-violet-800',
-      RepairCompleted:     'bg-cyan-900/30 text-cyan-400 border-cyan-800',
-      ReadyForPickup:      'bg-teal-900/30 text-teal-400 border-teal-800',
-      Closed:              'bg-blue-900/30 text-blue-400 border-blue-700',
-      Rejected:            'bg-rose-900/30 text-rose-400 border-rose-800',
+      Created:             'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 border-gray-300 dark:border-gray-700',
+      UnderExamination:    'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 border-blue-300 dark:border-blue-800',
+      ExaminationReviewed: 'bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-400 border-indigo-300 dark:border-indigo-700',
+      InvoicePending:      'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 border-amber-300 dark:border-amber-800',
+      Approved:            'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 border-emerald-300 dark:border-emerald-800',
+      RepairInProgress:    'bg-violet-100 dark:bg-violet-900/30 text-violet-700 dark:text-violet-400 border-violet-300 dark:border-violet-800',
+      RepairCompleted:     'bg-cyan-100 dark:bg-cyan-900/30 text-cyan-700 dark:text-cyan-400 border-cyan-300 dark:border-cyan-800',
+      ReadyForPickup:      'bg-teal-100 dark:bg-teal-900/30 text-teal-700 dark:text-teal-400 border-teal-300 dark:border-teal-800',
+      Closed:              'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 border-blue-300 dark:border-blue-700',
+      Rejected:            'bg-rose-100 dark:bg-rose-900/30 text-rose-700 dark:text-rose-400 border-rose-300 dark:border-rose-800',
     };
-    return map[status] ?? 'bg-gray-800 text-gray-400 border-gray-700';
+    return map[status] ?? 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 border-gray-300 dark:border-gray-700';
   }
 
   parseParts(json: string | null): { name: string; quantity: number; estimatedPrice?: number }[] {
