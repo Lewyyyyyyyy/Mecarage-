@@ -9,28 +9,52 @@
   become_method: sudo
 
   vars:
-    postgres_db: mecamanage
-    postgres_user: mecamanage_user
-    postgres_password: "{{ lookup('env', 'DB_PASSWORD') }}"
+    dockerhub_username: "{{ lookup('env', 'DOCKERHUB_USERNAME') }}"
+    frontend_image: "{{ dockerhub_username }}/mecamanage-frontend:latest"
+    backend_image: "{{ dockerhub_username }}/mecamanage-backend:latest"
+    ia_service_image: "{{ dockerhub_username }}/mecamanage-ia:latest"
+    mysql_database: "{{ lookup('env', 'MYSQL_DATABASE') | default('mecamanage', true) }}"
+    mysql_root_password: "{{ lookup('env', 'MYSQL_ROOT_PASSWORD') }}"
+    mysql_root_host: "{{ lookup('env', 'MYSQL_ROOT_HOST') | default('%', true) }}"
     jwt_secret: "{{ lookup('env', 'JWT_SECRET') }}"
     gemini_api_key: "{{ lookup('env', 'GEMINI_API_KEY') }}"
+    n8n_basic_auth_user: "{{ lookup('env', 'N8N_BASIC_AUTH_USER') | default('admin', true) }}"
+    n8n_basic_auth_password: "{{ lookup('env', 'N8N_BASIC_AUTH_PASSWORD') }}"
+    n8n_encryption_key: "{{ lookup('env', 'N8N_ENCRYPTION_KEY') }}"
+    n8n_database: "{{ lookup('env', 'N8N_DATABASE') | default('n8n', true) }}"
+    grafana_admin_user: "{{ lookup('env', 'GRAFANA_ADMIN_USER') | default('admin', true) }}"
+    grafana_admin_password: "{{ lookup('env', 'GRAFANA_ADMIN_PASSWORD') }}"
+    grafana_smtp_enabled: "{{ lookup('env', 'GRAFANA_SMTP_ENABLED') | default('true', true) }}"
+    grafana_smtp_host: "{{ lookup('env', 'GRAFANA_SMTP_HOST') }}"
+    grafana_smtp_user: "{{ lookup('env', 'GRAFANA_SMTP_USER') }}"
+    grafana_smtp_password: "{{ lookup('env', 'GRAFANA_SMTP_PASSWORD') }}"
+    grafana_smtp_from_address: "{{ lookup('env', 'GRAFANA_SMTP_FROM_ADDRESS') }}"
+    grafana_smtp_from_name: "{{ lookup('env', 'GRAFANA_SMTP_FROM_NAME') | default('MecaManage Monitoring', true) }}"
 
   roles:
     - docker
     - deploy
 
   post_tasks:
-    - name: Vérifier le health check backend
+    - name: Vérifier le health check frontend
       uri:
-        url: http://localhost:5073/swagger
+        url: http://localhost/
         status_code: 200
       retries: 5
       delay: 10
       ignore_errors: yes
 
-    - name: Vérifier le health check IA
+    - name: Vérifier le health check backend via NGINX
       uri:
-        url: http://localhost:8000/health
+        url: http://localhost/swagger/v1/swagger.json
+        status_code: 200
+      retries: 5
+      delay: 10
+      ignore_errors: yes
+
+    - name: Vérifier le health check IA via NGINX
+      uri:
+        url: http://localhost/ia/health
         status_code: 200
       retries: 5
       delay: 10

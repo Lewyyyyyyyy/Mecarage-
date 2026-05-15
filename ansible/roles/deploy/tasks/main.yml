@@ -25,13 +25,23 @@
 - name: Arrêter les conteneurs existants
   shell: |
     cd /opt/mecamanage/docker
-    docker compose down
+    docker compose down --remove-orphans
   ignore_errors: yes
+
+- name: Récupérer les images Docker publiées
+  shell: |
+    cd /opt/mecamanage/docker
+    docker compose --env-file ../.env.prod pull
+  register: pull_output
+
+- name: Afficher le résultat du pull
+  debug:
+    var: pull_output.stdout_lines
 
 - name: Lancer docker-compose
   shell: |
     cd /opt/mecamanage/docker
-    docker compose --env-file ../.env.prod up -d --build
+    docker compose --env-file ../.env.prod up -d --no-build --remove-orphans
   register: compose_output
 
 - name: Afficher le résultat

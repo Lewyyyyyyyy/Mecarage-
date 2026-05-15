@@ -38,3 +38,23 @@ D:\MecaRage\backend\artifacts\verify-build\api\MecaManage.Infrastructure.deps.js
 D:\MecaRage\backend\artifacts\verify-build\api\MecaManage.Infrastructure.runtimeconfig.json
 D:\MecaRage\backend\artifacts\verify-build\api\MecaManage.Infrastructure.dll
 D:\MecaRage\backend\artifacts\verify-build\api\MecaManage.Infrastructure.pdb
+C:\Users\saafi\projetdev sem 2\Mecarage-\backend\MecaManage.Infrastructure\bin\Debug\net9.0\MecaManage.Infrastructure.deps.json
+C:\Users\saafi\projetdev sem 2\Mecarage-\backend\MecaManage.Infrastructure\bin\Debug\net9.0\MecaManage.Infrastructure.runtimeconfig.json
+C:\Users\saafi\projetdev sem 2\Mecarage-\backend\MecaManage.Infrastructure\bin\Debug\net9.0\MecaManage.Infrastructure.dll
+C:\Users\saafi\projetdev sem 2\Mecarage-\backend\MecaManage.Infrastructure\bin\Debug\net9.0\MecaManage.Infrastructure.pdb
+C:\Users\saafi\projetdev sem 2\Mecarage-\backend\MecaManage.Infrastructure\bin\Debug\net9.0\MecaManage.Application.dll
+C:\Users\saafi\projetdev sem 2\Mecarage-\backend\MecaManage.Infrastructure\bin\Debug\net9.0\MecaManage.Domain.dll
+C:\Users\saafi\projetdev sem 2\Mecarage-\backend\MecaManage.Infrastructure\bin\Debug\net9.0\MecaManage.Application.pdb
+C:\Users\saafi\projetdev sem 2\Mecarage-\backend\MecaManage.Infrastructure\bin\Debug\net9.0\MecaManage.Domain.pdb
+C:\Users\saafi\projetdev sem 2\Mecarage-\backend\MecaManage.Infrastructure\obj\Debug\net9.0\MecaManage.Infrastructure.csproj.AssemblyReference.cache
+C:\Users\saafi\projetdev sem 2\Mecarage-\backend\MecaManage.Infrastructure\obj\Debug\net9.0\MecaManage.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\saafi\projetdev sem 2\Mecarage-\backend\MecaManage.Infrastructure\obj\Debug\net9.0\MecaManage.Infrastructure.AssemblyInfoInputs.cache
+C:\Users\saafi\projetdev sem 2\Mecarage-\backend\MecaManage.Infrastructure\obj\Debug\net9.0\MecaManage.Infrastructure.AssemblyInfo.cs
+C:\Users\saafi\projetdev sem 2\Mecarage-\backend\MecaManage.Infrastructure\obj\Debug\net9.0\MecaManage.Infrastructure.csproj.CoreCompileInputs.cache
+C:\Users\saafi\projetdev sem 2\Mecarage-\backend\MecaManage.Infrastructure\obj\Debug\net9.0\MecaManage.Infrastructure.sourcelink.json
+C:\Users\saafi\projetdev sem 2\Mecarage-\backend\MecaManage.Infrastructure\obj\Debug\net9.0\MecaMana.75B23C05.Up2Date
+C:\Users\saafi\projetdev sem 2\Mecarage-\backend\MecaManage.Infrastructure\obj\Debug\net9.0\MecaManage.Infrastructure.dll
+C:\Users\saafi\projetdev sem 2\Mecarage-\backend\MecaManage.Infrastructure\obj\Debug\net9.0\refint\MecaManage.Infrastructure.dll
+C:\Users\saafi\projetdev sem 2\Mecarage-\backend\MecaManage.Infrastructure\obj\Debug\net9.0\MecaManage.Infrastructure.pdb
+C:\Users\saafi\projetdev sem 2\Mecarage-\backend\MecaManage.Infrastructure\obj\Debug\net9.0\MecaManage.Infrastructure.genruntimeconfig.cache
+C:\Users\saafi\projetdev sem 2\Mecarage-\backend\MecaManage.Infrastructure\obj\Debug\net9.0\ref\MecaManage.Infrastructure.dll

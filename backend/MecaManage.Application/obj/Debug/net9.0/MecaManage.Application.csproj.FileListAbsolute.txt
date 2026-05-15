@@ -29,3 +29,19 @@ D:\MecaRage\backend\artifacts\testbuild2\MecaManage.Application.pdb
 D:\MecaRage\backend\artifacts\verify-build\api\MecaManage.Application.deps.json
 D:\MecaRage\backend\artifacts\verify-build\api\MecaManage.Application.dll
 D:\MecaRage\backend\artifacts\verify-build\api\MecaManage.Application.pdb
+C:\Users\saafi\projetdev sem 2\Mecarage-\backend\MecaManage.Application\bin\Debug\net9.0\MecaManage.Application.deps.json
+C:\Users\saafi\projetdev sem 2\Mecarage-\backend\MecaManage.Application\bin\Debug\net9.0\MecaManage.Application.dll
+C:\Users\saafi\projetdev sem 2\Mecarage-\backend\MecaManage.Application\bin\Debug\net9.0\MecaManage.Application.pdb
+C:\Users\saafi\projetdev sem 2\Mecarage-\backend\MecaManage.Application\bin\Debug\net9.0\MecaManage.Domain.dll
+C:\Users\saafi\projetdev sem 2\Mecarage-\backend\MecaManage.Application\bin\Debug\net9.0\MecaManage.Domain.pdb
+C:\Users\saafi\projetdev sem 2\Mecarage-\backend\MecaManage.Application\obj\Debug\net9.0\MecaManage.Application.csproj.AssemblyReference.cache
+C:\Users\saafi\projetdev sem 2\Mecarage-\backend\MecaManage.Application\obj\Debug\net9.0\MecaManage.Application.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\saafi\projetdev sem 2\Mecarage-\backend\MecaManage.Application\obj\Debug\net9.0\MecaManage.Application.AssemblyInfoInputs.cache
+C:\Users\saafi\projetdev sem 2\Mecarage-\backend\MecaManage.Application\obj\Debug\net9.0\MecaManage.Application.AssemblyInfo.cs
+C:\Users\saafi\projetdev sem 2\Mecarage-\backend\MecaManage.Application\obj\Debug\net9.0\MecaManage.Application.csproj.CoreCompileInputs.cache
+C:\Users\saafi\projetdev sem 2\Mecarage-\backend\MecaManage.Application\obj\Debug\net9.0\MecaManage.Application.sourcelink.json
+C:\Users\saafi\projetdev sem 2\Mecarage-\backend\MecaManage.Application\obj\Debug\net9.0\MecaMana.0232B2EC.Up2Date
+C:\Users\saafi\projetdev sem 2\Mecarage-\backend\MecaManage.Application\obj\Debug\net9.0\MecaManage.Application.dll
+C:\Users\saafi\projetdev sem 2\Mecarage-\backend\MecaManage.Application\obj\Debug\net9.0\refint\MecaManage.Application.dll
+C:\Users\saafi\projetdev sem 2\Mecarage-\backend\MecaManage.Application\obj\Debug\net9.0\MecaManage.Application.pdb
+C:\Users\saafi\projetdev sem 2\Mecarage-\backend\MecaManage.Application\obj\Debug\net9.0\ref\MecaManage.Application.dll

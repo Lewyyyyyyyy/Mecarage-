@@ -1,33 +1,39 @@
 {
   "format": 1,
   "restore": {
-    "D:\\MecaRage\\backend\\MecaManage.Infrastructure\\MecaManage.Infrastructure.csproj": {}
+    "C:\\Users\\saafi\\projetdev sem 2\\Mecarage-\\backend\\MecaManage.Infrastructure\\MecaManage.Infrastructure.csproj": {}
   },
   "projects": {
-    "D:\\MecaRage\\backend\\MecaManage.Application\\MecaManage.Application.csproj": {
+    "C:\\Users\\saafi\\projetdev sem 2\\Mecarage-\\backend\\MecaManage.Application\\MecaManage.Application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\MecaRage\\backend\\MecaManage.Application\\MecaManage.Application.csproj",
+        "projectUniqueName": "C:\\Users\\saafi\\projetdev sem 2\\Mecarage-\\backend\\MecaManage.Application\\MecaManage.Application.csproj",
         "projectName": "MecaManage.Application",
-        "projectPath": "D:\\MecaRage\\backend\\MecaManage.Application\\MecaManage.Application.csproj",
-        "packagesPath": "C:\\Users\\louay\\.nuget\\packages\\",
-        "outputPath": "D:\\MecaRage\\backend\\MecaManage.Application\\obj\\",
+        "projectPath": "C:\\Users\\saafi\\projetdev sem 2\\Mecarage-\\backend\\MecaManage.Application\\MecaManage.Application.csproj",
+        "packagesPath": "C:\\Users\\saafi\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\saafi\\projetdev sem 2\\Mecarage-\\backend\\MecaManage.Application\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\louay\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\saafi\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net9.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net9.0": {
             "targetAlias": "net9.0",
             "projectReferences": {
-              "D:\\MecaRage\\backend\\MecaManage.Domain\\MecaManage.Domain.csproj": {
-                "projectPath": "D:\\MecaRage\\backend\\MecaManage.Domain\\MecaManage.Domain.csproj"
+              "C:\\Users\\saafi\\projetdev sem 2\\Mecarage-\\backend\\MecaManage.Domain\\MecaManage.Domain.csproj": {
+                "projectPath": "C:\\Users\\saafi\\projetdev sem 2\\Mecarage-\\backend\\MecaManage.Domain\\MecaManage.Domain.csproj"
               }
             }
           }
@@ -42,7 +48,7 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.300"
+        "SdkAnalysisLevel": "10.0.200"
       },
       "frameworks": {
         "net9.0": {
@@ -80,31 +86,51 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[9.0.15, 9.0.15]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[9.0.15, 9.0.15]"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App.Ref",
+              "version": "[9.0.15, 9.0.15]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.304/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.203/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "D:\\MecaRage\\backend\\MecaManage.Domain\\MecaManage.Domain.csproj": {
+    "C:\\Users\\saafi\\projetdev sem 2\\Mecarage-\\backend\\MecaManage.Domain\\MecaManage.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\MecaRage\\backend\\MecaManage.Domain\\MecaManage.Domain.csproj",
+        "projectUniqueName": "C:\\Users\\saafi\\projetdev sem 2\\Mecarage-\\backend\\MecaManage.Domain\\MecaManage.Domain.csproj",
         "projectName": "MecaManage.Domain",
-        "projectPath": "D:\\MecaRage\\backend\\MecaManage.Domain\\MecaManage.Domain.csproj",
-        "packagesPath": "C:\\Users\\louay\\.nuget\\packages\\",
-        "outputPath": "D:\\MecaRage\\backend\\MecaManage.Domain\\obj\\",
+        "projectPath": "C:\\Users\\saafi\\projetdev sem 2\\Mecarage-\\backend\\MecaManage.Domain\\MecaManage.Domain.csproj",
+        "packagesPath": "C:\\Users\\saafi\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\saafi\\projetdev sem 2\\Mecarage-\\backend\\MecaManage.Domain\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\louay\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\saafi\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net9.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -123,7 +149,7 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.300"
+        "SdkAnalysisLevel": "10.0.200"
       },
       "frameworks": {
         "net9.0": {
@@ -139,42 +165,62 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[9.0.15, 9.0.15]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[9.0.15, 9.0.15]"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App.Ref",
+              "version": "[9.0.15, 9.0.15]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.304/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.203/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "D:\\MecaRage\\backend\\MecaManage.Infrastructure\\MecaManage.Infrastructure.csproj": {
+    "C:\\Users\\saafi\\projetdev sem 2\\Mecarage-\\backend\\MecaManage.Infrastructure\\MecaManage.Infrastructure.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\MecaRage\\backend\\MecaManage.Infrastructure\\MecaManage.Infrastructure.csproj",
+        "projectUniqueName": "C:\\Users\\saafi\\projetdev sem 2\\Mecarage-\\backend\\MecaManage.Infrastructure\\MecaManage.Infrastructure.csproj",
         "projectName": "MecaManage.Infrastructure",
-        "projectPath": "D:\\MecaRage\\backend\\MecaManage.Infrastructure\\MecaManage.Infrastructure.csproj",
-        "packagesPath": "C:\\Users\\louay\\.nuget\\packages\\",
-        "outputPath": "D:\\MecaRage\\backend\\MecaManage.Infrastructure\\obj\\",
+        "projectPath": "C:\\Users\\saafi\\projetdev sem 2\\Mecarage-\\backend\\MecaManage.Infrastructure\\MecaManage.Infrastructure.csproj",
+        "packagesPath": "C:\\Users\\saafi\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\saafi\\projetdev sem 2\\Mecarage-\\backend\\MecaManage.Infrastructure\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\louay\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\saafi\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net9.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net9.0": {
             "targetAlias": "net9.0",
             "projectReferences": {
-              "D:\\MecaRage\\backend\\MecaManage.Application\\MecaManage.Application.csproj": {
-                "projectPath": "D:\\MecaRage\\backend\\MecaManage.Application\\MecaManage.Application.csproj"
+              "C:\\Users\\saafi\\projetdev sem 2\\Mecarage-\\backend\\MecaManage.Application\\MecaManage.Application.csproj": {
+                "projectPath": "C:\\Users\\saafi\\projetdev sem 2\\Mecarage-\\backend\\MecaManage.Application\\MecaManage.Application.csproj"
               },
-              "D:\\MecaRage\\backend\\MecaManage.Domain\\MecaManage.Domain.csproj": {
-                "projectPath": "D:\\MecaRage\\backend\\MecaManage.Domain\\MecaManage.Domain.csproj"
+              "C:\\Users\\saafi\\projetdev sem 2\\Mecarage-\\backend\\MecaManage.Domain\\MecaManage.Domain.csproj": {
+                "projectPath": "C:\\Users\\saafi\\projetdev sem 2\\Mecarage-\\backend\\MecaManage.Domain\\MecaManage.Domain.csproj"
               }
             }
           }
@@ -189,7 +235,7 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.300"
+        "SdkAnalysisLevel": "10.0.200"
       },
       "frameworks": {
         "net9.0": {
@@ -233,12 +279,26 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[9.0.15, 9.0.15]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[9.0.15, 9.0.15]"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App.Ref",
+              "version": "[9.0.15, 9.0.15]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.304/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.203/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

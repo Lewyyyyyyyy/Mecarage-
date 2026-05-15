@@ -2,39 +2,44 @@ version: "3.9"
 
 # ══════════════════════════════════════════════════════════════
 # MecaManage — Docker Compose
-# Services : backend + ia-service + postgres + redis + n8n + nginx
+# Services : frontend + backend + ia-service + mysql + redis + n8n + nginx
 # ══════════════════════════════════════════════════════════════
 
 services:
 
-  # ── PostgreSQL 16 ────────────────────────────────────────────
-  postgres:
-    image: postgres:16-alpine
-    container_name: mecamanage-postgres
+  # ── MySQL 8 ──────────────────────────────────────────────────
+  mysql:
+    image: mysql:8.0
+    container_name: mecamanage-mysql
     restart: unless-stopped
+    init: true
+    command: --default-authentication-plugin=mysql_native_password
+    security_opt:
+      - no-new-privileges:true
     environment:
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-    ports:
-      - "5432:5432"
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_ROOT_HOST: ${MYSQL_ROOT_HOST}
     volumes:
-      - postgres-data:/var/lib/postgresql/data
+      - mysql-data:/var/lib/mysql
+      - ./mysql/init:/docker-entrypoint-initdb.d:ro
     networks:
       - mecamanage-net
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p${MYSQL_ROOT_PASSWORD} --silent"]
       interval: 10s
       timeout: 5s
       retries: 5
+      start_period: 20s
 
   # ── Redis 7 ──────────────────────────────────────────────────
   redis:
     image: redis:7-alpine
     container_name: mecamanage-redis
     restart: unless-stopped
-    ports:
-      - "6379:6379"
+    init: true
+    security_opt:
+      - no-new-privileges:true
     volumes:
       - redis-data:/data
     networks:
@@ -44,14 +49,44 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+      start_period: 10s
 
-  # ── Backend ASP.NET Core 8 ────────────────────────────────────
+  # ── Frontend Angular (static site) ───────────────────────────
+  frontend:
+    image: ${FRONTEND_IMAGE:-mecamanage-frontend:local}
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile
+    container_name: mecamanage-frontend
+    restart: unless-stopped
+    init: true
+    security_opt:
+      - no-new-privileges:true
+    depends_on:
+      backend:
+        condition: service_healthy
+      ia-service:
+        condition: service_healthy
+    networks:
+      - mecamanage-net
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q --spider http://localhost/"]
+      interval: 15s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+
+  # ── Backend ASP.NET Core 9 ────────────────────────────────────
   backend:
+    image: ${BACKEND_IMAGE:-mecamanage-backend:local}
     build:
       context: ../backend
       dockerfile: ../docker/Dockerfile.backend
     container_name: mecamanage-backend
     restart: unless-stopped
+    init: true
+    security_opt:
+      - no-new-privileges:true
     environment:
       ASPNETCORE_ENVIRONMENT: Production
       ConnectionStrings__DefaultConnection: ${CONNECTION_STRING}
@@ -60,64 +95,73 @@ services:
       Jwt__Issuer: ${JWT_ISSUER}
       Jwt__Audience: ${JWT_AUDIENCE}
       Jwt__ExpiryMinutes: ${JWT_EXPIRY_MINUTES}
-    ports:
-      - "5073:5073"
     depends_on:
-      postgres:
+      mysql:
         condition: service_healthy
       redis:
         condition: service_healthy
     networks:
       - mecamanage-net
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:5073/health || exit 1"]
+      test: ["CMD-SHELL", "curl -fsS http://localhost:5073/swagger/v1/swagger.json >/dev/null"]
       interval: 15s
       timeout: 10s
       retries: 5
+      start_period: 30s
 
   # ── IA Service FastAPI ────────────────────────────────────────
   ia-service:
+    image: ${IA_SERVICE_IMAGE:-mecamanage-ia:local}
     build:
       context: ../ia-service
       dockerfile: Dockerfile
     container_name: mecamanage-ia
     restart: unless-stopped
+    init: true
+    security_opt:
+      - no-new-privileges:true
     environment:
       GEMINI_API_KEY: ${GEMINI_API_KEY}
       GEMINI_MODEL: ${GEMINI_MODEL}
       GEMINI_MAX_RETRIES: ${GEMINI_MAX_RETRIES}
       GEMINI_RETRY_DELAY_SECONDS: ${GEMINI_RETRY_DELAY_SECONDS}
-    ports:
-      - "8000:8000"
+    depends_on:
+      mysql:
+        condition: service_healthy
     networks:
       - mecamanage-net
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:8000/health || exit 1"]
+      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:8000/health')\""]
       interval: 15s
       timeout: 10s
       retries: 5
+      start_period: 20s
 
   # ── n8n Workflow Automation ───────────────────────────────────
   n8n:
     image: n8nio/n8n:latest
     container_name: mecamanage-n8n
     restart: unless-stopped
+    init: true
+    security_opt:
+      - no-new-privileges:true
     environment:
       N8N_BASIC_AUTH_ACTIVE: ${N8N_BASIC_AUTH_ACTIVE}
       N8N_BASIC_AUTH_USER: ${N8N_BASIC_AUTH_USER}
       N8N_BASIC_AUTH_PASSWORD: ${N8N_BASIC_AUTH_PASSWORD}
-      DB_TYPE: postgresdb
-      DB_POSTGRESDB_HOST: postgres
-      DB_POSTGRESDB_PORT: 5432
-      DB_POSTGRESDB_DATABASE: ${POSTGRES_DB}
-      DB_POSTGRESDB_USER: ${POSTGRES_USER}
-      DB_POSTGRESDB_PASSWORD: ${POSTGRES_PASSWORD}
+      N8N_ENCRYPTION_KEY: ${N8N_ENCRYPTION_KEY}
+      DB_TYPE: mysqldb
+      DB_MYSQLDB_HOST: mysql
+      DB_MYSQLDB_PORT: 3306
+      DB_MYSQLDB_DATABASE: ${N8N_DATABASE}
+      DB_MYSQLDB_USER: root
+      DB_MYSQLDB_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     ports:
-      - "5678:5678"
+      - "127.0.0.1:5678:5678"
     volumes:
       - n8n-data:/home/node/.n8n
     depends_on:
-      postgres:
+      mysql:
         condition: service_healthy
     networks:
       - mecamanage-net
@@ -127,27 +171,45 @@ services:
     image: nginx:alpine
     container_name: mecamanage-nginx
     restart: unless-stopped
+    init: true
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
     ports:
       - "80:80"
+    tmpfs:
+      - /var/cache/nginx
+      - /var/run
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
     depends_on:
-      - backend
-      - ia-service
+      frontend:
+        condition: service_healthy
+      backend:
+        condition: service_healthy
+      ia-service:
+        condition: service_healthy
     networks:
       - mecamanage-net
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost/health || exit 1"]
+      test: ["CMD-SHELL", "wget -q --spider http://localhost/health"]
       interval: 15s
       timeout: 10s
       retries: 3
+      start_period: 5s
+
   # ── Prometheus ────────────────────────────────────────────
   prometheus:
     image: prom/prometheus:latest
     container_name: mecamanage-prometheus
     restart: unless-stopped
+    init: true
+    security_opt:
+      - no-new-privileges:true
     ports:
-      - "9090:9090"
+      - "127.0.0.1:9090:9090"
     volumes:
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
       - prometheus-data:/prometheus
@@ -163,28 +225,33 @@ services:
       interval: 15s
       timeout: 10s
       retries: 3
+      start_period: 10s
 
   # ── Grafana ───────────────────────────────────────────────
   grafana:
     image: grafana/grafana:latest
     container_name: mecamanage-grafana
     restart: unless-stopped
+    init: true
+    security_opt:
+      - no-new-privileges:true
     ports:
-      - "3000:3000"
+      - "127.0.0.1:3000:3000"
     environment:
-      GF_SECURITY_ADMIN_USER: admin
-      GF_SECURITY_ADMIN_PASSWORD: admin123
+      GF_SECURITY_ADMIN_USER: ${GRAFANA_ADMIN_USER}
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD}
       GF_ALERTING_ENABLED: "true"
-      GF_SMTP_ENABLED: "true"
-      GF_SMTP_HOST: "smtp.gmail.com:587"
-      GF_SMTP_USER: "arbihazbri297@gmail.com"
-      GF_SMTP_PASSWORD: "kwfc xzsh sjhl vtqi"
-      GF_SMTP_FROM_ADDRESS: "arbihazbri297@gmail.com"
-      GF_SMTP_FROM_NAME: "MecaManage Monitoring"
+      GF_SMTP_ENABLED: ${GRAFANA_SMTP_ENABLED}
+      GF_SMTP_HOST: ${GRAFANA_SMTP_HOST}
+      GF_SMTP_USER: ${GRAFANA_SMTP_USER}
+      GF_SMTP_PASSWORD: ${GRAFANA_SMTP_PASSWORD}
+      GF_SMTP_FROM_ADDRESS: ${GRAFANA_SMTP_FROM_ADDRESS}
+      GF_SMTP_FROM_NAME: ${GRAFANA_SMTP_FROM_NAME}
     volumes:
       - grafana-data:/var/lib/grafana
     depends_on:
-      - prometheus
+      prometheus:
+        condition: service_healthy
     networks:
       - mecamanage-net
     healthcheck:
@@ -192,14 +259,18 @@ services:
       interval: 15s
       timeout: 10s
       retries: 3
+      start_period: 10s
 
   # ── cAdvisor — métriques conteneurs Docker ────────────────
   cadvisor:
     image: gcr.io/cadvisor/cadvisor:latest
     container_name: mecamanage-cadvisor
     restart: unless-stopped
+    init: true
+    security_opt:
+      - no-new-privileges:true
     ports:
-      - "8081:8080"
+      - "127.0.0.1:8081:8080"
     volumes:
       - /:/rootfs:ro
       - /var/run:/var/run:ro
@@ -207,10 +278,11 @@ services:
       - /var/lib/docker/:/var/lib/docker:ro
     networks:
       - mecamanage-net
+
 # ── Volumes persistants ───────────────────────────────────────
 volumes:
-  postgres-data:
-    name: mecamanage-postgres-data
+  mysql-data:
+    name: mecamanage-mysql-data
   redis-data:
     name: mecamanage-redis-data
   n8n-data:
@@ -219,6 +291,7 @@ volumes:
     name: mecamanage-prometheus-data
   grafana-data:
     name: mecamanage-grafana-data
+
 # ── Réseau isolé ──────────────────────────────────────────────
 networks:
   mecamanage-net:

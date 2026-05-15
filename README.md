@@ -420,3 +420,44 @@ Start Redis or use Docker:
 docker run -d -p 6379:6379 redis:7-alpine
 ```
 
+---
+
+## Déploiement Docker
+- L’environnement de production est piloté depuis `docker/docker-compose.yml`.
+- Les variables réelles sont générées via `ansible/roles/deploy/templates/env.prod.j2`.
+- En production, `nginx` reste la porte d’entrée publique ; `n8n`, `Prometheus`, `Grafana` et `cAdvisor` sont limités à `127.0.0.1`.
+- Le job IA a été retiré de la CI/CD ; le pipeline ne teste et ne pousse plus que le backend.
+
+### Points d’accès utiles
+- API / Swagger : via `http://localhost` ou via un reverse proxy externe vers `nginx`
+- IA : via `http://localhost/ia/`
+- n8n : `http://127.0.0.1:5678`
+- Prometheus : `http://127.0.0.1:9090`
+- Grafana : `http://127.0.0.1:3000`
+- cAdvisor : `http://127.0.0.1:8081`
+
+### Variables d’environnement
+| Nom | Description | Exemple |
+|-----|-------------|---------|
+| `MYSQL_ROOT_PASSWORD` | Mot de passe root MySQL | `root` |
+| `MYSQL_DATABASE` | Nom de la base de données | `mecamanage` |
+| `MYSQL_USER` | Nom d’utilisateur MySQL | `mecamanage_user` |
+| `MYSQL_PASSWORD` | Mot de passe de l’utilisateur MySQL | `pass123` |
+| `REDIS_PASSWORD` | Mot de passe Redis | `redispass` |
+| `JWT_SECRET` | Clé secrète pour JWT | `MecaManage_Super_Secret_Key_2026_MinLength32Chars!` |
+| `GEMINI_API_KEY` | Clé API pour Google Gemini | `votre_cle_api_google` |
+
+### Commandes Docker Compose
+```bash
+# Démarrer en arrière-plan
+docker compose up -d
+
+# Voir les logs
+docker compose logs -f
+
+# Accéder au conteneur d’un service
+docker exec -it <nom_du_conteneur> /bin/bash
+
+# Arrêter les services
+docker compose down
+```

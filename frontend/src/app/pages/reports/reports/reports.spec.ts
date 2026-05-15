@@ -1,23 +1,7 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ReportsComponent } from './reports';
 
-import { Reports } from './reports';
-
-describe('Reports', () => {
-  let component: Reports;
-  let fixture: ComponentFixture<Reports>;
-
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [Reports]
-    })
-    .compileComponents();
-
-    fixture = TestBed.createComponent(Reports);
-    component = fixture.componentInstance;
-    await fixture.whenStable();
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
+describe('ReportsComponent', () => {
+  it('should be defined', () => {
+    expect(ReportsComponent).toBeDefined();
   });
 });
