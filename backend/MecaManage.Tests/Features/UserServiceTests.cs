@@ -57,7 +57,6 @@ public class UserServiceTests
     }
 
     [Fact]
-    [Fact]
     public void VerifyPassword_WithCorrectPassword_ShouldReturnTrue()
     {
         // Arrange
