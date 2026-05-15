@@ -13,6 +13,14 @@ public static class SeedHelper
 
     public static void Seed(ApplicationDbContext context)
     {
+        SeedDatabase(context);
+    }
+
+    public static void SeedDatabase(ApplicationDbContext context)
+    {
+        if (context.Users.Any())
+            return;
+
         var user = new User
         {
             Id = UserId,

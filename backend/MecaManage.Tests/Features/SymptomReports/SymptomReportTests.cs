@@ -26,8 +26,8 @@ public class SymptomReportTests
             It.IsAny<int>(),
             It.IsAny<string>(),
             It.IsAny<CancellationToken>(),
-            null,
-            null)).ReturnsAsync(new IADiagnosisResponse
+            It.IsAny<Guid?>(),
+            It.IsAny<Guid?>())).ReturnsAsync(new IADiagnosisResponse
             {
                 Diagnosis = "Suspicion de problème de batterie",
                 ConfidenceScore = 0.91f,
@@ -42,7 +42,8 @@ public class SymptomReportTests
         var command = new CreateSymptomReportCommand(
             SeedHelper.UserId,
             SeedHelper.VehicleId,
-            "Le moteur démarre mal et les lumières faiblissent");
+            "Le moteur démarre mal et les lumières faiblissent",
+            SeedHelper.GarageId);
 
         var result = await handler.Handle(command, CancellationToken.None);
 
@@ -54,6 +55,25 @@ public class SymptomReportTests
         report.AIConfidenceScore.Should().Be(0.91f);
         report.AIRecommendations.Should().Contain("Vérifier la batterie");
         report.Status.Should().Be(SymptomReportStatus.PendingReview);
+    }
+
+    [Fact]
+    public async Task CreateSymptomReport_WithoutGarage_Fails()
+    {
+        var context = DbContextFactory.Create("CreateSymptomReport_WithoutGarage_Fails");
+        SeedHelper.Seed(context);
+
+        var iaService = new Mock<IIAService>();
+        var handler = new CreateSymptomReportCommandHandler(context, iaService.Object);
+        var command = new CreateSymptomReportCommand(
+            SeedHelper.UserId,
+            SeedHelper.VehicleId,
+            "Bruit moteur sans garage");
+
+        var result = await handler.Handle(command, CancellationToken.None);
+
+        result.Success.Should().BeFalse();
+        result.Message.Should().Contain("garage");
     }
 
     [Fact]
@@ -72,8 +92,17 @@ public class SymptomReportTests
             It.IsAny<int>(),
             It.IsAny<string>(),
             It.IsAny<CancellationToken>(),
-            chefAtelierId,
-            SeedHelper.GarageId)).ReturnsAsync((IADiagnosisResponse?)null);
+            It.IsAny<Guid?>(),
+            It.IsAny<Guid?>())).ReturnsAsync(new IADiagnosisResponse
+            {
+                Diagnosis = "Suspicion de problème de batterie",
+                ConfidenceScore = 0.91f,
+                RecommendedWorkshop = "electrique",
+                UrgencyLevel = "modere",
+                EstimatedCostRange = "80-200 TND",
+                RecommendedActions = "Vérifier la batterie | Tester l'alternateur",
+                RagSourcesUsed = 4
+            });
 
         var handler = new CreateSymptomReportCommandHandler(context, iaService.Object);
         var command = new CreateSymptomReportCommand(
@@ -98,4 +127,3 @@ public class SymptomReportTests
             SeedHelper.GarageId), Times.Once);
     }
 }
-
