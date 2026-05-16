@@ -1,0 +1,40 @@
+# ═══════════════════════════════════════════════════════════════
+# SonarCloud Configuration for MecaRage
+# ═══════════════════════════════════════════════════════════════
+
+sonar.projectKey=mecarage_mecarage
+sonar.projectName=MecaRage
+sonar.projectVersion=1.0.0
+
+# ─ Project Info ─────────────────────────────────────────────
+sonar.organization=your-sonarcloud-org
+sonar.sourceEncoding=UTF-8
+
+# ─ Source Paths ─────────────────────────────────────────────
+sonar.sources=backend/MecaManage.API,backend/MecaManage.Application,backend/MecaManage.Domain,backend/MecaManage.Infrastructure,frontend/src,ia-service
+
+# ─ Test Paths ───────────────────────────────────────────────
+sonar.tests=backend/MecaManage.Tests,frontend/src,ia-service/tests
+sonar.test.inclusions=**/*.Tests/**,**/*.spec.ts,**/tests/**
+
+# ─ Exclusions ───────────────────────────────────────────────
+sonar.exclusions=**/node_modules/**,**/bin/**,**/obj/**,**/dist/**,**/__pycache__/**,**/venv/**
+
+# ─ Code Coverage ────────────────────────────────────────────
+sonar.coverage.exclusions=**/*.spec.ts,**/node_modules/**,**/tests/**,**/__pycache__/**
+
+# ─ Language Specific ───────────────────────────────────────
+sonar.language=csharp
+sonar.csharp.opencover.reportsPaths=**/coverage.xml
+sonar.javascript.lcov.reportPaths=frontend/coverage/lcov.info
+
+# ─ Quality Gates ────────────────────────────────────────────
+sonar.qualitygate.wait=true
+sonar.qualitygate.timeout=300
+
+# ─ Analysis Properties ──────────────────────────────────────
+sonar.links.homepage=https://github.com/your-username/mecarage
+sonar.links.ci=https://github.com/your-username/mecarage/actions
+sonar.links.scm=https://github.com/your-username/mecarage
+sonar.links.issue=https://github.com/your-username/mecarage/issues
+

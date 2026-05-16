@@ -1,40 +1,174 @@
-__pycache__/
-*.pyc
-venv/
-.venv/
+# ═══════════════════════════════════════════════════════════════
+# MecaRage .gitignore - Comprehensive exclusions
+# ═══════════════════════════════════════════════════════════════
 
-# ── Secrets / credentials ───────────────────────────────────────
+# ─ SECRETS & CREDENTIALS ────────────────────────────────────
 .env
+.env.local
+.env.development.local
+.env.production.local
 .env.prod
+.env.*.local
+.secrets/
+secrets.json
 *.key
-# The real dev appsettings with DB creds — each dev has their own copy
-backend/**/appsettings.Development.json
+*.pem
+*.p12
+.ssh/
 
-# ── .NET build outputs (nested projects) ────────────────────────
+# ─ BACKEND (.NET) ──────────────────────────────────────────
 backend/**/bin/
 backend/**/obj/
 backend/**/.vs/
 backend/.vs/
 backend/artifacts/
+backend/**/*.user
+backend/**/*.suo
+backend/**/*.VisualState.xml
+backend/**/TestResult.xml
+backend/**/.coverage
+backend/**/coverage.xml
+backend/**/OpenCover.xml
+backend/**/*.nupkg
+backend/**/*.snupkg
+backend/**/appsettings.Development.json
 
-# NuGet user-specific files
-*.user
-*.suo
-*.userprefs
+# NuGet
+*.nupkg
+*.snupkg
+.nuget/
 
-# ── Frontend ─────────────────────────────────────────────────────
+# ─ FRONTEND (Angular) ──────────────────────────────────────
 node_modules/
 frontend/node_modules/
 frontend/dist/
 frontend/.angular/
+frontend/.next/
+frontend/build/
+frontend/npm-debug.log
+frontend/yarn-error.log
+frontend/.cache
+frontend/.eslintcache
+frontend/**/*.spec.ts
 
-# ── IA service ───────────────────────────────────────────────────
+# ─ IA SERVICE (Python) ─────────────────────────────────────
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+venv/
+env/
+ENV/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+.pytest_cache/
+.coverage
+htmlcov/
 ia-service/.pytest_cache/
 ia-service/__pycache__/
 ia-service/diagnosis_preview.json
+ia-service/venv/
+ia-service/env/
 
-# ── Monorepo / tooling ───────────────────────────────────────────
-.turbo/
-docker/postgres-data/
-.vscode/settings.json
+# ─ IDE & EDITORS ───────────────────────────────────────────
 .idea/
+.vscode/
+.vscode/settings.json
+.vscode/extensions.json
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+.sublime-workspace
+*.sublime-project
+*.sublime-workspace
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+*.sublime-project
+*.sublime-workspace
+
+# ─ DOCKER ──────────────────────────────────────────────────
+.docker/
+docker-compose.override.yml
+docker/mysql-data/
+docker/postgres-data/
+mysql-data/
+postgres-data/
+redis-data/
+
+# ─ LOGS & OUTPUT ───────────────────────────────────────────
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# ─ MONOREPO & BUILD ────────────────────────────────────────
+.turbo/
+dist/
+build/
+out/
+.next/
+.cache/
+
+# ─ TEST & COVERAGE ────────────────────────────────────────
+coverage/
+.nyc_output/
+TestResult.xml
+test-results.xml
+
+# ─ TEMP & BACKUP FILES ────────────────────────────────────
+*.tmp
+*.bak
+*.swp
+*~
+.#*
+
+# ─ OS SPECIFIC ────────────────────────────────────────────
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+$RECYCLE.BIN/
+
+# ─ GIT ────────────────────────────────────────────────────
+.gitkeep
+!.gitkeep
+
+# ─ CUSTOM ─────────────────────────────────────────────────
+node_modules/
+.parcel-cache/
+dist/
+.next/
+out/
+
+# Keep these important files
+!.github/
+!.gitignore
+!.nvmrc
+!docker-compose.yml
+!backend/Dockerfile
+!frontend/Dockerfile
