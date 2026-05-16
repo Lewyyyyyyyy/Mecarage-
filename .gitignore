@@ -1,69 +1,21 @@
-# Python
 __pycache__/
 *.pyc
-.pytest_cache/
-
-# Environment files
 .env
-.env.prod
-.env.*.local
-
-# Virtual environments
 venv/
 .venv/
-env/
-
-# .NET
-**/bin/
-**/obj/
-**/.vs/
-*.user
-*.suo
-*.csproj.user
-*.DotSettings
-*.DotSettings.user
-
-# Node.js / Frontend
+backend/bin/
+backend/obj/
+backend/.vs/
 node_modules/
 frontend/node_modules/
 frontend/dist/
 frontend/.angular/
-frontend/coverage/
-frontend/**/*.spec.js
-frontend/**/*.spec.js.map
-
-# Docker
-docker/postgres-data/
-docker/mysql-data/
-
-# IDE
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
-
-# Logs
-*.log
-*.status
-backend-test.log
-backend-test.status
-docker-build-*.log
-docker-build-*.status
-frontend/frontend-test.log
-frontend/frontend-test.status
-
-# Keys & Certificates
-*.key
-*.pem
-*.cert
-
-# AI Service
+ia-service/.pytest_cache/
+ia-service/__pycache__/
 ia-service/diagnosis_preview.json
-
-# Turbo
 .turbo/
-
-# OS
-.DS_Store
-Thumbs.db
+docker/postgres-data/
+.vscode/settings.json
+*.key
+.idea/
+.env.prod
