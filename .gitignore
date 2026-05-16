@@ -1,21 +1,40 @@
 __pycache__/
 *.pyc
-.env
 venv/
 .venv/
-backend/bin/
-backend/obj/
+
+# ── Secrets / credentials ───────────────────────────────────────
+.env
+.env.prod
+*.key
+# The real dev appsettings with DB creds — each dev has their own copy
+backend/**/appsettings.Development.json
+
+# ── .NET build outputs (nested projects) ────────────────────────
+backend/**/bin/
+backend/**/obj/
+backend/**/.vs/
 backend/.vs/
+backend/artifacts/
+
+# NuGet user-specific files
+*.user
+*.suo
+*.userprefs
+
+# ── Frontend ─────────────────────────────────────────────────────
 node_modules/
 frontend/node_modules/
 frontend/dist/
 frontend/.angular/
+
+# ── IA service ───────────────────────────────────────────────────
 ia-service/.pytest_cache/
 ia-service/__pycache__/
 ia-service/diagnosis_preview.json
+
+# ── Monorepo / tooling ───────────────────────────────────────────
 .turbo/
 docker/postgres-data/
 .vscode/settings.json
-*.key
 .idea/
-.env.prod

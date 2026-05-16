@@ -1,0 +1,29 @@
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=localhost;Port=3306;Database=mecamanage;User=YOUR_MYSQL_USER;Password=YOUR_MYSQL_PASSWORD",
+    "Redis": "localhost:6379"
+  },
+  "Jwt": {
+    "Secret": "MecaManage_Super_Secret_Key_2026_MinLength32Chars!",
+    "Issuer": "MecaManage",
+    "Audience": "MecaManageClients",
+    "ExpiryMinutes": "60"
+  },
+  "BootstrapSuperAdmin": {
+    "Enabled": true,
+    "Email": "admin@mecamanage.local",
+    "Password": "SuperAdmin@123",
+    "FirstName": "Super",
+    "LastName": "Admin",
+    "Phone": "+33000000000",
+    "TenantName": "MecaManage Platform",
+    "TenantSlug": "platform"
+  },
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  }
+}
+
