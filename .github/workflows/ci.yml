@@ -171,20 +171,20 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      # ─ Backend Image ─
-      - name: Extract metadata (Backend)
-        id: meta-backend
-        uses: docker/metadata-action@v5
-        with:
-          images: |
-            ${{ secrets.DOCKERHUB_USERNAME != '' && format('{0}/mecamanage-backend', secrets.DOCKERHUB_USERNAME) || '' }}
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/backend
-          tags: |
-            type=ref,event=branch
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
-            type=sha,prefix={{branch}}-
-            type=raw,value=latest
+       # ─ Backend Image ─
+       - name: Extract metadata (Backend)
+         id: meta-backend
+         uses: docker/metadata-action@v5
+         with:
+           images: |
+             ${{ secrets.DOCKERHUB_USERNAME }}/mecamanage-backend
+             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/backend
+           tags: |
+             type=ref,event=branch
+             type=semver,pattern={{version}}
+             type=semver,pattern={{major}}.{{minor}}
+             type=sha,prefix={{branch}}-
+             type=raw,value=latest
 
       - name: Build & Push Backend
         uses: docker/build-push-action@v5
@@ -197,20 +197,20 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      # ─ Frontend Image ─
-      - name: Extract metadata (Frontend)
-        id: meta-frontend
-        uses: docker/metadata-action@v5
-        with:
-          images: |
-            ${{ secrets.DOCKERHUB_USERNAME != '' && format('{0}/mecamanage-frontend', secrets.DOCKERHUB_USERNAME) || '' }}
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/frontend
-          tags: |
-            type=ref,event=branch
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
-            type=sha,prefix={{branch}}-
-            type=raw,value=latest
+       # ─ Frontend Image ─
+       - name: Extract metadata (Frontend)
+         id: meta-frontend
+         uses: docker/metadata-action@v5
+         with:
+           images: |
+             ${{ secrets.DOCKERHUB_USERNAME }}/mecamanage-frontend
+             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/frontend
+           tags: |
+             type=ref,event=branch
+             type=semver,pattern={{version}}
+             type=semver,pattern={{major}}.{{minor}}
+             type=sha,prefix={{branch}}-
+             type=raw,value=latest
 
       - name: Build & Push Frontend
         uses: docker/build-push-action@v5
