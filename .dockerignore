@@ -1,0 +1,94 @@
+# ═══════════════════════════════════════════════════════════════
+# MecaRage Docker Build Context Exclusions
+# ═══════════════════════════════════════════════════════════════
+
+# Git
+.git
+.gitignore
+.gitattributes
+.gitkeep
+
+# GitHub
+.github
+.github/workflows
+.github/ISSUE_TEMPLATE
+
+# Documentation
+docs
+*.md
+README.md
+DOCKER.md
+DEVOPS_SETUP.md
+COMMIT_MESSAGE.md
+SETUP_PRODUCTION.md
+MONITORING.md
+COMPREHENSIVE_DEVOPS_GUIDE.md
+
+# Reports
+Report
+MecaRage-rapport
+MecaRage-rapport.zip
+rapport-final.zip
+rapport-final
+
+# IDE
+.idea
+.vscode
+*.sublime-project
+*.sublime-workspace
+.project
+.classpath
+*.swp
+*.swo
+*~
+
+# Build artifacts
+.turbo
+.next
+.cache
+dist
+build
+
+# Node
+node_modules
+npm-debug.log
+yarn-error.log
+
+# Backend
+bin
+obj
+*.user
+*.suo
+
+# Python
+__pycache__
+*.pyc
+venv
+env
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+.env.example
+.env.prod
+
+# Node modules in root
+node_modules/
+package-lock.json
+
+# Misc
+*.log
+.coverage
+test-results.xml
+ansible
+n8n
+docker/mysql
+docker/postgres-data
+docker-compose.override.yml
+verify-setup.sh
+verify-setup.bat
+push-to-github.ps1
+
